@@ -92,6 +92,11 @@ export type Project = {
   slug: string;
   title: string;
   tagline: string;
+  /**
+   * 갤러리 카드에 쓰이는 대표 이미지.
+   * 없으면 제목만으로 된 타이포그래피 카드가 대신 그려집니다.
+   */
+  cover?: string;
   period: string;
   role: string;
   teamSize: string;
@@ -113,6 +118,7 @@ export const projects: Project[] = [
     slug: "gears-of-deceit",
     title: "Gears of Deceit",
     tagline: "달리는 증기기관차 위, 5인 멀티플레이 소셜 디덕션",
+    cover: "/projects/gears-of-deceit/key-art.png",
     period: "2026.06 – 2026.07",
     role: "네트워크 · 열차 시스템 · 렌더링 / UI",
     teamSize: "5인 팀 (커밋 54회 기여)",
@@ -247,9 +253,8 @@ export const projects: Project[] = [
           ],
           media: [
             {
-              // ⚠️ 순찰자 영상을 유튜브에 올린 뒤 여기에 ID만 넣으면 영상으로 바뀝니다.
-              //    https://youtu.be/AbCdEfG → youtubeId: "AbCdEfG"
-              youtubeId: null,
+              // https://www.youtube.com/watch?v=d1UV0k-tygk
+              youtubeId: "d1UV0k-tygk",
               src: "/projects/gears-of-deceit/patrol-poster.jpg",
               alt: "순찰자 시점 플레이 — 두 플레이어가 마주친 순간",
               caption:

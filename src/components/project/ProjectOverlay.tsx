@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import type { Project } from "@/content/projects";
 import { ProjectDetail } from "./ProjectDetail";
+import { ProjectSummary } from "./ProjectSummary";
 
 /**
  * 카드를 누르면 그 자리에서 펼쳐지는 상세 패널.
@@ -96,7 +97,11 @@ export function ProjectOverlay({
 
         {/* 닫기 바가 차지한 높이를 되돌려 본문이 위에서 시작하게 합니다 */}
         <div className="-mt-19">
-          <ProjectDetail project={project} variant="overlay" />
+          {project.detail ? (
+            <ProjectDetail project={project} variant="overlay" />
+          ) : (
+            <ProjectSummary project={project} />
+          )}
         </div>
       </div>
     </div>

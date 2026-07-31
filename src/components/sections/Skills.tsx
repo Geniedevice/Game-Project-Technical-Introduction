@@ -6,7 +6,7 @@ import { SkillBadge } from "@/components/ui/SkillBadge";
 /** 기술 스택 — 파치먼트 캔버스 위 뱃지 그리드. */
 export function Skills() {
   return (
-    <section id="skills" className="scroll-mt-24 bg-parchment px-6 py-24 sm:py-32">
+    <section id="skills" className="scroll-mt-24 bg-canvas px-6 py-24 sm:py-32">
       <div className="container-tight">
         <SectionHeading
           eyebrow="Skills"
@@ -17,7 +17,7 @@ export function Skills() {
         <div className="mt-16 flex flex-col gap-12">
           {skillGroups.map((group, i) => (
             <Reveal key={group.title} delay={i * 80}>
-              <div className="rounded-lg border border-hairline bg-canvas p-6 sm:p-8">
+              <div className="rounded-lg border border-hairline bg-pearl p-6 sm:p-8">
                 <div className="flex flex-col gap-1">
                   <h3 className="text-tagline font-semibold text-ink">{group.title}</h3>
                   <p className="text-caption text-ink-48">{group.caption}</p>
