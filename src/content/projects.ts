@@ -22,7 +22,16 @@ export type ProjectSurface = "dark" | "light" | "parchment";
 export type MediaSlot = {
   /** 이미지 경로. video가 있으면 재생 전 포스터로 쓰입니다 */
   src: string | null;
-  /** mp4 경로. 있으면 이미지 대신 영상 플레이어가 나옵니다 */
+  /**
+   * 유튜브 영상 ID. 채우면 이 자리가 영상 플레이어로 바뀝니다.
+   * 비어 있으면 src 이미지가 그대로 보이므로, 나중에 ID만 넣으면 됩니다.
+   * https://youtu.be/AbCdEfG → "AbCdEfG"
+   */
+  youtubeId?: string | null;
+  /**
+   * 직접 올린 mp4 경로 (public/ 기준).
+   * 저장소가 무거워지므로 짧은 클립에만 쓰세요. 긴 영상은 유튜브를 권합니다.
+   */
   video?: string;
   alt: string;
   caption: string;
@@ -238,9 +247,11 @@ export const projects: Project[] = [
           ],
           media: [
             {
+              // ⚠️ 순찰자 영상을 유튜브에 올린 뒤 여기에 ID만 넣으면 영상으로 바뀝니다.
+              //    https://youtu.be/AbCdEfG → youtubeId: "AbCdEfG"
+              youtubeId: null,
               src: "/projects/gears-of-deceit/patrol-poster.jpg",
-              video: "/projects/gears-of-deceit/patrol.mp4",
-              alt: "순찰자 역할 플레이 영상",
+              alt: "순찰자 시점 플레이 — 두 플레이어가 마주친 순간",
               caption:
                 "순찰자 시점 플레이 — 근접 보이스가 걸린 상태에서 다른 플레이어와 마주치는 순간",
               hint: "플레이 영상",

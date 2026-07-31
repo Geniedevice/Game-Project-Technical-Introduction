@@ -27,7 +27,9 @@ export function Media({
 
   return (
     <figure className={cn("flex flex-col gap-3", className)}>
-      {slot.video ? (
+      {slot.youtubeId ? (
+        <VideoEmbed youtubeId={slot.youtubeId} title={slot.alt} />
+      ) : slot.video ? (
         <video
           controls
           playsInline

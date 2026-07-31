@@ -56,11 +56,36 @@ curl -H "Referer: https://blog.naver.com/" \
 `thumbnails.sprites`의 스프라이트 시트(100컷 한 장)를 받으면 영상 전체를 한눈에 훑어
 원하는 장면의 번호를 고를 수 있습니다.
 
-### 유튜브에 올린다면
+## 영상 넣기
 
-`detail.youtubeId`에 영상 ID만 넣으면 히어로 아래에 플레이어가 붙습니다.
+### 유튜브 (권장)
+
+`MediaSlot`이나 `detail`의 `youtubeId`에 영상 ID만 넣으면 그 자리가 플레이어로 바뀝니다.
 (`https://youtu.be/AbCdEfG` → `youtubeId: "AbCdEfG"`)
-그러면 프레임 이미지 대신 영상을 페이지 안에서 바로 재생할 수 있습니다.
+
+`youtubeId`가 비어 있으면 `src` 이미지가 그대로 보이므로,
+지금은 대표 프레임을 띄워두고 나중에 ID만 채우면 됩니다.
+
+**지금 비어 있는 곳** — 보이스 섹션의 순찰자 플레이 영상
+(`projects.ts`에서 `youtubeId: null`을 찾으세요)
+
+### 직접 올리기 (짧은 클립만)
+
+`MediaSlot.video`에 `public/` 기준 경로를 넣으면 `<video>`로 재생됩니다.
+`preload="none"`이라 재생 버튼을 눌러야 내려받으므로 페이지 로딩은 느려지지 않습니다.
+
+다만 **저장소에 영원히 남습니다.** 순찰자 영상(9분 39초)은 720p로 압축해도 69MB라
+유튜브로 보냈습니다. 30초~1분짜리 하이라이트 클립 정도만 직접 올리는 걸 권합니다.
+
+```bash
+# 구간을 잘라 압축하는 예 (3분20초부터 50초간)
+ffmpeg -ss 200 -t 50 -i 원본.mp4 -vf "scale=1280:-2" \
+  -c:v libx264 -crf 30 -preset veryfast -pix_fmt yuv420p \
+  -movflags +faststart -c:a aac -b:a 96k clip.mp4
+
+# 포스터 프레임 뽑기
+ffmpeg -ss 10 -i clip.mp4 -frames:v 1 -q:v 3 clip-poster.jpg
+```
 
 ## 네이버 블로그 이미지를 가져올 때
 
