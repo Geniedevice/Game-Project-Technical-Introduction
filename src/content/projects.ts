@@ -11,6 +11,9 @@
  */
 export type ProjectSurface = "dark" | "light" | "parchment";
 
+/** 목록에 쓸 수 있는 아이콘. 새 모양이 필요하면 ProjectIcon.tsx에 추가하세요. */
+export type ProjectIconName = "gear" | "terminal" | "nodes" | "network" | "cube";
+
 /**
  * 이미지 자리.
  * `src`가 null이면 사이트에 "여기에 무엇을 넣으면 되는지" 안내가 표시됩니다.
@@ -92,11 +95,10 @@ export type Project = {
   slug: string;
   title: string;
   tagline: string;
-  /**
-   * 갤러리 카드에 쓰이는 대표 이미지.
-   * 없으면 제목만으로 된 타이포그래피 카드가 대신 그려집니다.
-   */
-  cover?: string;
+  /** 목록의 아이콘 (src/components/project/ProjectIcon.tsx) */
+  icon: ProjectIconName;
+  /** 아이콘 아래에 붙는 짧은 꼬리표. 한 줄을 넘기지 마세요 */
+  label: string;
   period: string;
   role: string;
   teamSize: string;
@@ -118,7 +120,8 @@ export const projects: Project[] = [
     slug: "gears-of-deceit",
     title: "Gears of Deceit",
     tagline: "달리는 증기기관차 위, 5인 멀티플레이 소셜 디덕션",
-    cover: "/projects/gears-of-deceit/key-art.png",
+    icon: "gear",
+    label: "Unreal · 팀 5인",
     period: "2026.06 – 2026.07",
     role: "네트워크 · 열차 시스템 · 렌더링 / UI",
     teamSize: "5인 팀 (커밋 54회 기여)",
@@ -440,6 +443,8 @@ export const projects: Project[] = [
     slug: "console-game-systems",
     title: "콘솔 게임 시스템 과제 5종",
     tagline: "C++만으로 상태창 · 전투 · 인벤토리 · 경영 시뮬레이션 구현",
+    icon: "terminal",
+    label: "C++ · 개인 과제",
     period: "학습 과정",
     role: "단독 구현",
     teamSize: "개인 과제",
@@ -469,6 +474,8 @@ export const projects: Project[] = [
     slug: "fundamentals",
     title: "기본기 트레이닝",
     tagline: "알고리즘 97문제와 CS 38편 — 매일 쌓은 기록",
+    icon: "nodes",
+    label: "알고리즘 · CS",
     period: "2025.10 – 현재",
     role: "자기 주도 학습",
     teamSize: "개인",

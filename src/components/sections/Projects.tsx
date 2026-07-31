@@ -8,16 +8,14 @@ import { ProjectCard } from "@/components/project/ProjectCard";
 import { ProjectOverlay } from "@/components/project/ProjectOverlay";
 
 /**
- * 프로젝트 갤러리.
+ * 프로젝트 목록.
  *
- * 목록에서는 카드만 보여주고, 카드를 누르면 상세가 그 위로 펼쳐집니다.
- * 첫 프로젝트는 대표작이라 한 줄을 다 쓰는 큰 카드로 둡니다.
+ * 아이콘과 제목만 늘어놓고, 누르면 상세가 그 위로 펼쳐집니다.
+ * 프로젝트가 늘어나도 줄만 추가되도록 균일한 그리드로 둡니다.
  */
 export function Projects() {
   const [openSlug, setOpenSlug] = useState<string | null>(null);
   const open = openSlug ? projects.find((p) => p.slug === openSlug) : null;
-
-  const [featured, ...rest] = projects;
 
   /**
    * 전용 페이지가 있는 프로젝트만 주소를 바꿉니다.
@@ -56,32 +54,17 @@ export function Projects() {
       <div className="container-wide">
         <SectionHeading
           eyebrow="Projects"
-          title="문제를 어떻게 구조로 풀었는가"
-          description="완성된 화면보다, 그 화면을 만들기 위해 무엇을 바꿨는지를 적었습니다. 카드를 누르면 기술 소개가 펼쳐집니다."
+          title="지금까지 만든 것들"
+          description="아이콘을 누르면 그 프로젝트의 기술 소개가 펼쳐집니다. 완성된 화면보다, 그 화면을 만들기 위해 무엇을 바꿨는지를 적었습니다."
         />
 
-        <div className="mt-16 flex flex-col gap-6">
-          <Reveal>
-            <ProjectCard
-              project={featured}
-              index={0}
-              featured
-              onOpen={() => openProject(featured)}
-            />
-          </Reveal>
-
-          <div className="grid gap-6 md:grid-cols-2">
-            {rest.map((project, i) => (
-              <Reveal key={project.slug} delay={i * 80} className="h-full">
-                <ProjectCard
-                  project={project}
-                  index={i + 1}
-                  onOpen={() => openProject(project)}
-                />
-              </Reveal>
-            ))}
-          </div>
-        </div>
+        <ul className="mx-auto mt-16 grid max-w-[880px] grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
+          {projects.map((project, i) => (
+            <Reveal as="li" key={project.slug} delay={(i % 4) * 70}>
+              <ProjectCard project={project} onOpen={() => openProject(project)} />
+            </Reveal>
+          ))}
+        </ul>
       </div>
 
       {open && <ProjectOverlay project={open} onClose={close} />}
