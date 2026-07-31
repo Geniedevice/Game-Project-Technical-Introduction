@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { MediaSlot } from "@/content/projects";
+import { asset } from "@/lib/asset";
 import { cn } from "@/lib/cn";
 
 const aspect = {
@@ -26,10 +27,21 @@ export function Media({
 
   return (
     <figure className={cn("flex flex-col gap-3", className)}>
-      {slot.src ? (
+      {slot.video ? (
+        <video
+          controls
+          playsInline
+          preload="none"
+          poster={slot.src ? asset(slot.src) : undefined}
+          className={cn("w-full rounded-lg bg-black", ratio, "object-cover")}
+        >
+          <source src={asset(slot.video)} type="video/mp4" />
+          이 브라우저는 영상 재생을 지원하지 않습니다.
+        </video>
+      ) : slot.src ? (
         <div className={cn("relative overflow-hidden rounded-lg", ratio)}>
           <Image
-            src={slot.src}
+            src={asset(slot.src)}
             alt={slot.alt}
             fill
             sizes="(min-width: 980px) 900px, 100vw"

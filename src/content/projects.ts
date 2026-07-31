@@ -20,7 +20,10 @@ export type ProjectSurface = "dark" | "light" | "parchment";
  *    핫링크가 차단되어 다른 도메인에서는 깨집니다. 파일을 내려받아 public/에 두세요.
  */
 export type MediaSlot = {
+  /** 이미지 경로. video가 있으면 재생 전 포스터로 쓰입니다 */
   src: string | null;
+  /** mp4 경로. 있으면 이미지 대신 영상 플레이어가 나옵니다 */
+  video?: string;
   alt: string;
   caption: string;
   /** src가 비었을 때 자리표시자에 뜨는 안내 문구 */
@@ -235,10 +238,18 @@ export const projects: Project[] = [
           ],
           media: [
             {
+              src: "/projects/gears-of-deceit/patrol-poster.jpg",
+              video: "/projects/gears-of-deceit/patrol.mp4",
+              alt: "순찰자 역할 플레이 영상",
+              caption:
+                "순찰자 시점 플레이 — 근접 보이스가 걸린 상태에서 다른 플레이어와 마주치는 순간",
+              hint: "플레이 영상",
+              aspect: "16/9",
+            },
+            {
               src: "/projects/gears-of-deceit/voice.jpg",
               alt: "보이스·세션 시연 영상의 인게임 화면",
-              caption:
-                "VOIP 보이스와 세션 멀티 시연 영상의 한 장면 — 역할(마피아)과 어빌리티 슬롯이 함께 보인다",
+              caption: "역할(마피아)과 어빌리티 슬롯이 함께 보이는 화면",
               hint: "보이스 시연 장면",
               aspect: "16/9",
             },

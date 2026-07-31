@@ -1,8 +1,11 @@
-import Link from "next/link";
+"use client";
+
+import { useCallback, useEffect, useState } from "react";
 import { projects, type Project } from "@/content/projects";
 import { getPost, postHref } from "@/content/til";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { ProjectOverlay } from "@/components/project/ProjectOverlay";
 import { cn } from "@/lib/cn";
 
 const surface = {
@@ -12,6 +15,33 @@ const surface = {
 } as const;
 
 export function Projects() {
+  const [openSlug, setOpenSlug] = useState<string | null>(null);
+  const open = openSlug ? projects.find((p) => p.slug === openSlug) : null;
+
+  /**
+   * 열 때 주소를 /projects/{slug}로 바꿔둡니다.
+   * 덕분에 뒤로 가기로 닫을 수 있고, 그 상태에서 새로고침하면
+   * 같은 내용의 전용 페이지가 그대로 열립니다.
+   */
+  const openProject = useCallback((project: Project) => {
+    setOpenSlug(project.slug);
+    window.history.pushState({ project: project.slug }, "", `projects/${project.slug}/`);
+  }, []);
+
+  const close = useCallback(() => {
+    setOpenSlug(null);
+    window.history.back();
+  }, []);
+
+  // 뒤로 가기로 닫힌 경우 상태만 정리합니다
+  useEffect(() => {
+    function onPopState() {
+      setOpenSlug(null);
+    }
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
   return (
     <section id="projects" className="scroll-mt-24">
       <div className="bg-canvas px-6 py-24 sm:py-32">
@@ -23,13 +53,28 @@ export function Projects() {
       </div>
 
       {projects.map((project, i) => (
-        <ProjectTile key={project.slug} project={project} index={i} />
+        <ProjectTile
+          key={project.slug}
+          project={project}
+          index={i}
+          onOpen={() => openProject(project)}
+        />
       ))}
+
+      {open && <ProjectOverlay project={open} onClose={close} />}
     </section>
   );
 }
 
-function ProjectTile({ project, index }: { project: Project; index: number }) {
+function ProjectTile({
+  project,
+  index,
+  onOpen,
+}: {
+  project: Project;
+  index: number;
+  onOpen: () => void;
+}) {
   const onDark = project.surface === "dark";
 
   return (
@@ -259,27 +304,30 @@ function ProjectTile({ project, index }: { project: Project; index: number }) {
           <Reveal delay={300}>
             <div className="mt-8 flex flex-wrap gap-3">
               {project.detail && (
-                <Link
-                  href={`/projects/${project.slug}`}
+                <button
+                  type="button"
+                  onClick={onOpen}
                   className={cn(
                     "press inline-flex items-center gap-2 rounded-full px-[22px] py-[11px] text-body",
                     "bg-primary text-white hover:bg-primary-focus",
                   )}
                 >
-                  자세히 보기
+                  기술 소개 펼치기
                   <svg
                     viewBox="0 0 16 16"
                     aria-hidden="true"
-                    className="size-3 shrink-0"
+                    className="size-3.5 shrink-0"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="1.8"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   >
-                    <path d="m6 3 5 5-5 5" />
+                    <path d="M9.5 2.5H13.5V6.5" />
+                    <path d="M6.5 13.5H2.5V9.5" />
+                    <path d="M13.5 2.5 9 7M2.5 13.5 7 9" />
                   </svg>
-                </Link>
+                </button>
               )}
 
               {project.links?.map((link) => (
