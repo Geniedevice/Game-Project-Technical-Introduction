@@ -11,7 +11,7 @@ export function Skills() {
         <SectionHeading
           eyebrow="Skills"
           title="무엇을 쓸 수 있는가"
-          description="써본 것과 책임지고 쓸 수 있는 것을 구분했습니다. 뱃지에 마우스를 올리면 근거가 보입니다."
+          description="써본 것과 책임지고 쓸 수 있는 것을 구분했습니다."
         />
 
         <div className="mt-16 flex flex-col gap-12">

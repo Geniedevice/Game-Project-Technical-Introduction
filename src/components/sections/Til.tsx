@@ -30,7 +30,7 @@ export function Til() {
         <SectionHeading
           eyebrow="Today I Learned"
           title={`${totalPostCount}편의 기록`}
-          description="막힌 지점과 그것을 푼 과정을 그때그때 남겼습니다. 위 프로젝트의 판단은 대부분 여기서 나왔고, 제목을 누르면 실제 글로 이동합니다."
+          description="개인적으로 공부하며 남긴 기록입니다."
           onDark
         />
 

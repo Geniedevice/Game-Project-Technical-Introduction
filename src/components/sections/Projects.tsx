@@ -55,7 +55,7 @@ export function Projects() {
         <SectionHeading
           eyebrow="Projects"
           title="지금까지 만든 것들"
-          description="아이콘을 누르면 그 프로젝트의 기술 소개가 펼쳐집니다. 완성된 화면보다, 그 화면을 만들기 위해 무엇을 바꿨는지를 적었습니다."
+          description="작업해온 프로젝트의 기록입니다."
         />
 
         <ul className="mx-auto mt-16 grid max-w-[1120px] grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
