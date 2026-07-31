@@ -19,7 +19,7 @@ npm run lint
 | 파일 | 무엇을 담나 |
 |---|---|
 | `src/content/site.ts` | 이름, 직무, 히어로 문구, 이메일, 블로그·GitHub 주소 |
-| `src/content/projects.ts` | 프로젝트 — 문제 / 접근 / 결과 / 관련 글 |
+| `src/content/projects.ts` | 프로젝트 — 문제 / 접근 / 결과 / 관련 글 / 상세 페이지 |
 | `src/content/skills.ts` | 기술 스택 뱃지 (그룹 · 숙련도 · 근거 한 줄) |
 | `src/content/til.ts` | 학습 기록 — **자동 생성**, 아래 참고 |
 
@@ -60,6 +60,24 @@ relatedPosts: ["gas-15", "gas-17"]   // 총알 최적화, 장비 카드 UI 시�
 ```
 
 히어로의 지표(기록 편수·푼 문제 수)도 이 데이터에서 계산되므로 따로 고칠 필요가 없습니다.
+
+## 프로젝트 상세 페이지
+
+`projects.ts`의 프로젝트에 `detail` 필드가 있으면 `/projects/{slug}/` 페이지가 자동 생성됩니다.
+메인의 프로젝트 타일에도 "자세히 보기" 버튼이 붙고, sitemap에도 추가됩니다.
+
+현재 상세 페이지가 있는 프로젝트: **Gears of Deceit** (`/projects/gears-of-deceit/`)
+
+### 이미지 채우기
+
+상세 페이지의 이미지 자리(`MediaSlot`)는 `src`가 `null`이면
+"여기에 무엇을 넣으면 되는지" 안내 문구가 대신 표시됩니다. 레이아웃은 그대로 잡혀 있으므로
+나중에 파일만 넣으면 됩니다.
+
+필요한 이미지 목록과 채우는 방법은 **[docs/media-slots.md](docs/media-slots.md)** 에 있습니다.
+
+> ⚠️ 네이버 블로그 이미지 주소를 그대로 쓰면 핫링크 차단으로 깨집니다.
+> 이미지를 내려받아 `public/projects/{slug}/`에 두고 그 경로를 쓰세요.
 
 ## 구조
 

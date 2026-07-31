@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { projects, type Project } from "@/content/projects";
 import { getPost, postHref } from "@/content/til";
 import { Reveal } from "@/components/ui/Reveal";
@@ -253,11 +254,35 @@ function ProjectTile({ project, index }: { project: Project; index: number }) {
           </Reveal>
         )}
 
-        {/* 외부 링크 */}
-        {project.links && project.links.length > 0 && (
+        {/* 링크 — 상세 페이지가 있으면 그것을 먼저 */}
+        {(project.detail || (project.links && project.links.length > 0)) && (
           <Reveal delay={300}>
             <div className="mt-8 flex flex-wrap gap-3">
-              {project.links.map((link) => (
+              {project.detail && (
+                <Link
+                  href={`/projects/${project.slug}`}
+                  className={cn(
+                    "press inline-flex items-center gap-2 rounded-full px-[22px] py-[11px] text-body",
+                    "bg-primary text-white hover:bg-primary-focus",
+                  )}
+                >
+                  자세히 보기
+                  <svg
+                    viewBox="0 0 16 16"
+                    aria-hidden="true"
+                    className="size-3 shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="m6 3 5 5-5 5" />
+                  </svg>
+                </Link>
+              )}
+
+              {project.links?.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
