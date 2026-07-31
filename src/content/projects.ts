@@ -459,8 +459,8 @@ export const projects: Project[] = [
   {
     slug: "destination",
     title: "DESTINATION",
-    tagline: "좀비 웨이브를 함께 버티는 3D 멀티플레이 슈터",
-    banner: "/projects/destination/key-art.jpg",
+    tagline: "대규모 PVE와 총기 액션이 결합된 빠른 템포의 서바이벌 게임",
+    banner: "/projects/destination/banner.png",
     icon: "network",
     label: "Unreal · 개인",
     period: "2025.10",
@@ -499,7 +499,7 @@ export const projects: Project[] = [
         "혼자 만든 프로젝트라 네트워크부터 전투·아이템·AI·UI까지 전부 직접 설계했습니다. 기능을 늘리는 것보다 “나중에 하나를 바꿔도 나머지가 안 깨지는 구조”를 잡는 데 시간을 더 썼습니다.",
       ],
       facts: [
-        { label: "장르", value: "협동 좀비 웨이브 슈터" },
+        { label: "장르", value: "3D 좀비 로그라이크 액션" },
         { label: "규모", value: "개인 프로젝트 (C++ 141파일)" },
         { label: "멀티", value: "Steam OSS 세션" },
         { label: "기간", value: "2025.10" },
