@@ -634,37 +634,6 @@ export const projects: Project[] = [
     },
   },
   {
-    slug: "console-game-systems",
-    title: "콘솔 게임 시스템 과제 5종",
-    tagline: "C++만으로 상태창 · 전투 · 인벤토리 · 경영 시뮬레이션 구현",
-    icon: "terminal",
-    label: "C++ · 개인 과제",
-    period: "학습 과정",
-    role: "단독 구현",
-    teamSize: "개인 과제",
-    stack: ["C++", "Unreal Engine C++", "OOP"],
-    problem:
-      "엔진이 대신 해주던 것들을 걷어내고, 게임 시스템을 자료구조와 클래스 설계만으로 처음부터 세워보는 것이 목표였습니다.",
-    approach: [
-      "캐릭터 상태창부터 시작해 전직 시스템과 전투 루프까지 단계적으로 확장했습니다",
-      "인벤토리와 연금술사 공방 관리 시스템에서 아이템·레시피 관계를 직접 자료구조로 설계했습니다",
-      "마지막 과제에서 같은 구조를 언리얼 C++로 옮기며, 엔진이 무엇을 대신해주는지 비교했습니다",
-    ],
-    results: [
-      { label: "구현 과제", value: "5종 전부 완료" },
-      { label: "다룬 시스템", value: "상태창 · 전투 · 인벤토리" },
-      { label: "확장", value: "콘솔 → Unreal C++" },
-    ],
-    relatedPosts: [
-      "assignment-00",
-      "assignment-01",
-      "assignment-02",
-      "assignment-03",
-      "assignment-04",
-    ],
-    surface: "parchment",
-  },
-  {
     slug: "fundamentals",
     title: "기본기 트레이닝",
     tagline: "알고리즘 97문제와 CS 38편 — 매일 쌓은 기록",
