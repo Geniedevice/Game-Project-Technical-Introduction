@@ -32,23 +32,6 @@ export function Skills() {
             </Reveal>
           ))}
         </div>
-
-        <Reveal delay={240}>
-          <ul className="mt-10 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 text-fine text-ink-48">
-            <li className="inline-flex items-center gap-2">
-              <span aria-hidden="true" className="size-1.5 rounded-full bg-sky" />
-              주력
-            </li>
-            <li className="inline-flex items-center gap-2">
-              <span aria-hidden="true" className="size-1.5 rounded-full bg-primary" />
-              실무 수준
-            </li>
-            <li className="inline-flex items-center gap-2">
-              <span aria-hidden="true" className="size-1.5 rounded-full bg-ink-48/50" />
-              경험 있음
-            </li>
-          </ul>
-        </Reveal>
       </div>
     </section>
   );
