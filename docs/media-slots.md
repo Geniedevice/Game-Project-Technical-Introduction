@@ -87,6 +87,22 @@ ffmpeg -ss 200 -t 50 -i 원본.mp4 -vf "scale=1280:-2" \
 ffmpeg -ss 10 -i clip.mp4 -frames:v 1 -q:v 3 clip-poster.jpg
 ```
 
+## DESTINATION 현재 상태
+
+이미지 4장과 영상 1개 모두 [블로그 영상 글](https://blog.naver.com/startblack7/224034428520)에서
+가져왔습니다. (`public/projects/destination/`)
+
+| 파일 | 쓰이는 곳 |
+|---|---|
+| `demo.mp4` (8.5MB) | 히어로 — 74초 플레이 영상, 페이지에서 바로 재생 |
+| `key-art.jpg` | 위 영상의 포스터 |
+| `city.jpg` | 개요 — 폐허 도시 전경 |
+| `combat.jpg` | 01 네트워크 — 전투 화면 |
+| `ability-cards.jpg` | 04 최적화와 성장 — 카드 선택 |
+
+영상이 74초로 짧아(8.5MB) 유튜브 대신 직접 올렸습니다.
+`preload="none"`이라 재생 버튼을 눌러야 내려받습니다.
+
 ## 네이버 블로그 이미지를 가져올 때
 
 **이미지 주소를 그대로 쓰면 안 됩니다.** 네이버는 다른 도메인에서의 요청(핫링크)을

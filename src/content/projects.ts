@@ -56,6 +56,11 @@ export type DetailSection = {
   media?: MediaSlot[];
   /** 근거가 되는 til post id (til.generated.ts) */
   posts?: string[];
+  /**
+   * posts 묶음의 제목. 기본값은 "그때 공부한 것"입니다.
+   * 프로젝트보다 나중에 정리한 글이라면 문구를 바꿔주세요.
+   */
+  postsLabel?: string;
   /** 학습 노트에는 없는 블로그 글 직접 링크 */
   blogPosts?: { title: string; url: string }[];
 };
@@ -437,6 +442,195 @@ export const projects: Project[] = [
           lesson: "초기화 타이밍은 서버 · 클라이언트 · 리슨 호스트가 각각 다르다.",
         },
       ],
+    },
+  },
+  {
+    slug: "destination",
+    title: "DESTINATION",
+    tagline: "좀비 웨이브를 함께 버티는 3D 멀티플레이 슈터",
+    icon: "network",
+    label: "Unreal · 개인",
+    period: "2025.10",
+    role: "전체 설계 및 구현",
+    teamSize: "개인 프로젝트",
+    stack: ["Unreal Engine 5", "C++", "GAS", "Steam OSS", "Replication"],
+    problem:
+      "슈터 하나에 필요한 시스템은 전부 서로 얽혀 있습니다. 무기가 늘면 데미지 계산이 흔들리고, 아이템이 늘면 네트워크가 무거워지고, 적이 늘면 프레임이 무너집니다. 각각을 따로 붙이면 결국 어느 하나를 건드릴 때마다 나머지가 깨집니다.",
+    approach: [
+      "데미지 계산을 GAS의 ExecCalc 한 곳으로 모아, 무기가 몇 종이 되든 계산 경로는 하나만 유지되도록 했습니다",
+      "인벤토리와 장비를 FastArraySerializer로 구성해 배열 전체가 아니라 바뀐 항목만 복제되게 했습니다",
+      "AI 컨트롤러를 미리 만들어두고 빌려 쓰는 풀로 바꿔, 웨이브 중 스폰 비용을 없앴습니다",
+      "무기·아이템·카드 수치를 전부 DataAsset과 DataTable로 빼내 코드 밖에서 조정 가능하게 했습니다",
+    ],
+    results: [
+      { label: "데미지 경로", value: "ExecCalc 단일화" },
+      { label: "아이템 동기화", value: "FastArray 델타 복제" },
+      { label: "AI", value: "컨트롤러 풀링" },
+    ],
+    relatedPosts: ["cs-30", "cs-33", "cs-27"],
+    links: [
+      {
+        label: "GitHub 저장소",
+        href: "https://github.com/Geniedevice/DESTINATION-OnlineSubSystem",
+      },
+      {
+        label: "개발 기록",
+        href: "https://blog.naver.com/startblack7/224034428520",
+      },
+    ],
+    surface: "dark",
+
+    detail: {
+      overview: [
+        "폐허가 된 도시에서 몰려오는 좀비 웨이브를 함께 버티는 3D 멀티플레이 슈터입니다. 스팀으로 방을 만들고 친구가 들어와, 웨이브를 넘길 때마다 능력 카드를 골라 캐릭터를 키워 나갑니다.",
+        "혼자 만든 프로젝트라 네트워크부터 전투·아이템·AI·UI까지 전부 직접 설계했습니다. 기능을 늘리는 것보다 “나중에 하나를 바꿔도 나머지가 안 깨지는 구조”를 잡는 데 시간을 더 썼습니다.",
+      ],
+      facts: [
+        { label: "장르", value: "협동 좀비 웨이브 슈터" },
+        { label: "규모", value: "개인 프로젝트 (C++ 141파일)" },
+        { label: "멀티", value: "Steam OSS 세션" },
+        { label: "기간", value: "2025.10" },
+      ],
+      teamNote:
+        "개인 프로젝트입니다. 아래 시스템은 전부 직접 설계하고 구현했습니다.",
+
+      myScope: [
+        {
+          title: "네트워크",
+          text: "Steam OSS 세션 · 로비 · 서버 권위 게임 모드 구성",
+        },
+        {
+          title: "전투 (GAS)",
+          text: "AttributeSet · ExecCalc 데미지 파이프라인 · 무기별 어빌리티",
+        },
+        {
+          title: "아이템",
+          text: "FastArraySerializer 기반 인벤토리 · 장비 시스템",
+        },
+        {
+          title: "AI · 성장",
+          text: "컨트롤러 풀링, 웨이브 스포너, 로그라이크 능력 카드",
+        },
+      ],
+
+      keyArt: {
+        // 74초짜리 짧은 영상이라 유튜브 대신 직접 올렸습니다 (8.5MB)
+        video: "/projects/destination/demo.mp4",
+        src: "/projects/destination/key-art.jpg",
+        alt: "DESTINATION 플레이 영상",
+        caption: "플레이 영상 — 웨이브를 버티며 폐허가 된 도시를 이동한다",
+        hint: "대표 화면",
+        aspect: "16/9",
+      },
+      overviewMedia: {
+        src: "/projects/destination/city.jpg",
+        alt: "폐허가 된 도시",
+        caption: "안개가 깔린 폐허 도시 — 좌상단은 남은 적 수와 웨이브 타이머",
+        hint: "맵 전경",
+        aspect: "16/9",
+      },
+      // 영상은 위에서 바로 재생되므로 원문 글만 링크로 남깁니다
+      youtubeId: null,
+
+      sections: [
+        {
+          id: "network",
+          eyebrow: "01 · 네트워크",
+          title: "먼저 “같이 할 수 있는 상태”부터 만들었다",
+          lead: "멀티플레이 게임은 전투가 아무리 좋아도 방에 못 들어가면 아무것도 아닙니다.",
+          body: [
+            "그래서 게임플레이보다 세션을 먼저 세웠습니다. GameInstance가 세션 인터페이스를 들고 방 생성·검색·참가를 처리하고, 메뉴 위젯은 IMenuInterface를 통해 그 기능만 호출합니다. UI가 온라인 서브시스템을 직접 알지 못하게 막아둔 구조입니다.",
+            "로비를 별도 게임 모드와 게임 스테이트로 분리해, 접속 인원이 모이면 본 게임 레벨로 함께 넘어가도록 했습니다. 게임 중 메뉴에서도 같은 인터페이스로 방을 나가고 메인 메뉴로 돌아올 수 있습니다.",
+            "판정은 전부 서버가 쥡니다. 스포너의 남은 체력과 웨이브 수처럼 승패에 직결되는 값은 Replicated로 두고, 클라이언트는 RepNotify로 UI만 갱신합니다.",
+          ],
+          bullets: [
+            { label: "세션", text: "Steam OSS · 방 생성 / 검색 / 참가 / 나가기" },
+            { label: "경계", text: "UI는 IMenuInterface만 알고 OSS를 직접 다루지 않음" },
+            { label: "로비", text: "LobbyGameMode · LobbyGameState로 대기 상태 분리" },
+            { label: "권위", text: "스포너 체력 · 웨이브 수를 서버가 소유하고 복제" },
+          ],
+          media: [
+            {
+              src: "/projects/destination/combat.jpg",
+              alt: "좀비를 처치한 직후의 화면",
+              caption: "좌상단 남은 적 수와 타이머는 서버가 관리하고 클라이언트로 복제된다",
+              hint: "전투 화면",
+              aspect: "16/9",
+            },
+          ],
+          posts: ["cs-33", "cs-30", "cs-22"],
+          postsLabel: "관련해서 정리한 개념",
+        },
+        {
+          id: "combat",
+          eyebrow: "02 · 전투",
+          title: "무기가 늘어도 데미지 계산은 한 곳에서만",
+          lead: "샷건·스나이퍼·바주카·미니건이 각자 데미지를 계산하기 시작하면, 밸런스를 잡는 순간 어디를 고쳐야 할지 알 수 없게 됩니다.",
+          body: [
+            "그래서 무기별로 다른 것은 발사 방식과 투사체까지로 한정하고, “맞았을 때 얼마가 깎이는가”는 GameplayEffect 하나가 ExecCalc로 처리하도록 통일했습니다. 어빌리티는 데미지 원본값만 SetByCaller로 실어 보냅니다.",
+            "계산 순서도 한 곳에 있으니 규칙이 분명해집니다. 공격자의 치명타 확률과 배수를 먼저 적용하고, 대상의 피해 감소를 적용한 뒤, 남은 피해를 실드가 먼저 흡수하고 그다음 체력이 깎입니다. 새 무기를 추가할 때 이 순서를 다시 구현할 일이 없습니다.",
+            "체력·실드·피해감소·치명타·마나는 모두 AttributeSet에 RepNotify로 올려, 값이 바뀌면 UI가 따라오게 했습니다.",
+          ],
+          bullets: [
+            { label: "단일 경로", text: "모든 피해가 ExecCalc_Damage 한 곳을 통과" },
+            { label: "계산 순서", text: "치명타 → 피해 감소 → 실드 흡수 → 체력" },
+            { label: "무기별 차이", text: "발사 방식과 투사체만 어빌리티로 분리 (샷건 · 스나이퍼 · 바주카 · 미니건)" },
+            { label: "적 어빌리티", text: "일반 · 원거리 · 보스 좀비도 같은 파이프라인 사용" },
+          ],
+          posts: ["cs-27", "cs-26"],
+          postsLabel: "관련해서 정리한 개념",
+        },
+        {
+          id: "items",
+          eyebrow: "03 · 아이템",
+          title: "인벤토리가 커질수록 네트워크가 무거워지는 문제",
+          lead: "배열 하나를 통째로 복제하면, 아이템 하나만 바뀌어도 전체가 다시 날아갑니다.",
+          body: [
+            "인벤토리와 장비를 FastArraySerializer로 구성했습니다. 바뀐 항목만 델타로 복제되므로 아이템 수가 늘어도 트래픽이 비례해서 커지지 않습니다. 항목마다 고유 ID를 두어 어떤 칸이 바뀌었는지 클라이언트가 정확히 알 수 있게 했습니다.",
+            "장비는 정의(Definition)와 실제로 장착된 인스턴스(Instance)를 나눴습니다. 아이템의 슬롯·희귀도는 GameplayTag로 표현하고, 장착하면 능력치 효과와 어빌리티가 함께 부여됐다가 해제할 때 부여 핸들로 정확히 회수됩니다. 장착과 해제가 대칭이 되어야 스탯이 새지 않기 때문입니다.",
+            "UI는 위젯 컨트롤러를 사이에 두어 인벤토리 데이터를 직접 참조하지 않습니다. 데이터가 바뀌면 델리게이트로 알리고, 위젯은 받은 것만 그립니다.",
+          ],
+          bullets: [
+            { label: "복제", text: "FastArraySerializer로 바뀐 항목만 전송" },
+            { label: "장비 구조", text: "Definition(설계) / Instance(장착된 실체) 분리" },
+            { label: "태그", text: "슬롯 · 희귀도 · 아이템 종류를 GameplayTag로 표현" },
+            { label: "UI 분리", text: "WidgetController가 데이터와 위젯 사이를 중재" },
+          ],
+          posts: ["cs-34", "cs-27"],
+          postsLabel: "관련해서 정리한 개념",
+        },
+        {
+          id: "optimize",
+          eyebrow: "04 · 최적화와 성장",
+          title: "적을 늘리면서 프레임을 지키기",
+          lead: "웨이브 게임의 재미는 “점점 많아지는 것”인데, 구현에서는 그게 그대로 비용입니다.",
+          body: [
+            "좀비가 스폰될 때마다 AI 컨트롤러를 새로 만들면 웨이브가 몰리는 순간 프레임이 흔들립니다. 그래서 맵에 배치된 스포너들의 필요 수를 시작할 때 모두 더해, 그만큼의 컨트롤러를 미리 만들어두고 빌려 쓰는 방식으로 바꿨습니다.",
+            "대기 중인 컨트롤러는 Tick과 가시성을 꺼둡니다. 살아 있지만 아무것도 하지 않는 상태로 두었다가, 필요할 때 꺼내 빙의시키고 좀비가 죽으면 빙의를 풀어 다시 풀에 돌려놓습니다.",
+            "성장은 웨이브 사이의 카드 선택으로 붙였습니다. 카드 정의는 DataAsset에 두고 런타임 상태만 따로 관리해, 같은 카드를 다시 고르면 레벨이 올라갑니다. 넉백 증가·지속 회복·신규 무기처럼 성격이 다른 보상을 같은 틀에 담을 수 있습니다.",
+          ],
+          bullets: [
+            { label: "AI 풀링", text: "스포너들의 필요 수를 합산해 컨트롤러를 미리 생성" },
+            { label: "대기 상태", text: "Tick · 가시성을 끈 채 보관, 빌려줄 때만 활성화" },
+            { label: "웨이브", text: "스포너마다 체력 · 웨이브 수 · 스폰 간격을 개별 설정" },
+            { label: "성장", text: "능력 카드 선택 · 중복 선택 시 레벨업" },
+          ],
+          media: [
+            {
+              src: "/projects/destination/ability-cards.jpg",
+              alt: "웨이브 사이의 능력 카드 선택 화면",
+              caption:
+                "웨이브 사이 카드 선택 — 넉백 증가 · 지속 회복 · 신규 무기를 같은 틀에 담았다",
+              hint: "카드 선택",
+              aspect: "16/9",
+            },
+          ],
+          posts: ["gas-10", "cs-18"],
+          postsLabel: "관련해서 정리한 개념",
+        },
+      ],
+
+      troubleshooting: [],
     },
   },
   {

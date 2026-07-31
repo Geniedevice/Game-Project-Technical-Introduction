@@ -298,7 +298,8 @@ export function ProjectDetail({
         );
       })}
 
-      {/* 트러블슈팅 */}
+      {/* 트러블슈팅 — 기록해둔 게 있을 때만 */}
+      {detail.troubleshooting.length > 0 && (
       <section className="bg-parchment px-6 py-24">
         <div className="container-tight">
           <Reveal className="flex flex-col gap-4">
@@ -379,6 +380,7 @@ export function ProjectDetail({
           </ul>
         </div>
       </section>
+      )}
 
       {/* 마무리 */}
       <section className="bg-canvas px-6 py-24">
@@ -457,7 +459,7 @@ function SectionEvidence({
 
         {studyPosts.length > 0 && (
           <div>
-            <p className={label}>그때 공부한 것</p>
+            <p className={label}>{section.postsLabel ?? "그때 공부한 것"}</p>
             <ul className="mt-4 flex flex-wrap gap-2">
               {studyPosts.map((p) => (
                 <li key={p.id}>
