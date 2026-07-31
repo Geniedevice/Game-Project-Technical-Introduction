@@ -1,11 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import type { Project } from "@/content/projects";
 import { ProjectIcon } from "./ProjectIcon";
+import { asset } from "@/lib/asset";
 import { cn } from "@/lib/cn";
 
-/** 아이콘 타일의 배경 — 프로젝트 표면 색을 따릅니다. */
-const tile = {
+/** 배너 이미지가 없을 때 쓰는 배경 — 프로젝트 표면 색을 따릅니다. */
+const fallback = {
   dark: "bg-tile-1 text-sky",
   light: "bg-pearl text-primary",
   parchment: "bg-parchment text-primary",
@@ -13,8 +15,8 @@ const tile = {
 
 /**
  * 목록의 항목 한 칸.
- * 앱 아이콘처럼 아이콘 · 제목 · 짧은 꼬리표만 보여주고,
- * 누르면 상세가 그 위로 펼쳐집니다. (ProjectOverlay)
+ * 게임 프로젝트는 대표 아트를 16:9 배너로 보여주고,
+ * 그 외에는 선 아이콘으로 대신합니다. 누르면 상세가 펼쳐집니다.
  */
 export function ProjectCard({
   project,
@@ -28,26 +30,36 @@ export function ProjectCard({
       type="button"
       onClick={onOpen}
       aria-label={`${project.title} 기술 소개 펼치기`}
-      className="press group flex flex-col items-center gap-4 text-center"
+      className="press group flex w-full flex-col gap-4 text-left"
     >
-      {/* 아이콘 타일 */}
+      {/* 배너 */}
       <span
         className={cn(
-          "relative flex aspect-square w-full items-center justify-center rounded-[22%] border border-hairline",
+          "relative flex aspect-video w-full items-center justify-center overflow-hidden rounded-lg border border-hairline",
           "transition-colors duration-300 group-hover:border-ink-48/40",
-          tile[project.surface],
+          !project.banner && fallback[project.surface],
         )}
       >
-        <ProjectIcon
-          name={project.icon}
-          className="size-[38%] transition-transform duration-500 group-hover:scale-110"
-        />
+        {project.banner ? (
+          <Image
+            src={asset(project.banner)}
+            alt=""
+            fill
+            sizes="(min-width: 1024px) 340px, (min-width: 640px) 45vw, 90vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+          />
+        ) : (
+          <ProjectIcon
+            name={project.icon}
+            className="size-[26%] transition-transform duration-500 group-hover:scale-110"
+          />
+        )}
 
         {/* 펼침 표시 — 마우스를 올리면 나타납니다 */}
         <span
           aria-hidden="true"
           className={cn(
-            "absolute right-2.5 bottom-2.5 flex size-7 items-center justify-center rounded-full",
+            "absolute right-3 bottom-3 flex size-8 items-center justify-center rounded-full",
             "bg-canvas/85 text-ink opacity-0 backdrop-blur-sm transition-opacity duration-300",
             "group-hover:opacity-100 group-focus-visible:opacity-100",
           )}
@@ -69,11 +81,11 @@ export function ProjectCard({
       </span>
 
       {/* 제목 */}
-      <span className="flex flex-col gap-1">
-        <span className="text-caption font-semibold text-balance text-ink">
+      <span className="flex flex-col gap-1 px-0.5">
+        <span className="text-body font-semibold text-balance text-ink">
           {project.title}
         </span>
-        <span className="text-fine text-ink-48">{project.label}</span>
+        <span className="text-caption text-ink-48">{project.label}</span>
       </span>
     </button>
   );

@@ -106,7 +106,12 @@ export type Project = {
   slug: string;
   title: string;
   tagline: string;
-  /** 목록의 아이콘 (src/components/project/ProjectIcon.tsx) */
+  /**
+   * 목록에 쓰는 배너 이미지 (public/ 기준, 16:9 권장).
+   * 게임 프로젝트는 대표 아트를 넣고, 없으면 icon으로 그려집니다.
+   */
+  banner?: string;
+  /** banner가 없을 때 쓰이는 선 아이콘 (src/components/project/ProjectIcon.tsx) */
   icon: ProjectIconName;
   /** 아이콘 아래에 붙는 짧은 꼬리표. 한 줄을 넘기지 마세요 */
   label: string;
@@ -131,6 +136,7 @@ export const projects: Project[] = [
     slug: "gears-of-deceit",
     title: "Gears of Deceit",
     tagline: "달리는 증기기관차 위, 5인 멀티플레이 소셜 디덕션",
+    banner: "/projects/gears-of-deceit/key-art.png",
     icon: "gear",
     label: "Unreal · 팀 5인",
     period: "2026.06 – 2026.07",
@@ -454,6 +460,7 @@ export const projects: Project[] = [
     slug: "destination",
     title: "DESTINATION",
     tagline: "좀비 웨이브를 함께 버티는 3D 멀티플레이 슈터",
+    banner: "/projects/destination/key-art.jpg",
     icon: "network",
     label: "Unreal · 개인",
     period: "2025.10",

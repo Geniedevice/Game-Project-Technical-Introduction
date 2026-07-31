@@ -58,9 +58,9 @@ export function Projects() {
           description="아이콘을 누르면 그 프로젝트의 기술 소개가 펼쳐집니다. 완성된 화면보다, 그 화면을 만들기 위해 무엇을 바꿨는지를 적었습니다."
         />
 
-        <ul className="mx-auto mt-16 grid max-w-[880px] grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
+        <ul className="mx-auto mt-16 grid max-w-[1120px] grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project, i) => (
-            <Reveal as="li" key={project.slug} delay={(i % 4) * 70}>
+            <Reveal as="li" key={project.slug} delay={(i % 3) * 70}>
               <ProjectCard project={project} onOpen={() => openProject(project)} />
             </Reveal>
           ))}

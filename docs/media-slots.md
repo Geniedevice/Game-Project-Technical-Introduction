@@ -119,6 +119,16 @@ curl -H "Referer: https://blog.naver.com/" \
 
 `?type=w966`은 가로 966px 버전입니다. 더 큰 원본이 필요하면 `?type=w1200`을 씁니다.
 
+## 목록 배너
+
+프로젝트 목록의 타일은 `projects.ts`의 `banner`(public/ 기준 경로, 16:9 권장)를 씁니다.
+게임 프로젝트는 대표 아트를 넣고, 비워두면 `icon`으로 지정한 선 아이콘이 대신 그려집니다.
+
+```ts
+banner: "/projects/gears-of-deceit/key-art.png",
+icon: "gear",   // banner가 없을 때만 쓰입니다
+```
+
 ## 새 프로젝트에 상세 페이지 추가하기
 
 `projects.ts`의 프로젝트에 `detail` 필드를 채우면 `/projects/{slug}/`가 자동 생성되고,
