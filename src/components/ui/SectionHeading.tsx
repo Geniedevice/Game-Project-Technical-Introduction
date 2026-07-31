@@ -29,7 +29,7 @@ export function SectionHeading({
     >
       <span
         className={cn(
-          "text-caption font-semibold tracking-[0.14em] uppercase",
+          "text-caption-strong",
           onDark ? "text-sky" : "text-primary",
         )}
       >

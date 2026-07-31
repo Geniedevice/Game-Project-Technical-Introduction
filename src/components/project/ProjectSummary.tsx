@@ -32,7 +32,7 @@ export function ProjectSummary({ project }: { project: Project }) {
                 { k: "스택", v: project.stack.join(" · ") },
               ].map((item) => (
                 <div key={item.k} className="flex flex-col gap-1.5">
-                  <dt className="text-fine tracking-[0.1em] text-white/45 uppercase">
+                  <dt className="text-fine text-white/45">
                     {item.k}
                   </dt>
                   <dd className="text-caption text-white">{item.v}</dd>
@@ -48,14 +48,14 @@ export function ProjectSummary({ project }: { project: Project }) {
         <div className="container-tight">
           <div className="grid gap-10 md:grid-cols-2 md:gap-14">
             <Reveal className="flex flex-col gap-3">
-              <h2 className="text-caption font-semibold tracking-[0.12em] text-primary uppercase">
+              <h2 className="text-caption-strong text-primary">
                 문제
               </h2>
               <p className="text-body text-pretty text-ink-80">{project.problem}</p>
             </Reveal>
 
             <Reveal delay={80} className="flex flex-col gap-3">
-              <h2 className="text-caption font-semibold tracking-[0.12em] text-primary uppercase">
+              <h2 className="text-caption-strong text-primary">
                 접근
               </h2>
               <ul className="flex flex-col gap-3">
@@ -77,7 +77,7 @@ export function ProjectSummary({ project }: { project: Project }) {
             <div className="mt-14 grid gap-px overflow-hidden rounded-lg bg-hairline sm:grid-cols-3">
               {project.results.map((r) => (
                 <div key={r.label} className="flex flex-col gap-2 bg-canvas p-6">
-                  <span className="text-fine tracking-[0.1em] text-ink-48 uppercase">
+                  <span className="text-fine text-ink-48">
                     {r.label}
                   </span>
                   <span className="text-tagline font-semibold tabular-nums text-ink">
@@ -95,7 +95,7 @@ export function ProjectSummary({ project }: { project: Project }) {
         <section className="bg-parchment px-6 py-20">
           <div className="container-tight">
             <Reveal>
-              <p className="text-fine tracking-[0.1em] text-ink-48 uppercase">
+              <p className="text-fine text-ink-48">
                 이 판단의 근거
               </p>
             </Reveal>

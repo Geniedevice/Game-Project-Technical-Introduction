@@ -60,7 +60,7 @@ export function Til() {
                   {s.title}
                   <span
                     className={cn(
-                      "font-mono text-fine tabular-nums",
+                      "text-fine tabular-nums",
                       isActive ? "text-ink-48" : "text-white/40",
                     )}
                   >
@@ -90,7 +90,7 @@ export function Til() {
                 rel="noopener noreferrer"
                 className="press group flex h-full items-start gap-3 p-5"
               >
-                <span className="mt-0.5 font-mono text-fine tabular-nums text-white/35">
+                <span className="mt-0.5 text-fine tabular-nums text-white/35">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span className="text-caption text-pretty text-white underline-offset-4 group-hover:text-sky group-hover:underline">

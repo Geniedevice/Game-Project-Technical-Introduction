@@ -81,7 +81,7 @@ export function ProjectDetail({
             <dl className="mt-12 grid grid-cols-2 gap-x-8 gap-y-6 border-t border-white/12 pt-8 sm:grid-cols-4">
               {detail.facts.map((f) => (
                 <div key={f.label} className="flex flex-col gap-1.5">
-                  <dt className="text-fine tracking-[0.1em] text-white/45 uppercase">
+                  <dt className="text-fine text-white/45">
                     {f.label}
                   </dt>
                   <dd className="text-caption text-white">{f.value}</dd>
@@ -125,7 +125,7 @@ export function ProjectDetail({
       <section className="bg-parchment px-6 py-24">
         <div className="container-tight">
           <Reveal>
-            <span className="text-caption font-semibold tracking-[0.14em] text-primary uppercase">
+            <span className="text-caption-strong text-primary">
               Overview
             </span>
           </Reveal>
@@ -164,7 +164,7 @@ export function ProjectDetail({
                       className="mt-[9px] size-1.5 shrink-0 rounded-full bg-primary"
                     />
                     <div className="flex flex-col gap-1">
-                      <span className="text-body font-semibold text-ink">{s.title}</span>
+                      <span className="text-body-strong text-ink">{s.title}</span>
                       <span className="text-caption text-pretty text-ink-80">
                         {s.text}
                       </span>
@@ -191,7 +191,7 @@ export function ProjectDetail({
               <Reveal className="flex flex-col gap-4">
                 <span
                   className={cn(
-                    "text-caption font-semibold tracking-[0.14em] uppercase",
+                    "text-caption-strong",
                     onDark ? "text-sky" : "text-primary",
                   )}
                 >
@@ -250,7 +250,7 @@ export function ProjectDetail({
                       >
                         <dt
                           className={cn(
-                            "shrink-0 text-caption font-semibold sm:w-44",
+                            "shrink-0 text-caption-strong sm:w-44",
                             onDark ? "text-white" : "text-ink",
                           )}
                         >
@@ -303,7 +303,7 @@ export function ProjectDetail({
       <section className="bg-parchment px-6 py-24">
         <div className="container-tight">
           <Reveal className="flex flex-col gap-4">
-            <span className="text-caption font-semibold tracking-[0.14em] text-primary uppercase">
+            <span className="text-caption-strong text-primary">
               Troubleshooting
             </span>
             <h2 className="text-display-fluid text-balance text-ink">막혔던 지점들</h2>
@@ -328,7 +328,7 @@ export function ProjectDetail({
                     >
                       {t.mine ? "직접 해결" : "팀원 해결"}
                     </span>
-                    <h3 className="text-body font-semibold text-balance text-ink">
+                    <h3 className="text-body-strong text-balance text-ink">
                       {t.title}
                     </h3>
                   </div>
@@ -343,7 +343,7 @@ export function ProjectDetail({
                         key={row.k}
                         className="flex flex-col gap-1 sm:flex-row sm:gap-6"
                       >
-                        <dt className="shrink-0 text-fine tracking-[0.1em] text-ink-48 uppercase sm:w-20 sm:pt-1">
+                        <dt className="shrink-0 text-fine text-ink-48 sm:w-20 sm:pt-1">
                           {row.k}
                         </dt>
                         <dd className="text-caption text-pretty text-ink-80">{row.v}</dd>
@@ -430,7 +430,7 @@ function SectionEvidence({
   );
 
   const label = cn(
-    "text-fine tracking-[0.1em] uppercase",
+    "text-fine",
     onDark ? "text-white/45" : "text-ink-48",
   );
 

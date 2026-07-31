@@ -22,13 +22,13 @@ export function Footer() {
       <div className="container-wide">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="flex flex-col gap-2 lg:col-span-2">
-            <p className="text-caption font-semibold text-ink">{site.nameEn}</p>
+            <p className="text-caption-strong text-ink">{site.nameEn}</p>
             <p className="text-fine text-ink-48">{site.role}</p>
           </div>
 
           {columns.map((col) => (
             <nav key={col.title} aria-label={col.title} className="flex flex-col">
-              <p className="text-caption font-semibold text-ink">{col.title}</p>
+              <p className="text-caption-strong text-ink">{col.title}</p>
               <ul className="mt-2 flex flex-col">
                 {col.links.map((link) => (
                   <li key={link.label}>
@@ -37,7 +37,7 @@ export function Footer() {
                       {...(link.external
                         ? { target: "_blank", rel: "noopener noreferrer" }
                         : {})}
-                      className="press text-body leading-[2.2] text-ink-80 underline-offset-4 hover:text-primary hover:underline"
+                      className="press text-dense-link text-ink-80 underline-offset-4 hover:text-primary hover:underline"
                     >
                       {link.label}
                     </a>

@@ -24,7 +24,7 @@ export function Hero() {
     >
       <div className="mx-auto flex max-w-[980px] flex-col items-center text-center">
         <Reveal>
-          <p className="text-caption font-semibold tracking-[0.14em] text-primary uppercase">
+          <p className="text-caption-strong text-primary">
             {site.role}
           </p>
         </Reveal>

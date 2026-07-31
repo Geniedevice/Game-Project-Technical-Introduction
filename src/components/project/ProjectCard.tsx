@@ -82,7 +82,7 @@ export function ProjectCard({
 
       {/* 제목 */}
       <span className="flex flex-col gap-1 px-0.5">
-        <span className="text-body font-semibold text-balance text-ink">
+        <span className="text-body-strong text-balance text-ink">
           {project.title}
         </span>
         <span className="text-caption text-ink-48">{project.label}</span>
