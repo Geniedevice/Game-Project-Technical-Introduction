@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { detailedProjects, getProject } from "@/content/projects";
+import {
+  detailedProjects,
+  getProject,
+  type DetailSection,
+} from "@/content/projects";
 import { getPost } from "@/content/til";
 import { site } from "@/content/site";
 import { GlobalNav } from "@/components/layout/GlobalNav";
@@ -12,6 +16,88 @@ import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/cn";
 
 type Params = { slug: string };
+
+/**
+ * 섹션 하단의 근거 링크.
+ * 이 프로젝트를 만들며 쓴 개발 기록과, 그때 공부한 학습 기록을 나눠서 보여줍니다.
+ */
+function SectionEvidence({
+  section,
+  onDark,
+}: {
+  section: DetailSection;
+  onDark: boolean;
+}) {
+  const studyPosts = (section.posts ?? [])
+    .map((id) => getPost(id))
+    .filter((p): p is NonNullable<typeof p> => Boolean(p));
+  const devPosts = section.blogPosts ?? [];
+
+  if (studyPosts.length === 0 && devPosts.length === 0) return null;
+
+  const chip = cn(
+    "press inline-flex rounded-full border px-3.5 py-2 text-caption",
+    onDark
+      ? "border-sky/50 text-sky hover:bg-sky/10"
+      : "border-primary/40 text-primary hover:bg-primary/6",
+  );
+
+  const label = cn(
+    "text-fine tracking-[0.1em] uppercase",
+    onDark ? "text-white/45" : "text-ink-48",
+  );
+
+  return (
+    <Reveal delay={120}>
+      <div
+        className={cn(
+          "mt-12 flex flex-col gap-8 border-t pt-8",
+          onDark ? "border-white/12" : "border-hairline",
+        )}
+      >
+        {devPosts.length > 0 && (
+          <div>
+            <p className={label}>개발 기록</p>
+            <ul className="mt-4 flex flex-wrap gap-2">
+              {devPosts.map((p) => (
+                <li key={p.url}>
+                  <a
+                    href={p.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={chip}
+                  >
+                    {p.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {studyPosts.length > 0 && (
+          <div>
+            <p className={label}>그때 공부한 것</p>
+            <ul className="mt-4 flex flex-wrap gap-2">
+              {studyPosts.map((p) => (
+                <li key={p.id}>
+                  <a
+                    href={p.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={chip}
+                  >
+                    {p.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </Reveal>
+  );
+}
 
 export function generateStaticParams(): Params[] {
   return detailedProjects.map((p) => ({ slug: p.slug }));
@@ -113,17 +199,20 @@ export default async function ProjectPage({
               </Reveal>
             )}
 
-            {project.links && (
-              <Reveal delay={320}>
-                <div className="mt-10 flex flex-wrap gap-3">
-                  {project.links.map((l) => (
-                    <Button key={l.href} href={l.href} variant="ghost-on-dark">
-                      {l.label}
-                    </Button>
-                  ))}
-                </div>
-              </Reveal>
-            )}
+            <Reveal delay={320}>
+              <div className="mt-10 flex flex-wrap gap-3">
+                {detail.demoVideoUrl && (
+                  <Button href={detail.demoVideoUrl} size="lg">
+                    시연 영상 보기
+                  </Button>
+                )}
+                {project.links?.map((l) => (
+                  <Button key={l.href} href={l.href} variant="ghost-on-dark" size="lg">
+                    {l.label}
+                  </Button>
+                ))}
+              </div>
+            </Reveal>
           </div>
         </section>
 
@@ -145,6 +234,14 @@ export default async function ProjectPage({
                 </Reveal>
               ))}
             </div>
+
+            {detail.overviewMedia && (
+              <Reveal delay={120}>
+                <div className="mt-12">
+                  <Media slot={detail.overviewMedia} />
+                </div>
+              </Reveal>
+            )}
 
             {/* 담당 영역 — 팀 성과와 구분 */}
             <Reveal delay={140}>
@@ -285,50 +382,7 @@ export default async function ProjectPage({
                   </div>
                 )}
 
-                {section.posts && section.posts.length > 0 && (
-                  <Reveal delay={120}>
-                    <div
-                      className={cn(
-                        "mt-12 border-t pt-8",
-                        onDark ? "border-white/12" : "border-hairline",
-                      )}
-                    >
-                      <p
-                        className={cn(
-                          "text-fine tracking-[0.1em] uppercase",
-                          onDark ? "text-white/45" : "text-ink-48",
-                        )}
-                      >
-                        관련 학습 기록
-                      </p>
-
-                      <ul className="mt-4 flex flex-wrap gap-2">
-                        {section.posts.map((id) => {
-                          const post = getPost(id);
-                          if (!post) return null;
-
-                          return (
-                            <li key={id}>
-                              <a
-                                href={post.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={cn(
-                                  "press inline-flex rounded-full border px-3.5 py-2 text-caption",
-                                  onDark
-                                    ? "border-sky/50 text-sky hover:bg-sky/10"
-                                    : "border-primary/40 text-primary hover:bg-primary/6",
-                                )}
-                              >
-                                {post.title}
-                              </a>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  </Reveal>
-                )}
+                <SectionEvidence section={section} onDark={onDark} />
               </div>
             </section>
           );
@@ -384,6 +438,30 @@ export default async function ProjectPage({
                         </div>
                       ))}
                     </dl>
+
+                    {t.postUrl && (
+                      <a
+                        href={t.postUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="press mt-6 inline-flex items-center gap-1.5 text-caption text-primary underline-offset-4 hover:underline"
+                      >
+                        기록 보기
+                        <svg
+                          viewBox="0 0 16 16"
+                          aria-hidden="true"
+                          className="size-3 opacity-70"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M6 3h7v7" />
+                          <path d="M13 3 3.5 12.5" />
+                        </svg>
+                      </a>
+                    )}
                   </div>
                 </Reveal>
               ))}

@@ -39,8 +39,10 @@ export type DetailSection = {
   /** 구현 항목 */
   bullets?: { label: string; text: string }[];
   media?: MediaSlot[];
-  /** 근거가 되는 til post id */
+  /** 근거가 되는 til post id (til.generated.ts) */
   posts?: string[];
+  /** 학습 노트에는 없는 블로그 글 직접 링크 */
+  blogPosts?: { title: string; url: string }[];
 };
 
 export type Troubleshoot = {
@@ -50,6 +52,8 @@ export type Troubleshoot = {
   lesson?: string;
   /** 본인이 직접 해결한 것인지 (팀원 해결과 구분) */
   mine: boolean;
+  /** 과정을 기록한 블로그 글 */
+  postUrl?: string;
 };
 
 export type ProjectDetail = {
@@ -60,8 +64,12 @@ export type ProjectDetail = {
   /** 담당 영역 — 팀 성과와 구분하기 위한 목록 */
   myScope: { title: string; text: string }[];
   keyArt: MediaSlot;
+  /** 개요 섹션에 들어가는 이미지 */
+  overviewMedia?: MediaSlot;
   /** 유튜브 영상 id. 있으면 상세 페이지에 임베드됩니다 */
   youtubeId?: string | null;
+  /** 유튜브가 아닌 곳(네이버 등)에 올린 시연 영상. 버튼으로 연결됩니다 */
+  demoVideoUrl?: string | null;
   sections: DetailSection[];
   troubleshooting: Troubleshoot[];
   /** 팀 규모와 본인 위치를 명시 */
@@ -148,12 +156,22 @@ export const projects: Project[] = [
       ],
 
       keyArt: {
-        src: null,
-        alt: "Gears of Deceit 대표 이미지",
-        caption: "달리는 증기기관차 '베헤모스'",
-        hint: "게임 대표 스크린샷 1장 (가급적 열차 외관이나 엔진룸 전경)",
+        src: "/projects/gears-of-deceit/key-art.png",
+        alt: "Gears of Deceit 타이틀 아트",
+        caption: "달리는 열차 위, 10분간의 심리전",
+        hint: "게임 대표 컷",
         aspect: "16/9",
       },
+      overviewMedia: {
+        src: "/projects/gears-of-deceit/design-direction.png",
+        alt: "기획 방향 전환 다이어그램",
+        caption:
+          "총 기반 서부 마피아 → 회의 시스템 도입 → 추리를 걷어내고 '도착 여부'로 단순화",
+        hint: "기획 방향",
+        aspect: "16/9",
+      },
+      /** 시연 영상은 네이버 자체 플레이어라 외부 임베드가 되지 않아 글로 연결합니다. */
+      demoVideoUrl: "https://blog.naver.com/startblack7/224353530954",
       youtubeId: null,
 
       sections: [
@@ -175,14 +193,31 @@ export const projects: Project[] = [
           ],
           media: [
             {
-              src: null,
-              alt: "로비 화면",
-              caption: "세션 목록과 로비 화면",
-              hint: "메인 메뉴 / 방 목록 화면 스크린샷",
+              src: "/projects/gears-of-deceit/lobby.png",
+              alt: "게임 내 서버 목록 화면",
+              caption: "직접 만든 SERVER LIST 화면 — 호스트와 접속 인원이 함께 표시된다",
+              hint: "방 목록 화면",
+              aspect: "4/3",
+            },
+            {
+              src: "/projects/gears-of-deceit/session.png",
+              alt: "멀티플레이 세션 구성 설명 슬라이드",
+              caption: "PlayerGameInstance + Steam OSS + AdvancedSessions 구성",
+              hint: "세션 구조",
               aspect: "16/9",
             },
           ],
           posts: ["cs-33", "cs-30", "cs-23", "cs-24"],
+          blogPosts: [
+            {
+              title: "Gears of Deceit — Steam OSS 기반 멀티 세션",
+              url: "https://blog.naver.com/startblack7/224355773944",
+            },
+            {
+              title: "트러블 슈팅 — 유령 세션",
+              url: "https://blog.naver.com/startblack7/224352390229",
+            },
+          ],
         },
         {
           id: "voice",
@@ -201,13 +236,31 @@ export const projects: Project[] = [
           media: [
             {
               src: null,
-              alt: "보이스 채팅 UI",
-              caption: "발화 중인 플레이어 표시",
-              hint: "보이스 관련 화면 또는 비밀방 장면",
+              alt: "보이스 채팅 화면",
+              caption: "근접 보이스 / 비밀방 격리 장면",
+              hint: "보이스 관련 스크린샷 (블로그 글에 이미지가 없어 비워둔 자리입니다)",
               aspect: "16/9",
             },
           ],
           posts: ["cs-28", "cs-26", "ui-01"],
+          blogPosts: [
+            {
+              title: "Gears of Deceit — 보이스 감쇄",
+              url: "https://blog.naver.com/startblack7/224338475374",
+            },
+            {
+              title: "트러블 슈팅 — 보이스 생사별 격리",
+              url: "https://blog.naver.com/startblack7/224335734651",
+            },
+            {
+              title: "트러블 슈팅 — 멀티플레이 근접 VOIP + Seamless Travel",
+              url: "https://blog.naver.com/startblack7/224321224056",
+            },
+            {
+              title: "OSS::VOIP Talker",
+              url: "https://blog.naver.com/startblack7/224319170946",
+            },
+          ],
         },
         {
           id: "train",
@@ -225,14 +278,31 @@ export const projects: Project[] = [
           ],
           media: [
             {
-              src: null,
-              alt: "주행 중인 열차",
-              caption: "스플라인을 따라 주행하는 열차",
-              hint: "열차가 움직이는 장면 (가능하면 GIF나 연속 스크린샷)",
+              src: "/projects/gears-of-deceit/train.png",
+              alt: "설원을 가로지르는 열차 전경",
+              caption: "스플라인을 따라 설원을 가로지르는 열차 '베헤모스'",
+              hint: "열차 주행 장면",
+              aspect: "16/9",
+            },
+            {
+              src: "/projects/gears-of-deceit/quest-speed.png",
+              alt: "퀘스트 완료와 열차 속도의 관계 슬라이드",
+              caption: "속도 배율 = 1.0 + (완료 인원 / 유효 인원) — 전원 완료 시 2배속",
+              hint: "속도 규칙",
               aspect: "16/9",
             },
           ],
           posts: ["cs-25", "cs-27", "cs-17"],
+          blogPosts: [
+            {
+              title: "트러블 슈팅 — 움직이는 발판 위 캐릭터",
+              url: "https://blog.naver.com/startblack7/224332228398",
+            },
+            {
+              title: "Gears of Deceit(1) — 프로젝트 시작",
+              url: "https://blog.naver.com/startblack7/224331016694",
+            },
+          ],
         },
         {
           id: "render",
@@ -251,21 +321,31 @@ export const projects: Project[] = [
           ],
           media: [
             {
-              src: null,
-              alt: "툰 셰이딩이 적용된 화면",
-              caption: "Custom Depth 외곽선이 적용된 게임 화면",
-              hint: "툰 셰이딩 / 외곽선이 잘 보이는 스크린샷",
+              src: "/projects/gears-of-deceit/toon.png",
+              alt: "툰 셰이딩이 적용된 게임 화면",
+              caption: "포스트 프로세스로 구성한 셀 셰이딩과 외곽선",
+              hint: "툰 셰이딩",
               aspect: "16/9",
             },
             {
-              src: null,
-              alt: "HUD",
-              caption: "압력 게이지와 퀘스트 진행 HUD",
-              hint: "인게임 HUD가 보이는 스크린샷",
+              src: "/projects/gears-of-deceit/hud.png",
+              alt: "인게임 HUD",
+              caption: "남은 시간 · 압력 · 연료 · 퀘스트 진행도를 한 화면에 통합 배치",
+              hint: "인게임 HUD",
               aspect: "16/9",
             },
           ],
           posts: ["cs-37", "ui-00", "ui-01"],
+          blogPosts: [
+            {
+              title: "Gears of Deceit — 카툰 렌더링",
+              url: "https://blog.naver.com/startblack7/224341852380",
+            },
+            {
+              title: "Gears of Deceit(2) — 포스트 프로세스",
+              url: "https://blog.naver.com/startblack7/224334575960",
+            },
+          ],
         },
       ],
 
@@ -277,6 +357,26 @@ export const projects: Project[] = [
             "ESC 종료가 세션 정리를 우회 / Steam 공용 테스트 AppID(480)를 다른 개발자와 공유 / 강제 종료로 세션이 잔존",
           fix: "LoadMainMenu 연결 + 검색 워치독, BUILD_ID 서명 필터, 30분 나이 필터",
           lesson: "세 증상이 비슷해 보여도 원인이 다르면 처방도 따로 붙여야 한다.",
+          postUrl: "https://blog.naver.com/startblack7/224352390229",
+        },
+        {
+          mine: true,
+          title: "죽은 플레이어의 목소리가 산 사람에게 들림",
+          cause:
+            "보이스 채널이 위치만 기준으로 동작해, 사망 상태와 비밀방 같은 게임 규칙상의 경계를 반영하지 못함",
+          fix: "생사와 공간을 기준으로 채널을 분리하고, 상태가 바뀌는 시점에 채널을 다시 배정",
+          lesson:
+            "소셜 디덕션에서 들리는 범위는 편의 기능이 아니라 규칙이다. 규칙이 새면 게임이 무너진다.",
+          postUrl: "https://blog.naver.com/startblack7/224335734651",
+        },
+        {
+          mine: true,
+          title: "움직이는 열차 위에서 캐릭터가 반대로 밀려 떨어짐",
+          cause:
+            "등반·상호작용 진입 시 엔진이 Movement Base를 자동 해제하고 관성이 사라져, 캐릭터만 제자리에 남고 열차는 계속 이동",
+          fix: "SetBase()로 캐릭터의 Base를 발판에 강제 바인딩해 열차의 이동 벡터를 다시 받도록 처리",
+          lesson: "움직이는 바닥 위에서는 '가만히 있는 것'도 매 프레임 계산해야 하는 상태다.",
+          postUrl: "https://blog.naver.com/startblack7/224332228398",
         },
         {
           mine: true,
@@ -293,13 +393,6 @@ export const projects: Project[] = [
             "스킨 전송을 BeginPlay·OnRep_Controller에 연결했으나, 리슨 호스트는 BeginPlay가 빙의보다 먼저 실행되고 OnRep_Controller는 서버에서 호출되지 않음",
           fix: "서버 빙의 시점인 PossessedBy에서 전송 (중복 1회 가드)",
           lesson: "초기화 타이밍은 서버 · 클라이언트 · 리슨 호스트가 각각 다르다.",
-        },
-        {
-          mine: false,
-          title: "움직이는 열차 위에서 사다리를 타면 반대로 밀려 떨어짐",
-          cause:
-            "등반 진입 시 엔진이 Movement Base를 자동 해제하고 StopMovementImmediately로 관성이 사라져, 캐릭터만 멈추고 열차는 계속 이동",
-          fix: "SetBase()로 캐릭터의 Base를 사다리에 강제 바인딩",
         },
       ],
     },
