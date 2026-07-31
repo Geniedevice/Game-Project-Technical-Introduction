@@ -235,15 +235,20 @@ export const projects: Project[] = [
           ],
           media: [
             {
-              src: null,
-              alt: "보이스 채팅 화면",
-              caption: "근접 보이스 / 비밀방 격리 장면",
-              hint: "보이스 관련 스크린샷 (블로그 글에 이미지가 없어 비워둔 자리입니다)",
+              src: "/projects/gears-of-deceit/voice.jpg",
+              alt: "보이스·세션 시연 영상의 인게임 화면",
+              caption:
+                "VOIP 보이스와 세션 멀티 시연 영상의 한 장면 — 역할(마피아)과 어빌리티 슬롯이 함께 보인다",
+              hint: "보이스 시연 장면",
               aspect: "16/9",
             },
           ],
           posts: ["cs-28", "cs-26", "ui-01"],
           blogPosts: [
+            {
+              title: "시연 영상 — VOIP 보이스 · 세션 멀티",
+              url: "https://blog.naver.com/startblack7/224353530954",
+            },
             {
               title: "Gears of Deceit — 보이스 감쇄",
               url: "https://blog.naver.com/startblack7/224338475374",
@@ -282,6 +287,13 @@ export const projects: Project[] = [
               alt: "설원을 가로지르는 열차 전경",
               caption: "스플라인을 따라 설원을 가로지르는 열차 '베헤모스'",
               hint: "열차 주행 장면",
+              aspect: "16/9",
+            },
+            {
+              src: "/projects/gears-of-deceit/train-roof.jpg",
+              alt: "주행 중인 열차 지붕 위를 달리는 캐릭터",
+              caption: "주행 중인 열차 지붕 — 바닥이 계속 움직이는 상태에서의 이동",
+              hint: "열차 지붕",
               aspect: "16/9",
             },
             {

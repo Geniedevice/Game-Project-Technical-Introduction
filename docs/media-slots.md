@@ -27,22 +27,40 @@
 | `session.png` | 발표 자료 08 | 01 네트워크 — 세션 구성 |
 | `train.png` | Gears of Deceit(1) | 03 열차 — 주행 전경 |
 | `quest-speed.png` | 발표 자료 03 | 03 열차 — 속도 배율 규칙 |
+| `train-roof.jpg` | 시연 영상 프레임 | 03 열차 — 주행 중인 지붕 |
 | `toon.png` | 포스트 프로세스 글 | 04 렌더링 — 툰 셰이딩 |
 | `hud.png` | 카툰 렌더링 글 | 04 렌더링 — 인게임 HUD |
+| `voice.jpg` | 시연 영상 프레임 | 02 보이스 |
 
-### 비어 있는 자리 1개
+자리표시자는 남아 있지 않습니다.
 
-**02 보이스 섹션** — 블로그의 보이스 관련 글에 이미지가 없어 자리만 잡아뒀습니다.
-근접 보이스나 비밀방 격리가 보이는 스크린샷이 생기면
-`public/projects/gears-of-deceit/voice.png`로 넣고 `src`를 채우면 됩니다.
-
-### 시연 영상
+### 시연 영상에서 프레임 가져오기
 
 시연 영상은 네이버 자체 플레이어로 올라가 있어 **외부 사이트에 임베드할 수 없습니다.**
-지금은 `detail.demoVideoUrl`로 블로그 글에 연결해 두었습니다.
+지금은 `detail.demoVideoUrl`로 블로그 글에 연결하고, 영상에서 뽑은 프레임을 이미지로 씁니다.
 
-유튜브에 올리면 임베드로 바꿀 수 있습니다. `detail.youtubeId`에 영상 ID만 넣으면
-히어로 아래에 플레이어가 붙습니다. (`https://youtu.be/AbCdEfG` → `youtubeId: "AbCdEfG"`)
+네이버는 영상마다 전체 해상도(2560×1440) 대표 프레임을 여러 장 제공합니다.
+글 HTML에서 `"vid"`와 `"inkey"`를 찾아 아래 API를 호출하면 주소를 얻을 수 있습니다.
+
+```bash
+# 1) 영상 정보 (meta.cover.source에 대표 프레임 주소가 있습니다)
+curl -H "Referer: https://blog.naver.com/" \
+  "https://apis.naver.com/rmcnmv/rmcnmv/vod/play/v2.0/{vid}?key={inkey}"
+
+# 2) 프레임 내려받기 — 파일명 끝의 _01, _02 … 를 바꾸면 다른 구간이 나옵니다
+curl -H "Referer: https://blog.naver.com/" \
+  "https://phinf.pstatic.net/image.nmv/blog_2026_07_21_809/DjI42nRdU2_01.jpg" \
+  -o public/projects/gears-of-deceit/voice.jpg
+```
+
+`thumbnails.sprites`의 스프라이트 시트(100컷 한 장)를 받으면 영상 전체를 한눈에 훑어
+원하는 장면의 번호를 고를 수 있습니다.
+
+### 유튜브에 올린다면
+
+`detail.youtubeId`에 영상 ID만 넣으면 히어로 아래에 플레이어가 붙습니다.
+(`https://youtu.be/AbCdEfG` → `youtubeId: "AbCdEfG"`)
+그러면 프레임 이미지 대신 영상을 페이지 안에서 바로 재생할 수 있습니다.
 
 ## 네이버 블로그 이미지를 가져올 때
 
