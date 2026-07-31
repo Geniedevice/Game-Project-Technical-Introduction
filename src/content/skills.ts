@@ -9,6 +9,11 @@
  *   "working"   — 구현 경험이 있고 설명할 수 있는 것
  *   "familiar"  — 개념을 정리했고 다뤄본 것
  */
+import { getSeries, totalPostCount } from "./til";
+
+// 학습 기록에서 계산합니다 — npm run sync:til 하면 자동으로 따라옵니다
+const algoCount = getSeries("algo")?.posts.length ?? 0;
+
 export type SkillLevel = "core" | "working" | "familiar";
 
 export type Skill = {
@@ -55,7 +60,11 @@ export const skillGroups: SkillGroup[] = [
     caption: "엔진 아래에서 무슨 일이 일어나는지",
     skills: [
       { name: "자료구조", level: "core", note: "vector · list · map · TMap의 선택 기준" },
-      { name: "알고리즘", level: "core", note: "완전탐색 · DFS/BFS · DP · 그리디 (97문제)" },
+      {
+        name: "알고리즘",
+        level: "core",
+        note: `완전탐색 · DFS/BFS · DP · 그리디 (${algoCount}문제)`,
+      },
       { name: "객체지향 설계", level: "core", note: "OOP, vtable, 객체 복사 제어" },
       { name: "메모리", level: "working", note: "스택 오버플로 · 단편화 · 페이지 폴트 · 캐시" },
       { name: "운영체제", level: "working", note: "프로세스/스레드 · 컨텍스트 스위칭 · IPC · 레이스 컨디션" },
@@ -69,7 +78,7 @@ export const skillGroups: SkillGroup[] = [
     skills: [
       { name: "Git / GitHub", level: "working", note: "학습 노트 저장소 운영" },
       { name: "Visual Studio", level: "working" },
-      { name: "기술 문서화", level: "core", note: "160편의 학습 기록" },
+      { name: "기술 문서화", level: "core", note: `${totalPostCount}편의 학습 기록` },
       { name: "TypeScript", level: "familiar", note: "본 소개서 사이트 제작" },
     ],
   },

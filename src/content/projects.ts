@@ -9,6 +9,12 @@
  *
  * relatedPosts / posts 는 til.generated.ts의 id를 참조합니다. (근거 링크)
  */
+import { getSeries, totalPostCount } from "./til";
+
+// 학습 기록에서 계산합니다 — npm run sync:til 하면 자동으로 따라옵니다
+const algoCount = getSeries("algo")?.posts.length ?? 0;
+const csCount = getSeries("cs")?.posts.length ?? 0;
+
 export type ProjectSurface = "dark" | "light" | "parchment";
 
 /** 목록에 쓸 수 있는 아이콘. 새 모양이 필요하면 ProjectIcon.tsx에 추가하세요. */
@@ -636,7 +642,7 @@ export const projects: Project[] = [
   {
     slug: "fundamentals",
     title: "기본기 트레이닝",
-    tagline: "알고리즘 97문제와 CS 38편 — 매일 쌓은 기록",
+    tagline: `알고리즘 ${algoCount}문제와 CS ${csCount}편 — 매일 쌓은 기록`,
     icon: "nodes",
     label: "알고리즘 · CS",
     period: "2025.10 – 현재",
@@ -651,9 +657,9 @@ export const projects: Project[] = [
       "프로세스와 스레드, 캐시 히트, 페이지 폴트 같은 CS 개념을 언리얼의 대응 개념(UObject, RTTI, GameThread/RenderThread)과 짝지어 이해했습니다",
     ],
     results: [
-      { label: "푼 문제", value: "97문제" },
-      { label: "CS 정리", value: "38편" },
-      { label: "전체 기록", value: "160편" },
+      { label: "푼 문제", value: `${algoCount}문제` },
+      { label: "CS 정리", value: `${csCount}편` },
+      { label: "전체 기록", value: `${totalPostCount}편` },
     ],
     relatedPosts: ["cs-08", "cs-12", "cs-18", "cs-31", "cs-37"],
     links: [

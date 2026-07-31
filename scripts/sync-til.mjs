@@ -23,6 +23,18 @@ const SERIES = [
     file: "Unreal/GAS/GasStudyNote.md",
   },
   {
+    id: "trouble",
+    title: "트러블 슈팅",
+    caption: "원인을 찾기까지 오래 걸렸던 문제와 그 해결 과정",
+    file: "Unreal/TroubleShooting.md",
+  },
+  {
+    id: "unreal",
+    title: "언리얼 엔진 탐구",
+    caption: "엔진 기능을 하나씩 뜯어보며 남긴 연재 기록",
+    file: "Unreal/UnrealStudy.md",
+  },
+  {
     id: "ui",
     title: "UI 탐구",
     caption: "UMG 모듈화와 상태 동기화",
@@ -45,6 +57,12 @@ const SERIES = [
     title: "알고리즘 문제풀이",
     caption: "매일 한 문제씩. 자료구조·완전탐색·DP·그래프",
     file: "C++/Problem Solving.md",
+  },
+  {
+    id: "wrong",
+    title: "오답노트",
+    caption: "틀린 문제를 다시 풀며 왜 틀렸는지 정리한 기록",
+    file: "C++/오답노트.md",
   },
 ];
 
