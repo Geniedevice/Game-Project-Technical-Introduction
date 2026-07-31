@@ -7,10 +7,10 @@ export const site = {
   nameEn: "Jinhui Jang",
   role: "Unreal Engine Game Client Developer",
   /** 히어로 한 줄. 줄바꿈(\n)이 그대로 반영됩니다 */
-  headline: "매일의 기록으로\n증명하는 기본기",
+  headline: "멈추지 않고\n매일 기록합니다",
   /** 히어로 서브카피 */
   subheadline:
-    "구현을 넘어 동작 원리를 집요하게 파고듭니다. 여기 적힌 모든 주장에는 링크된 근거가 있습니다.",
+    "구현을 넘어 동작 원리를 집요하게 파고듭니다. 그 과정을 하나도 빠짐없이 남깁니다.",
   email: "jangjinhui080@gmail.com",
   blogUrl: "https://blog.naver.com/startblack7",
   githubUrl: "https://github.com/Geniedevice",
