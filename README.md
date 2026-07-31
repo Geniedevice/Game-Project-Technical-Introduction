@@ -104,4 +104,19 @@ scripts/sync-til.mjs    학습 노트 → til.generated.ts
 - `<username>.github.io` 저장소 → basePath 없음
 - 그 외 저장소 → `/<repo-name>` 이 자동 주입
 
-배포 후 `src/content/site.ts`의 `siteUrl`을 실제 주소로 바꿔주세요. (OG 메타태그에 사용됩니다)
+배포 주소: **https://geniedevice.github.io/Game-Project-Technical-Introduction/**
+
+저장소 이름을 바꾸면 `src/content/site.ts`의 `siteUrl`도 함께 바꿔주세요.
+canonical 태그, sitemap, 공유 미리보기 이미지 주소가 전부 이 값에서 나옵니다.
+
+### 공유 미리보기
+
+링크를 카카오톡·트위터 등에 붙였을 때 뜨는 카드는 `src/app/og.png/route.tsx`가 빌드 시 생성합니다.
+이름·직무·기록 편수가 자동으로 들어가므로 따로 이미지를 만들 필요가 없습니다.
+
+> Next.js의 `opengraph-image.tsx` 파일 컨벤션을 쓰지 않은 이유가 있습니다.
+> 그 방식은 확장자 없는 파일(`/opengraph-image`)로 내보내는데,
+> GitHub Pages는 확장자로 Content-Type을 판단하기 때문에 `image/png`로 응답하지 않아
+> 미리보기가 깨집니다. `robots.txt`·`sitemap.xml`과 같은 라우트 방식으로 `/og.png`를 만듭니다.
+
+함께 생성되는 것: `robots.txt`, `sitemap.xml`, canonical 태그.

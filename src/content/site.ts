@@ -15,8 +15,11 @@ export const site = {
   blogUrl: "https://blog.naver.com/startblack7",
   githubUrl: "https://github.com/Geniedevice",
   studyNoteUrl: "https://github.com/Geniedevice/BaseStudyNote",
-  /** GitHub Pages 배포 후 실제 주소로 바꿔주세요 (OG 태그에 사용) */
-  siteUrl: "https://geniedevice.github.io",
+  /**
+   * 배포 주소. 링크 공유 시 미리보기 카드와 canonical 태그에 쓰입니다.
+   * 저장소 이름을 바꾸면 이 값도 함께 바꿔주세요.
+   */
+  siteUrl: "https://geniedevice.github.io/Game-Project-Technical-Introduction/",
 } as const;
 
 export const nav = [
