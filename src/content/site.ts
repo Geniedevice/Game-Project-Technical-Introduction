@@ -25,6 +25,5 @@ export const site = {
 export const nav = [
   { label: "개요", href: "#overview" },
   { label: "프로젝트", href: "#projects" },
-  { label: "기술 스택", href: "#skills" },
   { label: "학습 기록", href: "#til" },
 ] as const;

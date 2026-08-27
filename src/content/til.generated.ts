@@ -45,6 +45,7 @@ export const generatedSeries: Series[] = [
       { id: "trouble-05", title: "트러블 슈팅 - 움직이는 발판 위 캐릭터", url: "https://blog.naver.com/startblack7/224332228398" },
       { id: "trouble-06", title: "트러블 슈팅 - 보이스 생사별 격리", url: "https://blog.naver.com/startblack7/224335734651" },
       { id: "trouble-07", title: "트러블 슈팅 - 유령 세션", url: "https://blog.naver.com/startblack7/224352390229" },
+      { id: "trouble-08", title: "트러블 슈팅 - MassEntity 설정 문제", url: "https://blog.naver.com/startblack7/224374416096" },
     ],
   },
   {
@@ -90,6 +91,17 @@ export const generatedSeries: Series[] = [
       { id: "unreal-34", title: "언리얼 엔진 탐구(63) - Gears of Deceit - WorldSubSystem을 통한 GAS시스템 통합", url: "https://blog.naver.com/startblack7/224354729321" },
       { id: "unreal-35", title: "언리얼 엔진 탐구(64) - Gears of Deceit - Stream OSS 기반 멀티 셰션", url: "https://blog.naver.com/startblack7/224355773944" },
       { id: "unreal-36", title: "언리얼 엔진 탐구(65) - ( Check / Verify / Ensure )", url: "https://blog.naver.com/startblack7/224360979685" },
+      { id: "unreal-37", title: "언리얼 엔진 탐구(66) - ( 최적화 )", url: "https://blog.naver.com/startblack7/224364215282" },
+      { id: "unreal-38", title: "언리얼 엔진 탐구(67) - ( 타이밍 이슈 )", url: "https://blog.naver.com/startblack7/224367134864" },
+      { id: "unreal-39", title: "언리얼 엔진 탐구(68) - ( Primitive 조합을 통한 연출 구현 )", url: "https://blog.naver.com/startblack7/224369187359" },
+      { id: "unreal-40", title: "언리얼 엔진 탐구(69) - 카드 연출(Dynamic Material Instance)", url: "https://blog.naver.com/startblack7/224370473451" },
+      { id: "unreal-41", title: "언리얼 엔진 탐구(70) - Mass Entity", url: "https://blog.naver.com/startblack7/224375576291" },
+      { id: "unreal-42", title: "언리얼 엔진 탐구(71) - Mass Entity(2) - Processor", url: "https://blog.naver.com/startblack7/224376757431" },
+      { id: "unreal-43", title: "언리얼 엔진 탐구(72) - Mass Entity(3) - UTickableWorldSubsystem와 작동 방식", url: "https://blog.naver.com/startblack7/224377898954" },
+      { id: "unreal-44", title: "언리얼 엔진 탐구(73) - Mass Entity(4) - MassEntity의 Animation 작동방식", url: "https://blog.naver.com/startblack7/224378559924" },
+      { id: "unreal-45", title: "언리얼 엔진 탐구(73) - Mass Entity(5) - Rader만들기", url: "https://blog.naver.com/startblack7/224384868670" },
+      { id: "unreal-46", title: "언리얼 엔진 탐구(74) - Mass Entity(6) - TransfromFragment기반 미니맵", url: "https://blog.naver.com/startblack7/224385949452" },
+      { id: "unreal-47", title: "언리얼 엔진 탐구(75) - 로우폴리 라이팅", url: "https://blog.naver.com/startblack7/224391284637" },
     ],
   },
   {
@@ -100,6 +112,19 @@ export const generatedSeries: Series[] = [
     posts: [
       { id: "ui-00", title: "UI 모듈", url: "https://blog.naver.com/startblack7/224203079327" },
       { id: "ui-01", title: "UI 동기화", url: "https://blog.naver.com/startblack7/224204409547" },
+    ],
+  },
+  {
+    id: "material",
+    title: "머티리얼 · 셰이더",
+    caption: "셀 셰이딩, 포스트 프로세스, 나이아가라로 만든 연출",
+    source: "https://github.com/Geniedevice/BaseStudyNote/blob/main/Unreal/Material.md",
+    posts: [
+      { id: "material-00", title: "Material - CelShading(3단)", url: "https://blog.naver.com/startblack7/224249009092" },
+      { id: "material-01", title: "Material - Asteroid(Ring) - NiagaraSystem", url: "https://blog.naver.com/startblack7/224253075622" },
+      { id: "material-02", title: "Material - SnowBlend(Procedual)", url: "https://blog.naver.com/startblack7/224256151000" },
+      { id: "material-03", title: "Material - Enter Effect", url: "https://blog.naver.com/startblack7/224274779372" },
+      { id: "material-04", title: "Material - PostProcess ToonShader", url: "https://blog.naver.com/startblack7/224282233630" },
     ],
   },
   {
@@ -158,6 +183,8 @@ export const generatedSeries: Series[] = [
       { id: "cs-48", title: "CS Study - memory barrier 와 memory leak 확인 방법", url: "https://blog.naver.com/startblack7/224340090792" },
       { id: "cs-49", title: "CS Study - 부동 소수점", url: "https://blog.naver.com/startblack7/224341204868" },
       { id: "cs-50", title: "CS Study - 알고리즘", url: "https://blog.naver.com/startblack7/224363180812" },
+      { id: "cs-51", title: "CS Study - 실전 알고리즘", url: "https://blog.naver.com/startblack7/224378344349" },
+      { id: "cs-52", title: "CS Study - 디자인 패턴", url: "https://blog.naver.com/startblack7/224388338048" },
     ],
   },
   {
@@ -299,6 +326,9 @@ export const generatedSeries: Series[] = [
       { id: "algo-122", title: "프로그래머 문제풀이(102) - 숫자게임", url: "https://blog.naver.com/startblack7/224354109806" },
       { id: "algo-123", title: "리트 코드 - 다익스트라", url: "https://blog.naver.com/startblack7/224361668954" },
       { id: "algo-124", title: "프로그래머스 문제풀이(103) - 최고의 집합", url: "https://blog.naver.com/startblack7/224363574762" },
+      { id: "algo-125", title: "프로그래머스 문제풀이(33) - 2016년", url: "https://blog.naver.com/startblack7/224221891697" },
+      { id: "algo-126", title: "프로그래머스 문제풀이(32) - 명예의 전당", url: "https://blog.naver.com/startblack7/224221852827" },
+      { id: "algo-127", title: "프로그래머스 문제풀이(104) - 스티커 모으기", url: "https://blog.naver.com/startblack7/224384800257" },
     ],
   },
   {
@@ -318,6 +348,10 @@ export const generatedSeries: Series[] = [
       { id: "wrong-08", title: "오답노트(9) - Bitmask와 3가지 탐색", url: "https://blog.naver.com/startblack7/224352488287" },
       { id: "wrong-09", title: "오답노트(10) - 비트 마스킹 + 백트래킹", url: "https://blog.naver.com/startblack7/224360186535" },
       { id: "wrong-10", title: "오답노트 (11) - 기지국 설치(N보다 낮은 복잡도 구현)", url: "https://blog.naver.com/startblack7/224360415254" },
+      { id: "wrong-11", title: "오답 노트 (12) - 알고리즘 종합문제 5개", url: "https://blog.naver.com/startblack7/224369097814" },
+      { id: "wrong-12", title: "오답 노트 (13) - 징검다리", url: "https://blog.naver.com/startblack7/224373083563" },
+      { id: "wrong-13", title: "오답 노트 (13) - 올바른 괄호", url: "https://blog.naver.com/startblack7/224373685374" },
+      { id: "wrong-14", title: "오답 노트 (14) - 팰린드롬 문제", url: "https://blog.naver.com/startblack7/224388495294" },
     ],
   },
 ];

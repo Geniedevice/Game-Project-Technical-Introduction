@@ -1,5 +1,13 @@
 import Link from "next/link";
-import type { DetailSection, Project } from "@/content/projects";
+import type {
+  DetailCompare,
+  DetailFlow,
+  DetailSection,
+  DetailTable,
+  FactGroup,
+  Project,
+  SectionKind,
+} from "@/content/projects";
 import { getPost } from "@/content/til";
 import { site } from "@/content/site";
 import { Button } from "@/components/ui/Button";
@@ -77,21 +85,8 @@ export function ProjectDetail({
             </p>
           </Reveal>
 
-          <Reveal delay={180}>
-            <dl className="mt-12 grid grid-cols-2 gap-x-8 gap-y-6 border-t border-white/12 pt-8 sm:grid-cols-4">
-              {detail.facts.map((f) => (
-                <div key={f.label} className="flex flex-col gap-1.5">
-                  <dt className="text-fine text-white/45">
-                    {f.label}
-                  </dt>
-                  <dd className="text-caption text-white">{f.value}</dd>
-                </div>
-              ))}
-            </dl>
-          </Reveal>
-
           <Reveal delay={240}>
-            <div className="mt-10">
+            <div className="mt-12">
               <Media slot={detail.keyArt} onDark />
             </div>
           </Reveal>
@@ -130,7 +125,14 @@ export function ProjectDetail({
             </span>
           </Reveal>
 
-          <div className="mt-6 flex flex-col gap-5">
+          {/* 1. 프로젝트 소개 */}
+          <Reveal delay={40}>
+            <h2 className="mt-5 text-display-fluid text-balance text-ink">
+              프로젝트 소개
+            </h2>
+          </Reveal>
+
+          <div className="mt-7 flex flex-col gap-5">
             {detail.overview.map((p, i) => (
               <Reveal key={i} delay={i * 60}>
                 <p className="max-w-[62ch] text-lead-airy font-light text-pretty text-ink-80">
@@ -148,9 +150,16 @@ export function ProjectDetail({
             </Reveal>
           )}
 
-          {/* 담당 영역 — 팀 성과와 구분 */}
+          {/* 2·3. 기간 · 팀 규모 / 개발 환경 — 제목을 단 블록으로 나눠서 */}
+          <div className="mt-16 flex flex-col gap-6">
+            {detail.factGroups.map((g, i) => (
+              <FactGroupBlock key={g.title} group={g} delay={i * 60} />
+            ))}
+          </div>
+
+          {/* 4. 담당 영역 — 팀 성과와 구분 */}
           <Reveal delay={140}>
-            <div className="mt-16 rounded-lg border border-hairline bg-canvas p-7 sm:p-9">
+            <div className="mt-6 rounded-lg border border-hairline bg-canvas p-7 sm:p-9">
               <h2 className="text-tagline font-semibold text-ink">제가 맡은 부분</h2>
               <p className="mt-2 max-w-[62ch] text-caption text-pretty text-ink-48">
                 {detail.teamNote}
@@ -189,14 +198,17 @@ export function ProjectDetail({
           >
             <div className="container-tight">
               <Reveal className="flex flex-col gap-4">
-                <span
-                  className={cn(
-                    "text-caption-strong",
-                    onDark ? "text-sky" : "text-primary",
-                  )}
-                >
-                  {section.eyebrow}
-                </span>
+                <div className="flex flex-wrap items-center gap-3">
+                  <span
+                    className={cn(
+                      "text-caption-strong",
+                      onDark ? "text-sky" : "text-primary",
+                    )}
+                  >
+                    {section.eyebrow}
+                  </span>
+                  <KindTag kind={section.kind} onDark={onDark} />
+                </div>
 
                 <h2
                   className={cn(
@@ -217,20 +229,30 @@ export function ProjectDetail({
                 </p>
               </Reveal>
 
-              <div className="mt-10 flex flex-col gap-5">
-                {section.body.map((p, j) => (
-                  <Reveal key={j} delay={j * 50}>
-                    <p
-                      className={cn(
-                        "max-w-[62ch] text-body text-pretty",
-                        onDark ? "text-[#cccccc]" : "text-ink-80",
-                      )}
-                    >
-                      {p}
-                    </p>
-                  </Reveal>
-                ))}
-              </div>
+              <FlowSteps flow={section.flow} onDark={onDark} />
+
+              {section.body && section.body.length > 0 && (
+                <div className="mt-12 flex flex-col gap-5">
+                  {section.body.map((p, j) => (
+                    <Reveal key={j} delay={j * 50}>
+                      <p
+                        className={cn(
+                          "max-w-[62ch] text-body text-pretty",
+                          onDark ? "text-[#cccccc]" : "text-ink-80",
+                        )}
+                      >
+                        {p}
+                      </p>
+                    </Reveal>
+                  ))}
+                </div>
+              )}
+
+              {section.table && <DetailTableView table={section.table} onDark={onDark} />}
+
+              {section.compare && (
+                <CompareView compare={section.compare} onDark={onDark} />
+              )}
 
               {section.bullets && (
                 <Reveal delay={80}>
@@ -306,10 +328,11 @@ export function ProjectDetail({
             <span className="text-caption-strong text-primary">
               Troubleshooting
             </span>
-            <h2 className="text-display-fluid text-balance text-ink">막혔던 지점들</h2>
+            <h2 className="text-display-fluid text-balance text-ink">트러블 슈팅</h2>
             <p className="max-w-[56ch] text-lead-airy font-light text-pretty text-ink-80">
-              원인을 찾기까지 오래 걸렸던 것들만 남겼습니다. 팀원이 해결한 것도 배운 게
-              있어 함께 적되, 누가 해결했는지는 구분했습니다.
+              원인을 찾기까지 오래 걸렸던 것만 남겼고, 위 섹션과 같은 순서로 적었습니다 —
+              문제 → 가설 → 해결방안 → 결과. 팀원이 해결한 것도 배운 게 있어 함께 적되,
+              누가 해결했는지는 구분했습니다.
             </p>
           </Reveal>
 
@@ -317,7 +340,10 @@ export function ProjectDetail({
             {detail.troubleshooting.map((t, i) => (
               <Reveal as="li" key={t.title} delay={i * 60}>
                 <div className="rounded-lg border border-hairline bg-canvas p-7">
-                  <div className="flex flex-wrap items-center gap-3">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="rounded-full border border-primary/30 bg-primary/8 px-2.5 py-1 text-fine text-primary">
+                      트러블 슈팅
+                    </span>
                     <span
                       className={cn(
                         "rounded-full px-2.5 py-1 text-fine",
@@ -328,22 +354,24 @@ export function ProjectDetail({
                     >
                       {t.mine ? "직접 해결" : "팀원 해결"}
                     </span>
-                    <h3 className="text-body-strong text-balance text-ink">
+                    <h3 className="mt-1 w-full text-body-strong text-balance text-ink">
                       {t.title}
                     </h3>
                   </div>
 
                   <dl className="mt-5 flex flex-col gap-4">
                     {[
-                      { k: "원인", v: t.cause },
-                      { k: "해결", v: t.fix },
+                      { k: "문제", v: t.problem },
+                      { k: "가설", v: t.cause },
+                      { k: "해결방안", v: t.fix },
+                      ...(t.result ? [{ k: "결과", v: t.result }] : []),
                       ...(t.lesson ? [{ k: "배운 점", v: t.lesson }] : []),
                     ].map((row) => (
                       <div
                         key={row.k}
                         className="flex flex-col gap-1 sm:flex-row sm:gap-6"
                       >
-                        <dt className="shrink-0 text-fine text-ink-48 sm:w-20 sm:pt-1">
+                        <dt className="shrink-0 text-fine text-ink-48 sm:w-24 sm:pt-1">
                           {row.k}
                         </dt>
                         <dd className="text-caption text-pretty text-ink-80">{row.v}</dd>
@@ -401,6 +429,253 @@ export function ProjectDetail({
         </div>
       </section>
     </div>
+  );
+}
+
+/**
+ * 개요의 정보 블록 하나.
+ * 제목을 달고 한 줄에 하나씩 — 라벨과 값이 나란히 놓입니다.
+ */
+function FactGroupBlock({ group, delay }: { group: FactGroup; delay: number }) {
+  return (
+    <Reveal delay={delay}>
+      <div className="rounded-lg border border-hairline bg-canvas p-7 sm:p-9">
+        <h2 className="text-tagline font-semibold text-ink">{group.title}</h2>
+
+        <dl className="mt-6 flex flex-col">
+          {group.items.map((item, i) => (
+            <div
+              key={item.label}
+              className={cn(
+                "flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:gap-10",
+                i > 0 && "border-t border-hairline",
+              )}
+            >
+              <dt className="shrink-0 text-caption text-ink-48 sm:w-40">
+                {item.label}
+              </dt>
+              <dd className="text-tagline text-ink">{item.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </Reveal>
+  );
+}
+
+/** 기능 구현 / 트러블 슈팅 — 제목 옆 꼬리표. 무엇을 읽는 중인지 먼저 알려줍니다. */
+function KindTag({ kind, onDark }: { kind: SectionKind; onDark: boolean }) {
+  const isTrouble = kind === "trouble";
+
+  return (
+    <span
+      className={cn(
+        "rounded-full border px-2.5 py-1 text-fine",
+        onDark
+          ? isTrouble
+            ? "border-white/25 bg-white/8 text-white/70"
+            : "border-sky/45 bg-sky/10 text-sky"
+          : isTrouble
+            ? "border-divider bg-pearl text-ink-48"
+            : "border-primary/30 bg-primary/8 text-primary",
+      )}
+    >
+      {isTrouble ? "트러블 슈팅" : "기능 구현"}
+    </span>
+  );
+}
+
+/**
+ * 문제 추론 → 가설 → 해결방안 → 결과.
+ * 모든 섹션이 같은 순서로 읽히도록 네 칸을 고정해 그립니다.
+ */
+function FlowSteps({ flow, onDark }: { flow: DetailFlow; onDark: boolean }) {
+  const steps = [
+    { k: "문제 추론", v: flow.problem },
+    { k: "가설", v: flow.hypothesis },
+    { k: "해결방안", v: flow.solution },
+    { k: "결과", v: flow.result },
+  ];
+
+  /* 한 단계씩 위에서 아래로 — 옆으로 나란히 두면 읽는 순서가 흐려집니다 */
+  return (
+    <ol className="mt-12 flex flex-col gap-4">
+      {steps.map((s, i) => (
+        <Reveal as="li" key={s.k} delay={i * 60}>
+          <div
+            className={cn(
+              "flex flex-col gap-3 rounded-lg border p-6 sm:flex-row sm:gap-10 sm:p-7",
+              onDark ? "border-white/12 bg-tile-3" : "border-hairline bg-canvas",
+            )}
+          >
+            <div className="flex shrink-0 items-center gap-2.5 sm:w-40">
+              <span
+                className={cn(
+                  "flex size-6 items-center justify-center rounded-full text-fine",
+                  onDark ? "bg-sky/20 text-sky" : "bg-primary/10 text-primary",
+                )}
+              >
+                {i + 1}
+              </span>
+              <span
+                className={cn(
+                  "text-body-strong",
+                  onDark ? "text-white" : "text-ink",
+                )}
+              >
+                {s.k}
+              </span>
+            </div>
+            <p
+              className={cn(
+                "max-w-[62ch] text-body text-pretty",
+                onDark ? "text-[#cccccc]" : "text-ink-80",
+              )}
+            >
+              {s.v}
+            </p>
+          </div>
+        </Reveal>
+      ))}
+    </ol>
+  );
+}
+
+/**
+ * 적용 전 · 후 비교.
+ * 왼쪽이 적용 전, 오른쪽이 적용 후입니다 — 읽는 순서와 같게 둡니다.
+ */
+function CompareView({
+  compare,
+  onDark,
+}: {
+  compare: DetailCompare;
+  onDark: boolean;
+}) {
+  const columns = [
+    { tag: "적용 전", slot: compare.before, highlight: false },
+    { tag: "적용 후", slot: compare.after, highlight: true },
+  ];
+
+  return (
+    <div className="mt-12">
+      <p
+        className={cn(
+          "text-caption-strong",
+          onDark ? "text-white" : "text-ink",
+        )}
+      >
+        {compare.title} — 적용 전 · 후
+      </p>
+
+      <div className="mt-5 grid gap-6 sm:grid-cols-2">
+        {columns.map((c, i) => (
+          <Reveal key={c.tag} delay={i * 80}>
+            <div className="flex flex-col gap-3">
+              <span
+                className={cn(
+                  "inline-flex w-fit rounded-full border px-2.5 py-1 text-fine",
+                  c.highlight
+                    ? onDark
+                      ? "border-sky/45 bg-sky/10 text-sky"
+                      : "border-primary/30 bg-primary/8 text-primary"
+                    : onDark
+                      ? "border-white/20 bg-white/6 text-white/60"
+                      : "border-divider bg-pearl text-ink-48",
+                )}
+              >
+                {c.tag}
+              </span>
+              <Media slot={c.slot} onDark={onDark} />
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** 규칙 비교표. 좁은 화면에서는 표만 가로로 스크롤됩니다. */
+function DetailTableView({
+  table,
+  onDark,
+}: {
+  table: DetailTable;
+  onDark: boolean;
+}) {
+  return (
+    <Reveal delay={80}>
+      <div className="mt-12">
+        <div
+          className={cn(
+            "overflow-x-auto rounded-lg border",
+            onDark ? "border-white/12" : "border-hairline",
+          )}
+        >
+          <table className="w-full min-w-[560px] border-collapse text-left">
+            <thead>
+              <tr>
+                {table.headers.map((h) => (
+                  <th
+                    key={h}
+                    scope="col"
+                    className={cn(
+                      "px-6 py-4 text-caption-strong",
+                      onDark
+                        ? "bg-tile-3 text-white"
+                        : "bg-pearl text-ink",
+                    )}
+                  >
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {table.rows.map((row, i) => (
+                <tr
+                  key={i}
+                  className={cn(
+                    "border-t",
+                    onDark ? "border-white/12" : "border-hairline",
+                  )}
+                >
+                  {row.map((cell, j) => (
+                    <td
+                      key={j}
+                      className={cn(
+                        "px-6 py-4 align-top text-caption text-pretty",
+                        j === 0
+                          ? onDark
+                            ? "text-white"
+                            : "text-ink"
+                          : onDark
+                            ? "text-[#cccccc]"
+                            : "text-ink-80",
+                        onDark ? "bg-tile-1" : "bg-canvas",
+                      )}
+                    >
+                      {cell}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {table.caption && (
+          <p
+            className={cn(
+              "mt-3 text-fine text-pretty",
+              onDark ? "text-white/45" : "text-ink-48",
+            )}
+          >
+            {table.caption}
+          </p>
+        )}
+      </div>
+    </Reveal>
   );
 }
 

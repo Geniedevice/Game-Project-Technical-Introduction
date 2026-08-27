@@ -58,9 +58,19 @@ export function Projects() {
           description="작업해온 프로젝트의 기록입니다."
         />
 
-        <ul className="mx-auto mt-16 grid max-w-[1120px] grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+        {/*
+          격자 대신 flex + justify-center로 둡니다.
+          프로젝트 수가 3의 배수가 아닐 때도 마지막 줄이 가운데로 모이고,
+          칸 너비는 3열 격자와 똑같이 유지됩니다. (가로 간격 24px 기준)
+        */}
+        <ul className="mx-auto mt-16 flex max-w-[1120px] flex-wrap justify-center gap-x-6 gap-y-10">
           {projects.map((project, i) => (
-            <Reveal as="li" key={project.slug} delay={(i % 3) * 70}>
+            <Reveal
+              as="li"
+              key={project.slug}
+              delay={(i % 3) * 70}
+              className="w-full sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]"
+            >
               <ProjectCard project={project} onOpen={() => openProject(project)} />
             </Reveal>
           ))}

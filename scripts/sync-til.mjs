@@ -41,6 +41,12 @@ const SERIES = [
     file: "Unreal/UI/UIStudyNote.md",
   },
   {
+    id: "material",
+    title: "머티리얼 · 셰이더",
+    caption: "셀 셰이딩, 포스트 프로세스, 나이아가라로 만든 연출",
+    file: "Unreal/Material.md",
+  },
+  {
     id: "cs",
     title: "CS · Unreal 심화",
     caption: "C++ 내부 동작, 운영체제, 네트워크, 그리고 언리얼의 대응 개념",

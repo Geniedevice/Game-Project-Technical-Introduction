@@ -14,13 +14,12 @@ npm run lint
 
 ## 콘텐츠 수정 — 여기만 고치면 됩니다
 
-컴포넌트를 건드릴 필요 없이 `src/content/` 안의 파일 4개만 수정하면 사이트 전체가 바뀝니다.
+컴포넌트를 건드릴 필요 없이 `src/content/` 안의 파일 3개만 수정하면 사이트 전체가 바뀝니다.
 
 | 파일 | 무엇을 담나 |
 |---|---|
 | `src/content/site.ts` | 이름, 직무, 히어로 문구, 이메일, 블로그·GitHub 주소 |
 | `src/content/projects.ts` | 프로젝트 — 문제 / 접근 / 결과 / 관련 글 / 상세 페이지 |
-| `src/content/skills.ts` | 기술 스택 뱃지 (그룹 · 숙련도 · 근거 한 줄) |
 | `src/content/til.ts` | 학습 기록 — **자동 생성**, 아래 참고 |
 
 ## 학습 기록 동기화
@@ -68,6 +67,34 @@ relatedPosts: ["gas-15", "gas-17"]   // 총알 최적화, 장비 카드 UI 시�
 
 현재 상세 페이지가 있는 프로젝트: **Gears of Deceit** (`/projects/gears-of-deceit/`)
 
+### 섹션 골자 — 모든 섹션이 같은 순서로 흐릅니다
+
+상세 페이지의 섹션과 트러블 슈팅은 하나의 틀을 공유합니다.
+제목만 봐도 종류를 알 수 있고, 본문은 항상 같은 순서로 읽힙니다.
+
+| 순서 | 필드 | 무엇을 쓰나 |
+|---|---|---|
+| 꼬리표 | `kind` | `"feature"` → **기능 구현**, `"trouble"` → **트러블 슈팅** |
+| 제목 | `title` | 무엇을 만들었는지 / 무엇이 고장났는지 한 줄 |
+| 1 | `flow.problem` | 문제 추론 — 무엇이 문제였나 |
+| 2 | `flow.hypothesis` | 가설 — 원인을 무엇이라고 봤나 |
+| 3 | `flow.solution` | 해결방안 — 그래서 무엇을 했나 |
+| 4 | `flow.result` | 결과 — 무엇이 달라졌나 |
+
+설명은 문장을 늘리지 않고 키워드로 줄입니다.
+규칙처럼 문장으로 늘어놓으면 안 읽히는 것은 `table`로 뺍니다.
+
+```ts
+table: {
+  caption: "표 아래 한 줄 설명 (선택)",
+  headers: ["조건", "속도", "의도"],
+  rows: [["전원 완료", "×2.0", "협력의 최대 보상"]],
+}
+```
+
+트러블 슈팅(`troubleshooting`)도 같은 순서입니다 —
+`problem`(문제) → `cause`(가설) → `fix`(해결방안) → `result`(결과) → `lesson`(배운 점).
+
 ### 이미지 채우기
 
 상세 페이지의 이미지 자리(`MediaSlot`)는 `src`가 `null`이면
@@ -89,8 +116,8 @@ src/
 │  └─ globals.css       디자인 토큰 (@theme) · 유틸리티
 ├─ components/
 │  ├─ layout/           GlobalNav · SubNav · Footer
-│  ├─ sections/         Hero · Projects · Skills · Til · Contact
-│  └─ ui/               Button · SkillBadge · SectionHeading · Reveal
+│  ├─ sections/         Hero · Projects · Til · Contact
+│  └─ ui/               Button · Media · SectionHeading · Reveal
 ├─ content/             ← 콘텐츠는 전부 여기
 │  └─ til.generated.ts  자동 생성 (수정 금지)
 └─ lib/cn.ts
