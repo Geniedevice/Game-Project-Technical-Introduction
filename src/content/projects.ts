@@ -550,6 +550,16 @@ export const projects: Project[] = [
               aspect: "16/9",
             },
           },
+          media: [
+            {
+              src: "/projects/gears-of-deceit/toon-material.png",
+              alt: "툰 셰이딩 포스트 프로세스 머티리얼의 노드 그래프",
+              caption:
+                "라이팅 결과를 단계로 끊고 외곽선을 더하는 포스트 프로세스 머티리얼 구성",
+              hint: "머티리얼 노드 그래프",
+              aspect: "16/9",
+            },
+          ],
           blogPosts: [
             {
               title: "Gears of Deceit — 카툰 렌더링",
