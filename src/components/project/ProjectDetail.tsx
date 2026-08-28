@@ -8,7 +8,6 @@ import type {
   Project,
   SectionKind,
 } from "@/content/projects";
-import { getPost } from "@/content/til";
 import { site } from "@/content/site";
 import { Button } from "@/components/ui/Button";
 import { Media, VideoEmbed } from "@/components/ui/Media";
@@ -717,7 +716,7 @@ function DetailTableView({
 
 /**
  * 섹션 하단의 근거 링크.
- * 이 프로젝트를 만들며 쓴 개발 기록과, 그때 공부한 학습 기록을 나눠서 보여줍니다.
+ * 이 프로젝트를 만들며 쓴 개발 기록을 보여줍니다.
  */
 function SectionEvidence({
   section,
@@ -726,12 +725,9 @@ function SectionEvidence({
   section: DetailSection;
   onDark: boolean;
 }) {
-  const studyPosts = (section.posts ?? [])
-    .map((id) => getPost(id))
-    .filter((p): p is NonNullable<typeof p> => Boolean(p));
   const devPosts = section.blogPosts ?? [];
 
-  if (studyPosts.length === 0 && devPosts.length === 0) return null;
+  if (devPosts.length === 0) return null;
 
   const chip = cn(
     "press inline-flex rounded-full border px-3.5 py-2 text-caption",
@@ -753,35 +749,18 @@ function SectionEvidence({
           onDark ? "border-white/12" : "border-hairline",
         )}
       >
-        {devPosts.length > 0 && (
-          <div>
-            <p className={label}>개발 기록</p>
-            <ul className="mt-4 flex flex-wrap gap-2">
-              {devPosts.map((p) => (
-                <li key={p.url}>
-                  <a href={p.url} target="_blank" rel="noopener noreferrer" className={chip}>
-                    {p.title}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {studyPosts.length > 0 && (
-          <div>
-            <p className={label}>{section.postsLabel ?? "그때 공부한 것"}</p>
-            <ul className="mt-4 flex flex-wrap gap-2">
-              {studyPosts.map((p) => (
-                <li key={p.id}>
-                  <a href={p.url} target="_blank" rel="noopener noreferrer" className={chip}>
-                    {p.title}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <div>
+          <p className={label}>개발 기록</p>
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {devPosts.map((p) => (
+              <li key={p.url}>
+                <a href={p.url} target="_blank" rel="noopener noreferrer" className={chip}>
+                  {p.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </Reveal>
   );

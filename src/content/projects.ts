@@ -96,13 +96,6 @@ export type DetailSection = {
   /** 구현 항목 */
   bullets?: { label: string; text: string }[];
   media?: MediaSlot[];
-  /** 근거가 되는 til post id (til.generated.ts) */
-  posts?: string[];
-  /**
-   * posts 묶음의 제목. 기본값은 "그때 공부한 것"입니다.
-   * 프로젝트보다 나중에 정리한 글이라면 문구를 바꿔주세요.
-   */
-  postsLabel?: string;
   /** 학습 노트에는 없는 블로그 글 직접 링크 */
   blogPosts?: { title: string; url: string }[];
 };
@@ -312,7 +305,7 @@ export const projects: Project[] = [
           title: "Steam OSS 기반 멀티플레이 세션 구현",
           lead: "Steam OnlineSubsystem으로 방 생성 · 검색 · 참가 · 나가기를 구현했습니다.",
           body: [
-            "네 가지 요청을 GameInstance 한 곳이 전담합니다. 메뉴 위젯은 인터페이스로 요청만 보내고 결과는 델리게이트로 돌려받아, UI가 온라인 서브시스템을 직접 다루지 않습니다. 세션을 어떻게 만드는지 바뀌어도 위젯은 손대지 않습니다.",
+            "모든 요청을 GameInstance 한 곳이 전담합니다. 메뉴 위젯은 인터페이스로 요청만 보내고 결과는 델리게이트로 돌려받아, UI가 온라인 서브시스템을 직접 다루지 않습니다. 세션을 어떻게 만드는지 바뀌어도 위젯은 손대지 않습니다.",
             "네 요청 모두 비동기라 요청과 결과가 분리됩니다. 요청을 보낸 뒤 완료 델리게이트를 받아 다음 단계로 넘어가고, 화면은 그동안 대기 상태를 유지합니다.",
           ],
           table: {
@@ -367,7 +360,6 @@ export const projects: Project[] = [
               aspect: "16/9",
             },
           ],
-          posts: ["cs-33", "cs-30", "cs-23", "cs-24"],
           blogPosts: [
             {
               title: "Gears of Deceit — Steam OSS 기반 멀티 세션",
@@ -422,7 +414,6 @@ export const projects: Project[] = [
               aspect: "16/9",
             },
           ],
-          posts: ["cs-28", "cs-26", "ui-01"],
           blogPosts: [
             {
               title: "시연 영상 — VOIP 보이스 · 세션 멀티",
@@ -501,7 +492,6 @@ export const projects: Project[] = [
               aspect: "16/9",
             },
           ],
-          posts: ["cs-25", "cs-27", "cs-17"],
           blogPosts: [
             {
               title: "트러블 슈팅 — 움직이는 발판 위 캐릭터",
@@ -560,7 +550,6 @@ export const projects: Project[] = [
               aspect: "16/9",
             },
           },
-          posts: ["cs-37", "ui-00", "ui-01"],
           blogPosts: [
             {
               title: "Gears of Deceit — 카툰 렌더링",
@@ -733,7 +722,6 @@ export const projects: Project[] = [
           items: [
             { label: "장르", value: "3D 좀비 로그라이크 액션" },
             { label: "인원", value: "멀티플레이 협동" },
-            { label: "규모", value: "C++ 141파일" },
           ],
         },
         {
@@ -823,8 +811,6 @@ export const projects: Project[] = [
               aspect: "16/9",
             },
           ],
-          posts: ["cs-33", "cs-30", "cs-22"],
-          postsLabel: "관련해서 정리한 개념",
         },
         {
           id: "combat",
@@ -857,8 +843,6 @@ export const projects: Project[] = [
               text: "체력 · 실드 · 피해감소 · 치명타 · 마나를 RepNotify로 UI와 연동",
             },
           ],
-          posts: ["cs-27", "cs-26"],
-          postsLabel: "관련해서 정리한 개념",
         },
         {
           id: "items",
@@ -885,8 +869,6 @@ export const projects: Project[] = [
             { label: "태그", text: "슬롯 · 희귀도 · 아이템 종류를 GameplayTag로 표현" },
             { label: "UI 분리", text: "WidgetController가 데이터와 위젯 사이를 중재" },
           ],
-          posts: ["cs-34", "cs-27"],
-          postsLabel: "관련해서 정리한 개념",
         },
         {
           id: "optimize",
@@ -923,8 +905,6 @@ export const projects: Project[] = [
               aspect: "16/9",
             },
           ],
-          posts: ["gas-10", "cs-18"],
-          postsLabel: "관련해서 정리한 개념",
         },
       ],
 
