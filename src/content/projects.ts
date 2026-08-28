@@ -555,7 +555,7 @@ export const projects: Project[] = [
               src: "/projects/gears-of-deceit/toon-material.png",
               alt: "툰 셰이딩 포스트 프로세스 머티리얼의 노드 그래프",
               caption:
-                "라이팅 결과를 단계로 끊고 외곽선을 더하는 포스트 프로세스 머티리얼 구성",
+                "화면 밝기를 뽑아 SmoothStep 으로 명암을 단으로 끊고, 그림자 · 광원 색을 입힌 뒤, CustomDepth 와 SceneDepth 차이로 외곽선을 더한다",
               hint: "머티리얼 노드 그래프",
               aspect: "16/9",
             },
