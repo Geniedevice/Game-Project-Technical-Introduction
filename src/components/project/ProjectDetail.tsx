@@ -1,10 +1,10 @@
 import Link from "next/link";
 import type {
   DetailCompare,
-  DetailFlow,
   DetailSection,
   DetailTable,
   FactGroup,
+  Hypothesis,
   Project,
   SectionKind,
 } from "@/content/projects";
@@ -132,22 +132,34 @@ export function ProjectDetail({
             </h2>
           </Reveal>
 
-          <div className="mt-7 flex flex-col gap-5">
-            {detail.overview.map((p, i) => (
-              <Reveal key={i} delay={i * 60}>
-                <p className="max-w-[62ch] text-lead-airy font-light text-pretty text-ink-80">
-                  {p}
-                </p>
-              </Reveal>
-            ))}
-          </div>
-
-          {detail.overviewMedia && (
-            <Reveal delay={120}>
-              <div className="mt-12">
-                <Media slot={detail.overviewMedia} />
+          {detail.overviewVideo && (
+            <Reveal delay={60}>
+              <div className="mt-8">
+                <Media slot={detail.overviewVideo} />
               </div>
             </Reveal>
+          )}
+
+          {detail.overview.length > 0 && (
+            <div className="mt-10 flex flex-col gap-5">
+              {detail.overview.map((p, i) => (
+                <Reveal key={i} delay={i * 60}>
+                  <p className="max-w-[62ch] text-lead-airy font-light text-pretty text-ink-80">
+                    {p}
+                  </p>
+                </Reveal>
+              ))}
+            </div>
+          )}
+
+          {detail.overviewMedia && detail.overviewMedia.length > 0 && (
+            <div className="mt-12 flex flex-col gap-10">
+              {detail.overviewMedia.map((slot, i) => (
+                <Reveal key={i} delay={120 + i * 60}>
+                  <Media slot={slot} />
+                </Reveal>
+              ))}
+            </div>
           )}
 
           {/* 2·3. 기간 · 팀 규모 / 개발 환경 — 제목을 단 블록으로 나눠서 */}
@@ -229,10 +241,18 @@ export function ProjectDetail({
                 </p>
               </Reveal>
 
-              <FlowSteps flow={section.flow} onDark={onDark} />
+              {section.headerMedia && section.headerMedia.length > 0 && (
+                <div className="mt-8 flex flex-col gap-8">
+                  {section.headerMedia.map((slot, k) => (
+                    <Reveal key={k} delay={60 + k * 60}>
+                      <Media slot={slot} onDark={onDark} />
+                    </Reveal>
+                  ))}
+                </div>
+              )}
 
               {section.body && section.body.length > 0 && (
-                <div className="mt-12 flex flex-col gap-5">
+                <div className="mt-10 flex flex-col gap-5">
                   {section.body.map((p, j) => (
                     <Reveal key={j} delay={j * 50}>
                       <p
@@ -300,14 +320,7 @@ export function ProjectDetail({
                   )}
                 >
                   {section.media.map((slot, k) => (
-                    <Reveal
-                      key={k}
-                      delay={k * 80}
-                      className={cn(
-                        // 영상은 한 줄을 다 쓰게 둡니다
-                        slot.video && section.media!.length > 1 && "sm:col-span-2",
-                      )}
-                    >
+                    <Reveal key={k} delay={k * 80}>
                       <Media slot={slot} onDark={onDark} />
                     </Reveal>
                   ))}
@@ -330,9 +343,9 @@ export function ProjectDetail({
             </span>
             <h2 className="text-display-fluid text-balance text-ink">트러블 슈팅</h2>
             <p className="max-w-[56ch] text-lead-airy font-light text-pretty text-ink-80">
-              원인을 찾기까지 오래 걸렸던 것만 남겼고, 위 섹션과 같은 순서로 적었습니다 —
-              문제 → 가설 → 해결방안 → 결과. 팀원이 해결한 것도 배운 게 있어 함께 적되,
-              누가 해결했는지는 구분했습니다.
+              원인을 찾기까지 오래 걸렸던 것만 남겼습니다. 문제 → 가설 검증 → 해결방안 →
+              결과 순서이고, 기각된 가설도 함께 적었습니다. 팀원이 해결한 것도 배운 게 있어
+              같이 넣되 누가 해결했는지는 구분했습니다.
             </p>
           </Reveal>
 
@@ -359,25 +372,21 @@ export function ProjectDetail({
                     </h3>
                   </div>
 
-                  <dl className="mt-5 flex flex-col gap-4">
+                  <div className="mt-5">
+                    <Row k="문제" v={t.problem} />
+                  </div>
+
+                  <HypothesisTable hypotheses={t.hypotheses} />
+
+                  <div className="mt-6 flex flex-col gap-4">
                     {[
-                      { k: "문제", v: t.problem },
-                      { k: "가설", v: t.cause },
                       { k: "해결방안", v: t.fix },
                       ...(t.result ? [{ k: "결과", v: t.result }] : []),
                       ...(t.lesson ? [{ k: "배운 점", v: t.lesson }] : []),
                     ].map((row) => (
-                      <div
-                        key={row.k}
-                        className="flex flex-col gap-1 sm:flex-row sm:gap-6"
-                      >
-                        <dt className="shrink-0 text-fine text-ink-48 sm:w-24 sm:pt-1">
-                          {row.k}
-                        </dt>
-                        <dd className="text-caption text-pretty text-ink-80">{row.v}</dd>
-                      </div>
+                      <Row key={row.k} k={row.k} v={row.v} />
                     ))}
-                  </dl>
+                  </div>
 
                   {t.postUrl && (
                     <a
@@ -463,6 +472,70 @@ function FactGroupBlock({ group, delay }: { group: FactGroup; delay: number }) {
   );
 }
 
+/** 트러블 슈팅 카드의 한 줄 — 라벨과 내용. */
+function Row({ k, v }: { k: string; v: string }) {
+  return (
+    <div className="flex flex-col gap-1 sm:flex-row sm:gap-6">
+      <span className="shrink-0 text-fine text-ink-48 sm:w-24 sm:pt-1">{k}</span>
+      <span className="text-caption text-pretty text-ink-80">{v}</span>
+    </div>
+  );
+}
+
+/**
+ * 세운 가설과 검증 결과.
+ * 기각된 것도 남깁니다 — 무엇을 지웠는지가 추론 과정 그 자체라서요.
+ */
+function HypothesisTable({ hypotheses }: { hypotheses: Hypothesis[] }) {
+  return (
+    <div className="mt-6">
+      <p className="text-fine text-ink-48">가설 검증</p>
+
+      <ol className="mt-3 flex flex-col gap-px overflow-hidden rounded-lg bg-hairline">
+        {hypotheses.map((h, i) => (
+          <li key={h.text} className="flex flex-col gap-2 bg-pearl p-5 sm:flex-row sm:gap-5">
+            <span
+              className={cn(
+                "flex size-6 shrink-0 items-center justify-center rounded-full text-fine",
+                h.verdict === "확인"
+                  ? "bg-primary text-white"
+                  : "border border-divider bg-canvas text-ink-48",
+              )}
+            >
+              {i + 1}
+            </span>
+
+            <div className="flex flex-1 flex-col gap-1.5">
+              <span
+                className={cn(
+                  "text-caption-strong text-pretty",
+                  h.verdict === "확인" ? "text-ink" : "text-ink-48 line-through",
+                )}
+              >
+                {h.text}
+              </span>
+              <span className="text-caption text-pretty text-ink-80">
+                확인 방법 — {h.test}
+              </span>
+            </div>
+
+            <span
+              className={cn(
+                "h-fit shrink-0 rounded-full px-2.5 py-1 text-fine",
+                h.verdict === "확인"
+                  ? "border border-primary/30 bg-primary/8 text-primary"
+                  : "border border-divider bg-canvas text-ink-48",
+              )}
+            >
+              {h.verdict}
+            </span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
 /** 기능 구현 / 트러블 슈팅 — 제목 옆 꼬리표. 무엇을 읽는 중인지 먼저 알려줍니다. */
 function KindTag({ kind, onDark }: { kind: SectionKind; onDark: boolean }) {
   const isTrouble = kind === "trouble";
@@ -482,62 +555,6 @@ function KindTag({ kind, onDark }: { kind: SectionKind; onDark: boolean }) {
     >
       {isTrouble ? "트러블 슈팅" : "기능 구현"}
     </span>
-  );
-}
-
-/**
- * 문제 추론 → 가설 → 해결방안 → 결과.
- * 모든 섹션이 같은 순서로 읽히도록 네 칸을 고정해 그립니다.
- */
-function FlowSteps({ flow, onDark }: { flow: DetailFlow; onDark: boolean }) {
-  const steps = [
-    { k: "문제 추론", v: flow.problem },
-    { k: "가설", v: flow.hypothesis },
-    { k: "해결방안", v: flow.solution },
-    { k: "결과", v: flow.result },
-  ];
-
-  /* 한 단계씩 위에서 아래로 — 옆으로 나란히 두면 읽는 순서가 흐려집니다 */
-  return (
-    <ol className="mt-12 flex flex-col gap-4">
-      {steps.map((s, i) => (
-        <Reveal as="li" key={s.k} delay={i * 60}>
-          <div
-            className={cn(
-              "flex flex-col gap-3 rounded-lg border p-6 sm:flex-row sm:gap-10 sm:p-7",
-              onDark ? "border-white/12 bg-tile-3" : "border-hairline bg-canvas",
-            )}
-          >
-            <div className="flex shrink-0 items-center gap-2.5 sm:w-40">
-              <span
-                className={cn(
-                  "flex size-6 items-center justify-center rounded-full text-fine",
-                  onDark ? "bg-sky/20 text-sky" : "bg-primary/10 text-primary",
-                )}
-              >
-                {i + 1}
-              </span>
-              <span
-                className={cn(
-                  "text-body-strong",
-                  onDark ? "text-white" : "text-ink",
-                )}
-              >
-                {s.k}
-              </span>
-            </div>
-            <p
-              className={cn(
-                "max-w-[62ch] text-body text-pretty",
-                onDark ? "text-[#cccccc]" : "text-ink-80",
-              )}
-            >
-              {s.v}
-            </p>
-          </div>
-        </Reveal>
-      ))}
-    </ol>
   );
 }
 

@@ -52,22 +52,6 @@ export type MediaSlot = {
 export type SectionKind = "feature" | "trouble";
 
 /**
- * 문제 추론 → 가설 → 해결방안 → 결과.
- * 모든 섹션이 같은 순서로 읽히도록 구조로 고정했습니다.
- * 각 칸은 한두 문장, 키워드 위주로 짧게 씁니다.
- */
-export type DetailFlow = {
-  /** 무엇이 문제였는가 */
-  problem: string;
-  /** 원인을 무엇이라고 봤는가 */
-  hypothesis: string;
-  /** 그래서 무엇을 했는가 */
-  solution: string;
-  /** 그래서 무엇이 달라졌는가 */
-  result: string;
-};
-
-/**
  * 적용 전 · 후 비교.
  * 화면에는 **왼쪽이 적용 전, 오른쪽이 적용 후**로 놓입니다.
  * 읽는 순서와 같게 두어 무엇이 달라졌는지 바로 보이게 합니다.
@@ -96,14 +80,14 @@ export type DetailSection = {
   title: string;
   /** 한 문장 요약 */
   lead: string;
-  /** 문제 추론 → 가설 → 해결방안 → 결과 */
-  flow: DetailFlow;
-  /** 표로 담기 애매한 보조 설명. 없으면 flow와 표만으로 끝납니다 */
+  /** 기능이 무엇을 하고 어떻게 도는지. 핵심만 두 문단 안쪽으로 */
   body?: string[];
   /** 규칙 · 비교를 표로 */
   table?: DetailTable;
   /** 적용 전 · 후 비교 (왼쪽 = 적용 전, 오른쪽 = 적용 후) */
   compare?: DetailCompare;
+  /** 제목 바로 아래에 위에서 아래로 놓이는 미디어. 영상을 먼저 보여줄 때 씁니다 */
+  headerMedia?: MediaSlot[];
   /** 구현 항목 */
   bullets?: { label: string; text: string }[];
   media?: MediaSlot[];
@@ -118,13 +102,30 @@ export type DetailSection = {
   blogPosts?: { title: string; url: string }[];
 };
 
-/** 트러블 슈팅도 섹션과 같은 골자(문제 → 가설 → 해결 → 결과)로 읽히게 맞춥니다. */
+/**
+ * 세워본 가설 하나와 그 검증 결과.
+ * 기각된 가설도 남깁니다 — 무엇을 지웠는지가 곧 추론 과정이라서요.
+ */
+export type Hypothesis = {
+  /** 원인을 무엇이라고 봤는가 */
+  text: string;
+  /** 어떻게 확인했는가 */
+  test: string;
+  /** 검증 결과 */
+  verdict: "확인" | "기각";
+};
+
+/**
+ * 트러블 슈팅.
+ * 문제 → 가설 검증 → 해결방안 → 결과 순서로 읽힙니다.
+ * 4단계 흐름은 여기에만 씁니다. 기능 섹션은 기능 설명만 합니다.
+ */
 export type Troubleshoot = {
   title: string;
   /** 문제 — 겉으로 드러난 증상 */
   problem: string;
-  /** 가설 — 원인을 무엇이라고 추론했는가 */
-  cause: string;
+  /** 세운 가설들과 검증 결과 */
+  hypotheses: Hypothesis[];
   /** 해결방안 */
   fix: string;
   /** 결과 */
@@ -155,8 +156,10 @@ export type ProjectDetail = {
   /** 담당 영역 — 팀 성과와 구분하기 위한 목록 */
   myScope: { title: string; text: string }[];
   keyArt: MediaSlot;
-  /** 개요 섹션에 들어가는 이미지 */
-  overviewMedia?: MediaSlot;
+  /** 프로젝트 소개 제목 바로 아래에 놓이는 영상 */
+  overviewVideo?: MediaSlot;
+  /** 소개 글 아래에 놓이는 이미지 · 영상 */
+  overviewMedia?: MediaSlot[];
   /** 유튜브 영상 id. 있으면 상세 페이지에 임베드됩니다 */
   youtubeId?: string | null;
   /** 유튜브가 아닌 곳(네이버 등)에 올린 시연 영상. 버튼으로 연결됩니다 */
@@ -226,10 +229,7 @@ export const projects: Project[] = [
     surface: "dark",
 
     detail: {
-      overview: [
-        "10분 안에 열차를 목적지까지 몰고 가야 하는 시민, 그것을 막아야 하는 마피아. 어몽어스식 마피아를 뿌리로 삼되 무거운 추리를 걷어내고 도착 여부라는 단순한 목표 아래 파티 게임의 재미에 집중한 3D 멀티플레이 액션입니다.",
-        "퀘스트를 완료한 인원이 많을수록 열차가 빨라지고(전원 완료 시 2배속), 마피아는 압력 밸브와 기어를 망가뜨려 열차를 멈춰 세웁니다. 근접 보이스 채팅이 필수라 누가 어디서 무슨 말을 했는지가 그대로 증거가 됩니다.",
-      ],
+      overview: [],
       factGroups: [
         {
           title: "게임 정보",
@@ -286,12 +286,13 @@ export const projects: Project[] = [
         hint: "게임 대표 컷",
         aspect: "16/9",
       },
-      overviewMedia: {
-        src: "/projects/gears-of-deceit/design-direction.png",
-        alt: "기획 방향 전환 다이어그램",
-        caption:
-          "총 기반 서부 마피아 → 회의 시스템 도입 → 추리를 걷어내고 '도착 여부'로 단순화",
-        hint: "기획 방향",
+      overviewVideo: {
+        // https://youtu.be/d1UV0k-tygk
+        youtubeId: "d1UV0k-tygk",
+        src: "/projects/gears-of-deceit/patrol-poster.jpg",
+        alt: "순찰자 시점 플레이 영상",
+        caption: "순찰자 시점 플레이 — 열차 안을 돌며 다른 플레이어와 마주치는 한 판",
+        hint: "플레이 영상",
         aspect: "16/9",
       },
       /** 시연 영상은 네이버 자체 플레이어라 외부 임베드가 되지 않아 글로 연결합니다. */
@@ -304,60 +305,59 @@ export const projects: Project[] = [
           kind: "feature",
           eyebrow: "01 · 네트워크",
           title: "Steam OSS 기반 멀티플레이 세션 구현",
-          lead: "게임플레이보다 먼저 세운 것은 방에 들어가진다는 최소 조건이었습니다.",
-          flow: {
-            problem:
-              "재참여 시 방 목록이 비고, 만들지 않은 방이 섞이고, 강제 종료한 방이 계속 살아 있었습니다.",
-            hypothesis:
-              "증상은 비슷해도 원인 계층이 다르다고 봤습니다 — 종료 경로(게임) · 공용 AppID(플랫폼) · 세션 잔존(수명).",
-            solution:
-              "계층별로 처방을 따로 붙였습니다. 종료 경로 연결 + 검색 워치독, BUILD_ID 서명 필터, 30분 나이 필터.",
-            result:
-              "재참여 · 검색 · 강제 종료 어느 경로에서도 방 목록이 깨지지 않고, Shipping 빌드에서도 동일하게 동작합니다.",
-          },
+          lead: "Steam OnlineSubsystem으로 방 생성 · 검색 · 참가 · 나가기를 구현했습니다.",
+          body: [
+            "네 가지 요청을 GameInstance 한 곳이 전담합니다. 메뉴 위젯은 인터페이스로 요청만 보내고 결과는 델리게이트로 돌려받아, UI가 온라인 서브시스템을 직접 다루지 않습니다. 세션을 어떻게 만드는지 바뀌어도 위젯은 손대지 않습니다.",
+            "네 요청 모두 비동기라 요청과 결과가 분리됩니다. 요청을 보낸 뒤 완료 델리게이트를 받아 다음 단계로 넘어가고, 화면은 그동안 대기 상태를 유지합니다.",
+          ],
           table: {
-            caption:
-              "세 증상을 하나로 뭉뚱그리지 않고, 원인 계층별로 분리해 처방했습니다.",
-            headers: ["증상", "원인", "처방"],
+            caption: "네 요청이 각각 무엇을 싣고 무엇으로 이어지는지.",
+            headers: ["기능", "요청에 싣는 것", "완료 후"],
             rows: [
               [
-                "재참여 시 방 목록이 빔",
-                "ESC 종료가 세션 정리를 우회",
-                "종료 경로를 LoadMainMenu에 연결 · 검색 워치독",
+                "방 생성",
+                "최대 인원 · 공개 여부 · 빌드 서명",
+                "세션 생성 → 로비 레벨로 ServerTravel",
               ],
               [
-                "모르는 방이 섞임",
-                "Steam 공용 테스트 AppID(480) 공유",
-                "BUILD_ID 서명으로 우리 빌드만 통과",
+                "검색",
+                "빌드 서명 · 생성 시각 필터",
+                "조건에 맞는 방만 서버 목록에 표시",
               ],
-              [
-                "유령 방이 남음",
-                "비정상 종료로 세션이 잔존",
-                "생성 후 30분 경과 세션은 목록에서 제외",
-              ],
+              ["참가", "목록에서 고른 세션", "접속 주소를 받아 ClientTravel"],
+              ["나가기", "현재 세션 핸들", "세션 파기 → 메인 메뉴 레벨 로드"],
             ],
           },
           bullets: [
             { label: "세션 구성", text: "PlayerGameInstance + Steam OSS + AdvancedSessions" },
             { label: "경계", text: "UI는 메뉴 인터페이스만 알고 OSS를 직접 다루지 않음" },
             {
+              label: "검색 필터",
+              text: "빌드 서명이 같고 생성한 지 30분이 안 된 방만 목록에 올림",
+            },
+            { label: "로비", text: "접속 인원과 호스트를 서버 목록에 표시, 정원이 차면 시작" },
+            {
               label: "Shipping",
               text: "OSS 초기화 실패 대응, Null 서브시스템에서 클라이언트 ServerTravel 차단",
             },
           ],
+          // 왼쪽이 정상 동작, 오른쪽이 필터를 걸기 전의 증상입니다
           media: [
             {
-              src: "/projects/gears-of-deceit/lobby.png",
-              alt: "게임 내 서버 목록 화면",
-              caption: "직접 만든 SERVER LIST 화면 — 호스트와 접속 인원이 함께 표시된다",
-              hint: "방 목록 화면",
-              aspect: "4/3",
+              // https://youtu.be/XhcKvdL2alY
+              youtubeId: "XhcKvdL2alY",
+              src: null,
+              alt: "로비에서 방을 만들고 참가하는 영상",
+              caption: "정상 동작 — 방 생성 → 검색 → 참가 → 로비 대기까지의 흐름",
+              hint: "로그인 · 방 참가 영상",
+              aspect: "16/9",
             },
             {
-              src: "/projects/gears-of-deceit/session.png",
-              alt: "멀티플레이 세션 구성 설명 슬라이드",
-              caption: "PlayerGameInstance + Steam OSS + AdvancedSessions 구성",
-              hint: "세션 구조",
+              src: "/projects/gears-of-deceit/lobby.png",
+              alt: "이름이 깨진 외부 방이 서버 목록에 잡힌 화면",
+              caption:
+                "필터 전 — 우리가 만들지 않은 방이 이름이 깨진 채로 검색된다. 공용 AppID를 함께 쓰던 시절의 증상이다",
+              hint: "에러 방 예시",
               aspect: "16/9",
             },
           ],
@@ -378,17 +378,11 @@ export const projects: Project[] = [
           kind: "feature",
           eyebrow: "02 · 보이스",
           title: "거리 감쇠 · 채널 격리 보이스 채팅 구현",
-          lead: "소셜 디덕션에서 들리는 범위는 편의 기능이 아니라 게임 규칙입니다.",
-          flow: {
-            problem:
-              "전원에게 항상 목소리가 들리면 알리바이라는 개념이 사라져 추리가 성립하지 않습니다.",
-            hypothesis:
-              "위치 기반 감쇠만으로는 벽 · 생사 같은 규칙상의 경계를 가를 수 없다고 봤습니다.",
-            solution:
-              "거리 감쇠(공간)와 채널 분리(규칙)를 겹쳐 적용하고, 상태가 바뀌는 시점에 채널을 재배정했습니다.",
-            result:
-              "같은 칸에 있어야 대화가 되고 비밀방 대화는 밖으로 새지 않습니다. 위치와 발화가 그대로 증거가 됩니다.",
-          },
+          lead: "거리 감쇠로 목소리가 닿는 범위를 좁혀, 누가 어디 있었는지가 추리 재료가 되게 했습니다.",
+          body: [
+            "보이스 컴포넌트에 감쇠 설정(SA_Voice)을 물렸습니다. 반경 100 안에서는 원음 그대로 들리고 거리가 멀어질수록 줄어들다 400을 넘으면 들리지 않습니다. 옆 칸 사람의 말은 닿지 않으므로 어디에 있었는지가 곧 알리바이가 됩니다.",
+            "여기에 채널 분리를 겹쳤습니다. 비밀방에 들어가면 별도 채널로 옮겨 바깥과 끊고, 사망하면 사망자 채널로 옮깁니다. 상태가 바뀌는 시점마다 채널을 다시 배정합니다.",
+          ],
           table: {
             caption: "누구에게 들리는가를 코드 분기가 아니라 채널 규칙으로 관리했습니다.",
             headers: ["상황", "들리는 대상", "의도"],
@@ -403,22 +397,22 @@ export const projects: Project[] = [
             { label: "채널 격리", text: "진입 시 별도 채널로 전환, 이탈 시 복귀" },
             { label: "상태 동기화", text: "플레이어별 발화 상태를 UI에 반영" },
           ],
-          media: [
+          headerMedia: [
             {
-              // https://www.youtube.com/watch?v=d1UV0k-tygk
-              youtubeId: "d1UV0k-tygk",
-              src: "/projects/gears-of-deceit/patrol-poster.jpg",
-              alt: "순찰자 시점 플레이 — 두 플레이어가 마주친 순간",
-              caption:
-                "순찰자 시점 플레이 — 근접 보이스가 걸린 상태에서 다른 플레이어와 마주치는 순간",
-              hint: "플레이 영상",
+              // https://youtu.be/JYJum1TzH1E
+              youtubeId: "JYJum1TzH1E",
+              src: null,
+              alt: "근접 보이스 동작을 확인하는 영상",
+              caption: "거리에 따라 목소리가 줄고, 채널이 갈리면 아예 들리지 않는다",
+              hint: "보이스 테스트 영상",
               aspect: "16/9",
             },
             {
-              src: "/projects/gears-of-deceit/voice.jpg",
-              alt: "보이스·세션 시연 영상의 인게임 화면",
-              caption: "역할(마피아)과 어빌리티 슬롯이 함께 보이는 화면",
-              hint: "보이스 시연 장면",
+              src: "/projects/gears-of-deceit/voice-attenuation.png",
+              alt: "보이스 컴포넌트의 감쇠 설정 화면",
+              caption:
+                "Voice Attenuation Override에 SA_Voice를 물리고 Inner Radius 100 · Falloff Distance 400 — 이 두 값이 대화가 성립하는 거리를 정한다",
+              hint: "감쇠 설정 화면",
               aspect: "16/9",
             },
           ],
@@ -451,17 +445,11 @@ export const projects: Project[] = [
           kind: "feature",
           eyebrow: "03 · 열차",
           title: "스플라인 주행 열차와 탑승 유지 구현",
-          lead: "무대 전체가 계속 이동한다는 설정은 낭만적이지만, 구현에서는 거의 모든 것을 흔듭니다.",
-          flow: {
-            problem:
-              "열차 속도가 곧 승패인데, 그 위에 선 캐릭터가 함께 실려 가지 않고 제자리에 남았습니다.",
-            hypothesis:
-              "속도는 서버가 소유해야 할 값이고, 탑승 문제는 엔진의 Movement Base 자동 해제가 원인이라고 봤습니다.",
-            solution:
-              "주행 속도를 서버 권위로 두어 복제하고, 발판에 Base를 강제 바인딩해 이동 벡터를 계속 받게 했습니다.",
-            result:
-              "주행 중인 지붕 위에서도 이동 · 전투가 성립하고, 속도 규칙이 전원에게 같은 값으로 보입니다.",
-          },
+          lead: "주행 중 흔들림과 위치 동기화로 달리는 무대를 구현했습니다.",
+          body: [
+            "열차는 스플라인을 따라 달립니다. 속도와 위치는 서버가 소유해 전원에게 복제하므로 모든 클라이언트가 같은 지점의 열차를 봅니다. 속도는 퀘스트 완료 인원과 적재 무게가 함께 움직입니다.",
+            "여기에 주행 중 흔들림을 더해 달리고 있다는 감각을 만들고, 그 위에 선 캐릭터는 SetBase()로 발판에 묶어 등반이나 상호작용 중에도 열차의 이동 벡터를 계속 받도록 했습니다.",
+          ],
           table: {
             caption:
               "속도를 협력의 결과로 두어, 퀘스트 진행도가 그대로 승패로 이어지게 했습니다.",
@@ -474,16 +462,18 @@ export const projects: Project[] = [
             ],
           },
           bullets: [
-            { label: "주행", text: "스플라인 기반 이동, 서버 권위로 속도 관리" },
+            { label: "주행", text: "스플라인 기반 이동, 서버 권위로 속도 · 위치 관리" },
+            { label: "주행 연출", text: "달리는 동안 흔들림을 더해 속도감 부여" },
             { label: "탑승 유지", text: "SetBase()로 캐릭터의 Base를 발판에 강제 바인딩" },
             { label: "안전 처리", text: "탈선 방지 콜라이더, 시작 위치 고정" },
           ],
           media: [
             {
-              src: "/projects/gears-of-deceit/train.png",
-              alt: "설원을 가로지르는 열차 전경",
-              caption: "스플라인을 따라 설원을 가로지르는 열차 '베헤모스'",
-              hint: "열차 주행 장면",
+              src: "/projects/gears-of-deceit/train-front.png",
+              alt: "설원을 달리는 열차 베헤모스 전경",
+              caption:
+                "스플라인을 따라 설원을 가로지르는 열차 베헤모스 — 기관차와 객차 전체가 하나의 무대다",
+              hint: "열차 전경",
               aspect: "16/9",
             },
             {
@@ -491,13 +481,6 @@ export const projects: Project[] = [
               alt: "주행 중인 열차 지붕 위를 달리는 캐릭터",
               caption: "주행 중인 열차 지붕 — 바닥이 계속 움직이는 상태에서의 이동",
               hint: "열차 지붕",
-              aspect: "16/9",
-            },
-            {
-              src: "/projects/gears-of-deceit/quest-speed.png",
-              alt: "퀘스트 완료와 열차 속도의 관계 슬라이드",
-              caption: "속도 배율 = 1.0 + (완료 인원 / 유효 인원) — 전원 완료 시 2배속",
-              hint: "속도 규칙",
               aspect: "16/9",
             },
           ],
@@ -518,22 +501,16 @@ export const projects: Project[] = [
           kind: "feature",
           eyebrow: "04 · 렌더링 · UI",
           title: "Custom Depth 툰 셰이딩과 HUD 구현",
-          lead: "룩을 만드는 파이프라인과 상호작용을 알려주는 파이프라인을 하나로 합쳤습니다.",
-          flow: {
-            problem:
-              "스팀펑크 룩을 위한 외곽선과, 조작 가능한 오브젝트 하이라이트가 각각 필요했습니다.",
-            hypothesis:
-              "둘 다 결국 실루엣을 뽑는 일이므로 Custom Depth 스텐실 하나로 겸할 수 있다고 봤습니다.",
-            solution:
-              "Custom Depth 기반 외곽선 · 셀 셰이딩을 포스트 프로세스로 구성하고, 같은 스텐실 값으로 하이라이트를 분기했습니다.",
-            result:
-              "룩과 상호작용 표현이 한 파이프라인에서 나와, 오브젝트에 플래그만 켜면 둘 다 적용됩니다.",
-          },
+          lead: "룩은 셀 셰이딩으로, 상호작용 표시는 뎁스 스텐실로 구현했습니다.",
+          body: [
+            "룩은 포스트 프로세스에서 셀 셰이딩으로 만듭니다. 라이팅 결과를 단계로 끊어 명암이 계단처럼 떨어지게 하고, 외곽선을 더해 스팀펑크 톤을 맞췄습니다.",
+            "상호작용 표시는 뎁스 스텐실을 씁니다. 조작 가능한 오브젝트의 Custom Depth를 켜고 스텐실 값을 주면 포스트 프로세스가 그 값을 가진 픽셀만 골라 외곽선을 그립니다. 새 오브젝트는 플래그만 켜면 표시가 붙습니다.",
+          ],
           bullets: [
-            { label: "툰 셰이딩", text: "Custom Depth 외곽선 + 셀 셰이딩 포스트 프로세스" },
+            { label: "셀 셰이딩", text: "라이팅을 단계로 끊는 포스트 프로세스와 외곽선" },
             {
-              label: "상호작용 강조",
-              text: "같은 스텐실 파이프라인으로 조작 가능한 오브젝트 하이라이트",
+              label: "상호작용 표시",
+              text: "Custom Depth + 스텐실 값으로 조작 가능한 오브젝트만 골라 외곽선",
             },
             { label: "HUD", text: "진행바 · 압력 게이지 · 연료 표시 머티리얼과 UI 애니메이션" },
             { label: "커서", text: "소프트웨어 → 하드웨어 전환 (아래 트러블 슈팅 참고)" },
@@ -548,9 +525,10 @@ export const projects: Project[] = [
               aspect: "16/9",
             },
             after: {
-              src: "/projects/gears-of-deceit/toon.png",
-              alt: "툰 셰이딩과 외곽선이 적용된 게임 화면",
-              caption: "적용 후 — 셀 셰이딩과 외곽선으로 실루엣이 분리된다",
+              src: "/projects/gears-of-deceit/toon-after.png",
+              alt: "툰 셰이딩이 적용된 인게임 화면",
+              caption:
+                "적용 후 — 명암이 단을 이루고 실루엣이 배경에서 떨어져 나온다. 남은 시간 · 압력 · 연료 · 퀘스트 진행도가 한 화면에 모인다",
               hint: "적용 후 화면",
               aspect: "16/9",
             },
@@ -574,33 +552,84 @@ export const projects: Project[] = [
           mine: true,
           title: "세션 목록이 비거나, 남의 방이 섞이거나, 유령 방이 남음",
           problem:
-            "재참여 시 방 목록이 비고, 만들지 않은 방이 검색되고, 강제 종료한 방이 계속 살아 있었습니다.",
-          cause:
-            "증상 세 개의 원인 계층이 각각 다르다고 봤습니다 — ESC 종료가 세션 정리를 우회 / Steam 공용 테스트 AppID(480) 공유 / 비정상 종료로 세션 잔존",
-          fix: "종료 경로를 LoadMainMenu에 연결 + 검색 워치독, BUILD_ID 서명 필터, 30분 나이 필터",
-          result: "어느 경로로 나가도 방 목록이 정상 상태로 복귀합니다.",
+            "재참여하면 방 목록이 비고, 만들지 않은 방이 검색되고, 강제 종료한 방이 계속 살아 있었습니다. 세 증상이 번갈아 나타났습니다.",
+          hypotheses: [
+            {
+              text: "세션 검색 호출 자체가 실패한다",
+              test: "검색 콜백의 성공 여부와 결과 수를 로그로 확인",
+              verdict: "기각",
+            },
+            {
+              text: "ESC 종료 경로가 세션 정리를 건너뛴다",
+              test: "종료 경로마다 로그를 걸어 세션 파기가 호출되는지 비교",
+              verdict: "확인",
+            },
+            {
+              text: "Steam 공용 테스트 AppID(480)를 쓰는 다른 개발자의 방이 섞인다",
+              test: "검색 결과의 방 이름과 호스트를 우리 빌드가 만든 것과 대조",
+              verdict: "확인",
+            },
+            {
+              text: "비정상 종료된 세션이 플랫폼에 그대로 남는다",
+              test: "강제 종료한 방이 이후에도 계속 검색되는지 시간을 두고 확인",
+              verdict: "확인",
+            },
+          ],
+          fix: "원인 계층별로 처방을 따로 붙였습니다. 종료 경로를 LoadMainMenu에 연결하고 검색 워치독 · 가드 리셋 추가, BUILD_ID 서명 필터로 우리 빌드만 통과, 생성 후 30분이 지난 세션은 목록에서 제외.",
+          result: "재참여 · 검색 · 강제 종료 어느 경로에서도 방 목록이 정상 상태로 돌아옵니다.",
           lesson: "세 증상이 비슷해 보여도 원인이 다르면 처방도 따로 붙여야 한다.",
           postUrl: "https://blog.naver.com/startblack7/224352390229",
         },
         {
           mine: true,
           title: "죽은 플레이어의 목소리가 산 사람에게 들림",
-          problem: "사망한 플레이어의 발언이 생존자에게 그대로 전달돼 추리가 무의미해졌습니다.",
-          cause:
-            "보이스 채널이 위치만 기준으로 동작해, 생사와 비밀방 같은 게임 규칙상의 경계를 반영하지 못한 것으로 추론했습니다.",
-          fix: "생사 · 공간을 기준으로 채널을 분리하고, 상태가 바뀌는 시점에 채널을 재배정",
+          problem:
+            "사망한 플레이어의 발언이 생존자에게 그대로 전달돼 추리가 무의미해졌습니다.",
+          hypotheses: [
+            {
+              text: "감쇠 반경이 너무 넓어 멀리까지 들린다",
+              test: "반경을 좁혀서 재현되는지 확인",
+              verdict: "기각",
+            },
+            {
+              text: "사망 시 보이스 컴포넌트를 끄지 않는다",
+              test: "사망 처리 경로에서 발화 상태가 어떻게 바뀌는지 추적",
+              verdict: "기각",
+            },
+            {
+              text: "채널이 위치만 기준이라 생사 · 비밀방 같은 규칙상의 경계를 모른다",
+              test: "벽을 사이에 둔 두 사람과 사망자 · 생존자 조합으로 들리는 범위를 비교",
+              verdict: "확인",
+            },
+          ],
+          fix: "생사와 공간을 기준으로 채널을 분리하고, 상태가 바뀌는 시점에 채널을 다시 배정했습니다.",
           result: "관전자가 정보를 흘릴 수 없게 되어 규칙이 다시 성립했습니다.",
-          lesson:
-            "소셜 디덕션에서 들리는 범위는 편의 기능이 아니라 규칙이다. 규칙이 새면 게임이 무너진다.",
+          lesson: "소셜 디덕션에서 들리는 범위는 편의 기능이 아니라 규칙이다. 규칙이 새면 게임이 무너진다.",
           postUrl: "https://blog.naver.com/startblack7/224335734651",
         },
         {
           mine: true,
           title: "움직이는 열차 위에서 캐릭터가 반대로 밀려 떨어짐",
-          problem: "지붕에서 등반이나 상호작용을 하면 캐릭터만 제자리에 남고 열차가 빠져나갔습니다.",
-          cause:
-            "해당 동작 진입 시 엔진이 Movement Base를 자동 해제해 관성이 끊긴 것으로 추론했습니다.",
-          fix: "SetBase()로 캐릭터의 Base를 발판에 강제 바인딩해 열차의 이동 벡터를 다시 받도록 처리",
+          problem:
+            "지붕에서 등반이나 상호작용을 하면 캐릭터만 제자리에 남고 열차가 빠져나갔습니다.",
+          hypotheses: [
+            {
+              text: "열차 이동이 캐릭터 갱신보다 늦어 한 프레임씩 밀린다",
+              test: "가만히 서 있을 때도 재현되는지 확인",
+              verdict: "기각",
+            },
+            {
+              text: "콜리전이 얇아 발판을 뚫고 빠진다",
+              test: "콜라이더 두께를 키워 재현 여부 확인",
+              verdict: "기각",
+            },
+            {
+              text: "특정 동작 진입 시 엔진이 Movement Base를 자동으로 해제한다",
+              test: "등반 · 상호작용에서만 재현되는지, 그때 Base 값이 비는지 확인",
+              verdict: "확인",
+            },
+          ],
+          fix: "SetBase()로 캐릭터의 Base를 발판에 강제 바인딩해 열차의 이동 벡터를 계속 받도록 했습니다.",
           result: "주행 중에도 지붕 위 이동 · 전투가 유지됩니다.",
           lesson: "움직이는 바닥 위에서는 '가만히 있는 것'도 매 프레임 계산해야 하는 상태다.",
           postUrl: "https://blog.naver.com/startblack7/224332228398",
@@ -608,20 +637,47 @@ export const projects: Project[] = [
         {
           mine: true,
           title: "소프트웨어 커서로 인한 프레임 병목과 클릭 오차",
-          problem: "UI 조작 중 주기적인 프리징이 생기고, 커서를 교체한 뒤에는 클릭 지점이 어긋났습니다.",
-          cause:
-            "UMG 소프트웨어 커서가 매 프레임 메인/Slate 스레드를 동기화 / 비대칭 커서의 시각적 조준점과 클릭점(0,0) 불일치",
-          fix: "하드웨어 커서로 전면 교체 후 피벗 · 렌더 트랜스폼 오프셋으로 조준점 보정",
+          problem:
+            "UI를 조작하는 동안 주기적으로 프리징이 생겼고, 커서를 교체한 뒤에는 클릭 지점이 어긋났습니다.",
+          hypotheses: [
+            {
+              text: "위젯이 많아 Slate 레이아웃 비용이 크다",
+              test: "위젯 수를 줄인 화면에서 프리징이 사라지는지 확인",
+              verdict: "기각",
+            },
+            {
+              text: "UMG 소프트웨어 커서가 매 프레임 메인 스레드와 Slate 스레드를 동기화한다",
+              test: "하드웨어 커서로 바꿔 프리징이 사라지는지 확인",
+              verdict: "확인",
+            },
+            {
+              text: "교체 후의 클릭 오차는 비대칭 커서 이미지의 조준점과 클릭점(0,0) 불일치 때문이다",
+              test: "대칭 커서와 비대칭 커서(장갑 · 빗자루)의 클릭 지점을 비교",
+              verdict: "확인",
+            },
+          ],
+          fix: "하드웨어 커서로 전면 교체한 뒤, 피벗과 렌더 트랜스폼 오프셋으로 조준점을 보정했습니다.",
           result: "프레임 병목이 사라지고 조준점과 실제 클릭 지점이 일치합니다.",
           lesson: "성능을 고치자 조작감 문제가 드러났다. 교체는 대체로 새 문제를 데려온다.",
         },
         {
           mine: false,
           title: "호스트만 캐릭터 스킨이 적용되지 않음",
-          problem: "클라이언트는 정상인데 리슨 호스트만 선택한 스킨이 반영되지 않았습니다.",
-          cause:
-            "스킨 전송을 BeginPlay · OnRep_Controller에 연결했으나, 리슨 호스트는 BeginPlay가 빙의보다 먼저 실행되고 OnRep_Controller는 서버에서 호출되지 않는 것이 원인이었습니다.",
-          fix: "서버 빙의 시점인 PossessedBy에서 전송 (중복 1회 가드)",
+          problem:
+            "클라이언트는 정상인데 리슨 호스트만 선택한 스킨이 반영되지 않았습니다.",
+          hypotheses: [
+            {
+              text: "스킨 값이 복제되지 않는다",
+              test: "클라이언트에서는 정상 적용되는지 확인",
+              verdict: "기각",
+            },
+            {
+              text: "초기화 시점이 리슨 호스트에서만 어긋난다",
+              test: "BeginPlay · OnRep_Controller · PossessedBy의 호출 순서를 서버 · 클라이언트 · 리슨 호스트에서 각각 로그로 비교",
+              verdict: "확인",
+            },
+          ],
+          fix: "서버 빙의 시점인 PossessedBy에서 전송하도록 옮겼습니다. (중복 1회 가드)",
           result: "호스트 · 클라이언트 모두 같은 시점에 스킨이 적용됩니다.",
           lesson: "초기화 타이밍은 서버 · 클라이언트 · 리슨 호스트가 각각 다르다.",
         },
@@ -728,13 +784,15 @@ export const projects: Project[] = [
         hint: "대표 화면",
         aspect: "16/9",
       },
-      overviewMedia: {
-        src: "/projects/destination/city.jpg",
-        alt: "폐허가 된 도시",
-        caption: "안개가 깔린 폐허 도시 — 좌상단은 남은 적 수와 웨이브 타이머",
-        hint: "맵 전경",
-        aspect: "16/9",
-      },
+      overviewMedia: [
+        {
+          src: "/projects/destination/city.jpg",
+          alt: "폐허가 된 도시",
+          caption: "안개가 깔린 폐허 도시 — 좌상단은 남은 적 수와 웨이브 타이머",
+          hint: "맵 전경",
+          aspect: "16/9",
+        },
+      ],
       // 영상은 위에서 바로 재생되므로 원문 글만 링크로 남깁니다
       youtubeId: null,
 
@@ -745,16 +803,10 @@ export const projects: Project[] = [
           eyebrow: "01 · 네트워크",
           title: "Steam OSS 세션과 서버 권위 구조 구현",
           lead: "멀티플레이 게임은 전투가 아무리 좋아도 방에 못 들어가면 아무것도 아닙니다.",
-          flow: {
-            problem:
-              "게임플레이를 먼저 붙이면 UI가 온라인 서브시스템에 직접 묶이고, 승패 값이 클라이언트로 흩어집니다.",
-            hypothesis:
-              "세션을 먼저 세우고 UI와 OSS 사이에 인터페이스를 끼워야 나중에 흔들리지 않는다고 봤습니다.",
-            solution:
-              "GameInstance가 세션을 전담하고 위젯은 IMenuInterface만 호출하게 했습니다. 승패에 직결되는 값은 서버가 소유하고 복제합니다.",
-            result:
-              "UI가 OSS를 몰라도 되고, 로비 → 본 게임 전환과 나가기가 같은 인터페이스로 처리됩니다.",
-          },
+          body: [
+            "GameInstance가 세션을 전담하고 위젯은 IMenuInterface만 호출합니다. 로비는 별도 게임 모드 · 게임 스테이트로 분리해, 인원이 모이면 본 게임 레벨로 함께 넘어갑니다.",
+            "스포너 체력이나 웨이브 수처럼 승패에 직결되는 값은 서버가 소유하고, 클라이언트는 RepNotify로 UI만 갱신합니다.",
+          ],
           bullets: [
             { label: "세션", text: "Steam OSS · 방 생성 / 검색 / 참가 / 나가기" },
             { label: "경계", text: "UI는 IMenuInterface만 알고 OSS를 직접 다루지 않음" },
@@ -779,16 +831,10 @@ export const projects: Project[] = [
           eyebrow: "02 · 전투",
           title: "ExecCalc 단일 데미지 파이프라인 구현",
           lead: "무기가 늘어도 맞으면 얼마가 깎이는지는 한 곳에서만 결정되게 했습니다.",
-          flow: {
-            problem:
-              "샷건 · 스나이퍼 · 바주카 · 미니건이 각자 데미지를 계산하면, 밸런스를 잡을 때 어디를 고쳐야 할지 알 수 없습니다.",
-            hypothesis:
-              "무기별로 달라야 하는 것은 발사 방식까지이고, 피해 계산은 공통 규칙이라고 봤습니다.",
-            solution:
-              "GameplayEffect 하나가 ExecCalc로 피해를 계산하고, 어빌리티는 원본값만 SetByCaller로 실어 보냅니다.",
-            result:
-              "새 무기를 추가할 때 계산 로직을 다시 구현하지 않습니다. 적 어빌리티도 같은 경로를 씁니다.",
-          },
+          body: [
+            "무기별로 다른 것은 발사 방식과 투사체까지입니다. 맞았을 때 얼마가 깎이는지는 GameplayEffect 하나가 ExecCalc로 계산하고, 어빌리티는 원본값만 SetByCaller로 실어 보냅니다.",
+            "계산 순서가 한 곳에 있으니 새 무기를 붙일 때 그 순서를 다시 구현할 일이 없습니다. 적 어빌리티도 같은 경로를 씁니다.",
+          ],
           table: {
             caption: "계산 순서를 한 곳에 고정해, 어떤 무기로 맞아도 같은 규칙이 적용됩니다.",
             headers: ["순서", "단계", "쓰이는 속성"],
@@ -819,16 +865,10 @@ export const projects: Project[] = [
           eyebrow: "03 · 아이템",
           title: "FastArraySerializer 인벤토리 · 장비 구현",
           lead: "아이템 하나가 바뀔 때 배열 전체가 다시 날아가지 않게 하는 것이 목표였습니다.",
-          flow: {
-            problem:
-              "배열을 통째로 복제하면 인벤토리가 커질수록 트래픽이 비례해서 늘어납니다.",
-            hypothesis:
-              "바뀐 항목만 식별할 수 있으면 아이템 수와 네트워크 비용을 분리할 수 있다고 봤습니다.",
-            solution:
-              "FastArraySerializer로 델타 복제하고 항목마다 고유 ID를 부여했습니다. 장비는 정의와 인스턴스를 분리했습니다.",
-            result:
-              "아이템이 늘어도 트래픽이 따라 늘지 않고, 장착 · 해제가 대칭이라 스탯이 새지 않습니다.",
-          },
+          body: [
+            "인벤토리와 장비를 FastArraySerializer로 구성해 바뀐 항목만 델타로 복제합니다. 항목마다 고유 ID가 있어 어떤 칸이 바뀌었는지 클라이언트가 정확히 압니다.",
+            "장비는 정의(Definition)와 장착된 실체(Instance)를 나눴습니다. 장착하면 효과와 어빌리티가 함께 부여되고, 해제할 때 부여 핸들로 정확히 회수됩니다.",
+          ],
           table: {
             caption: "복제 방식만 바꿔도 아이템 수와 네트워크 비용의 관계가 끊어집니다.",
             headers: ["구분", "배열 전체 복제", "FastArray 델타 복제"],
@@ -853,16 +893,10 @@ export const projects: Project[] = [
           eyebrow: "04 · 최적화 · 성장",
           title: "AI 컨트롤러 풀링과 능력 카드 성장 구현",
           lead: "웨이브 게임의 재미는 점점 많아지는 것인데, 구현에서는 그게 그대로 비용입니다.",
-          flow: {
-            problem:
-              "좀비가 스폰될 때마다 AI 컨트롤러를 새로 만들면 웨이브가 몰리는 순간 프레임이 흔들립니다.",
-            hypothesis:
-              "필요한 컨트롤러의 최대 수는 시작 시점에 계산할 수 있으므로, 생성 비용을 런타임 밖으로 뺄 수 있다고 봤습니다.",
-            solution:
-              "맵의 모든 스포너 필요 수를 합산해 미리 생성하고, 대기 중에는 Tick · 가시성을 끈 채 빌려 씁니다.",
-            result:
-              "웨이브 중 스폰 비용이 사라지고, 좀비가 죽으면 빙의만 풀어 다시 풀로 돌아갑니다.",
-          },
+          body: [
+            "맵에 놓인 스포너들의 필요 수를 시작할 때 모두 더해, 그만큼의 AI 컨트롤러를 미리 만들어둡니다. 대기 중에는 Tick과 가시성을 끈 채 보관하다가 필요할 때 꺼내 빙의시킵니다.",
+            "성장은 웨이브 사이의 카드 선택으로 붙였습니다. 카드 정의는 DataAsset에 두고 런타임 상태만 따로 관리해, 같은 카드를 다시 고르면 레벨이 오릅니다.",
+          ],
           table: {
             caption: "성장 보상은 성격이 달라도 같은 틀(DataAsset 정의 + 런타임 레벨)에 담았습니다.",
             headers: ["카드", "효과", "중복 선택 시"],
