@@ -251,6 +251,10 @@ export function ProjectDetail({
                 </div>
               )}
 
+              {section.mediaPosition === "top" && (
+                <SectionMedia section={section} onDark={onDark} />
+              )}
+
               {section.body && section.body.length > 0 && (
                 <div className="mt-10 flex flex-col gap-5">
                   {section.body.map((p, j) => (
@@ -312,19 +316,8 @@ export function ProjectDetail({
                 </Reveal>
               )}
 
-              {section.media && section.media.length > 0 && (
-                <div
-                  className={cn(
-                    "mt-12 grid gap-6",
-                    section.media.length > 1 && "sm:grid-cols-2",
-                  )}
-                >
-                  {section.media.map((slot, k) => (
-                    <Reveal key={k} delay={k * 80}>
-                      <Media slot={slot} onDark={onDark} />
-                    </Reveal>
-                  ))}
-                </div>
+              {section.mediaPosition !== "top" && (
+                <SectionMedia section={section} onDark={onDark} />
               )}
 
               <SectionEvidence section={section} onDark={onDark} />
@@ -469,6 +462,32 @@ function FactGroupBlock({ group, delay }: { group: FactGroup; delay: number }) {
         </dl>
       </div>
     </Reveal>
+  );
+}
+
+/** 섹션의 이미지 · 영상. 두 장 이상이면 좌우로 놓아 비교가 되게 합니다. */
+function SectionMedia({
+  section,
+  onDark,
+}: {
+  section: DetailSection;
+  onDark: boolean;
+}) {
+  if (!section.media || section.media.length === 0) return null;
+
+  return (
+    <div
+      className={cn(
+        "mt-10 grid gap-6",
+        section.media.length > 1 && "sm:grid-cols-2",
+      )}
+    >
+      {section.media.map((slot, k) => (
+        <Reveal key={k} delay={k * 80}>
+          <Media slot={slot} onDark={onDark} />
+        </Reveal>
+      ))}
+    </div>
   );
 }
 

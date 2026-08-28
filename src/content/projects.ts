@@ -88,6 +88,11 @@ export type DetailSection = {
   compare?: DetailCompare;
   /** 제목 바로 아래에 위에서 아래로 놓이는 미디어. 영상을 먼저 보여줄 때 씁니다 */
   headerMedia?: MediaSlot[];
+  /**
+   * media 를 어디에 놓을지. 기본은 섹션 맨 아래.
+   * "top" 이면 제목 바로 아래로 올라가되 좌우 배치는 그대로 유지됩니다.
+   */
+  mediaPosition?: "top" | "bottom";
   /** 구현 항목 */
   bullets?: { label: string; text: string }[];
   media?: MediaSlot[];
@@ -342,6 +347,7 @@ export const projects: Project[] = [
             },
           ],
           // 왼쪽이 정상 동작, 오른쪽이 필터를 걸기 전의 증상입니다
+          mediaPosition: "top",
           media: [
             {
               // https://youtu.be/XhcKvdL2alY
@@ -461,6 +467,17 @@ export const projects: Project[] = [
               ["압력 밸브 파손", "정지", "마피아의 방해 수단"],
             ],
           },
+          headerMedia: [
+            {
+              // https://youtu.be/NLYeQMLkxEc
+              youtubeId: "NLYeQMLkxEc",
+              src: null,
+              alt: "주행 중인 열차 영상",
+              caption: "스플라인을 따라 달리는 열차 — 주행 중 흔들림이 함께 걸린 상태",
+              hint: "열차 주행 영상",
+              aspect: "16/9",
+            },
+          ],
           bullets: [
             { label: "주행", text: "스플라인 기반 이동, 서버 권위로 속도 · 위치 관리" },
             { label: "주행 연출", text: "달리는 동안 흔들림을 더해 속도감 부여" },
