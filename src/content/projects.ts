@@ -217,7 +217,7 @@ export const projects: Project[] = [
       "세션 — Steam OSS · AdvancedSessions 로비, BUILD_ID 서명으로 남의 방 차단",
       "보이스 — 거리 감쇠 근접 대화, 비밀방 · 생사 기준 채널 격리",
       "열차 — 스플라인 주행, Movement Base 강제 바인딩으로 탑승 유지",
-      "렌더링 — Custom Depth 툰 셰이딩 · 외곽선, 하드웨어 커서 전환",
+      "렌더링 — 셀 셰이딩 포스트 프로세스, 뎁스 스텐실 기반 상호작용 표시",
     ],
     results: [
       { label: "멀티플레이", value: "Steam 세션 + 근접 보이스" },
@@ -275,7 +275,7 @@ export const projects: Project[] = [
         },
         {
           title: "렌더링 · UI",
-          text: "툰 셰이딩 · 외곽선 포스트 프로세스, 메인 메뉴, 하드웨어 커서 전환, HUD 머티리얼",
+          text: "셀 셰이딩 · 외곽선 포스트 프로세스, 뎁스 스텐실 상호작용 표시, 메인 메뉴, HUD 머티리얼",
         },
       ],
 
@@ -513,7 +513,6 @@ export const projects: Project[] = [
               text: "Custom Depth + 스텐실 값으로 조작 가능한 오브젝트만 골라 외곽선",
             },
             { label: "HUD", text: "진행바 · 압력 게이지 · 연료 표시 머티리얼과 UI 애니메이션" },
-            { label: "커서", text: "소프트웨어 → 하드웨어 전환 (아래 트러블 슈팅 참고)" },
           ],
           compare: {
             title: "툰 셰이딩 포스트 프로세스",
@@ -633,32 +632,6 @@ export const projects: Project[] = [
           result: "주행 중에도 지붕 위 이동 · 전투가 유지됩니다.",
           lesson: "움직이는 바닥 위에서는 '가만히 있는 것'도 매 프레임 계산해야 하는 상태다.",
           postUrl: "https://blog.naver.com/startblack7/224332228398",
-        },
-        {
-          mine: true,
-          title: "소프트웨어 커서로 인한 프레임 병목과 클릭 오차",
-          problem:
-            "UI를 조작하는 동안 주기적으로 프리징이 생겼고, 커서를 교체한 뒤에는 클릭 지점이 어긋났습니다.",
-          hypotheses: [
-            {
-              text: "위젯이 많아 Slate 레이아웃 비용이 크다",
-              test: "위젯 수를 줄인 화면에서 프리징이 사라지는지 확인",
-              verdict: "기각",
-            },
-            {
-              text: "UMG 소프트웨어 커서가 매 프레임 메인 스레드와 Slate 스레드를 동기화한다",
-              test: "하드웨어 커서로 바꿔 프리징이 사라지는지 확인",
-              verdict: "확인",
-            },
-            {
-              text: "교체 후의 클릭 오차는 비대칭 커서 이미지의 조준점과 클릭점(0,0) 불일치 때문이다",
-              test: "대칭 커서와 비대칭 커서(장갑 · 빗자루)의 클릭 지점을 비교",
-              verdict: "확인",
-            },
-          ],
-          fix: "하드웨어 커서로 전면 교체한 뒤, 피벗과 렌더 트랜스폼 오프셋으로 조준점을 보정했습니다.",
-          result: "프레임 병목이 사라지고 조준점과 실제 클릭 지점이 일치합니다.",
-          lesson: "성능을 고치자 조작감 문제가 드러났다. 교체는 대체로 새 문제를 데려온다.",
         },
         {
           mine: false,
