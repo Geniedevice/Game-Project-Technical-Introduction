@@ -54,11 +54,14 @@ export function Media({
         <Placeholder hint={slot.hint} ratio={ratio} onDark={onDark} />
       )}
 
-      <figcaption
-        className={cn("text-caption", onDark ? "text-white/50" : "text-ink-48")}
-      >
-        {slot.caption}
-      </figcaption>
+      {/* 설명이 없으면 빈 줄을 남기지 않습니다 */}
+      {slot.caption && (
+        <figcaption
+          className={cn("text-caption", onDark ? "text-white/50" : "text-ink-48")}
+        >
+          {slot.caption}
+        </figcaption>
+      )}
     </figure>
   );
 }

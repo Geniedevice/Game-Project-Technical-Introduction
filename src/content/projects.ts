@@ -685,6 +685,343 @@ export const projects: Project[] = [
     },
   },
   {
+    slug: "crawlescape",
+    title: "Crawlescape",
+    tagline: "다양한 무기로 싸우는 액션 로그라이크 TPS",
+    banner: "/projects/crawlescape/key-art.png",
+    icon: "cube",
+    label: "Unreal · 팀 6인",
+    period: "2026.05.01 – 2026.05.27",
+    role: "전투 시스템 · 오브젝트 풀링 · UI 매니저 · 포스트 프로세스",
+    teamSize: "6인 팀",
+    stack: ["Unreal Engine 5.5", "C++", "Blueprint", "DataAsset", "Object Pooling"],
+    problem:
+      "총기가 늘 때마다 클래스를 하나씩 더 만들고, 화면이 늘 때마다 열고 닫는 코드를 여기저기 심는 구조였습니다. 거기에 몬스터를 많이 스폰하면 프레임이 무너졌습니다. 기능을 더할수록 비용이 같이 붙는 것이 문제였습니다.",
+    approach: [
+      "무기 — 수치는 DataAsset, 무기별 동작은 BlueprintImplementableEvent로 열어 템플릿화",
+      "총알 — 미리 만들어 두고 꺼내 쓰는 오브젝트 풀링으로 스폰 비용 제거",
+      "UI — UIManager 한 곳이 열고 닫기와 중복을 카운팅으로 전담",
+      "연출 — 무기 소켓 · 스프링 암 트레이스, 포스트 프로세스와 UI 머티리얼",
+    ],
+    results: [
+      { label: "무기 추가", value: "C++ 수정 없이 DataAsset + BP" },
+      { label: "총알 · 몬스터", value: "오브젝트 풀링 재사용" },
+      { label: "프레임", value: "60fps 안정화" },
+    ],
+    relatedPosts: ["gas-10", "gas-15", "gas-16", "gas-17", "gas-13", "material-04"],
+    links: [
+      {
+        label: "플레이 영상",
+        href: "https://www.youtube.com/watch?v=6jrdc7jVilQ",
+      },
+    ],
+    surface: "dark",
+
+    detail: {
+      overview: [],
+      factGroups: [
+        {
+          title: "게임 정보",
+          items: [
+            { label: "장르", value: "액션 TPS" },
+            { label: "플랫폼", value: "PC (Windows)" },
+          ],
+        },
+        {
+          title: "기간 · 팀 규모",
+          items: [
+            { label: "개발 기간", value: "2026.05.01 – 2026.05.27 (4주)" },
+            { label: "팀 구성", value: "6명" },
+            { label: "담당 업무", value: "전투 시스템 · 오브젝트 풀링 · UI 매니저 · 포스트 프로세스" },
+          ],
+        },
+        {
+          title: "개발 환경",
+          items: [
+            { label: "게임 엔진", value: "Unreal Engine 5.5" },
+            { label: "IDE", value: "Visual Studio 2022" },
+            { label: "프로그래밍 언어", value: "C++ / Unreal Blueprint" },
+          ],
+        },
+      ],
+      teamNote:
+        "6인 팀 프로젝트입니다. 아래는 제가 맡은 전투 시스템, 오브젝트 풀링, UI 관리, 포스트 프로세스이며, 그 밖의 시스템은 팀원들이 담당했습니다.",
+
+      myScope: [
+        {
+          title: "전투 시스템",
+          text: "DataAsset 기반 무기 정보, 소켓 장착, BlueprintImplementableEvent 템플릿 패턴",
+        },
+        {
+          title: "오브젝트 풀링",
+          text: "풀링 컴포넌트를 붙여 총알 · 몬스터를 회수하고 재활용",
+        },
+        {
+          title: "UI",
+          text: "UIManager 중심의 열고 닫기 · 중복 방지 카운팅, 재사용 가능한 위젯 흐름",
+        },
+        {
+          title: "포스트 프로세스",
+          text: "화면 연출용 포스트 프로세스 머티리얼, UI 머티리얼, 스프링 암 기반 무기 트레이스",
+        },
+      ],
+
+      keyArt: {
+        src: "/projects/crawlescape/key-art.png",
+        alt: "Crawlescape 타이틀 아트",
+        caption: "",
+        hint: "게임 대표 컷",
+        aspect: "16/9",
+      },
+      overviewVideo: {
+        // https://www.youtube.com/watch?v=6jrdc7jVilQ
+        youtubeId: "6jrdc7jVilQ",
+        src: null,
+        alt: "Crawlescape 플레이 영상",
+        caption: "프로젝트 전체 기록 영상",
+        hint: "플레이 영상",
+        aspect: "16/9",
+      },
+      youtubeId: null,
+
+      sections: [
+        {
+          id: "weapon",
+          kind: "feature",
+          eyebrow: "01 · 전투 시스템",
+          title: "데이터 드리븐 무기 시스템과 템플릿 패턴",
+          lead: "템플릿 패턴을 기반으로 확장하여 구현했습니다.",
+          headerMedia: [
+            {
+              // https://youtu.be/LmYBKiMyngM
+              youtubeId: "LmYBKiMyngM",
+              src: null,
+              alt: "전투 시스템 시연 영상",
+              caption: "전투 시스템 — 무기 교체와 사격",
+              hint: "전투 시스템 영상",
+              aspect: "16/9",
+            },
+            {
+              src: "/projects/crawlescape/weapon-dataasset.png",
+              alt: "무기 DataAsset의 디테일 패널",
+              caption:
+                "무기 DataAsset — 표시 이름 · 레벨별 강화 수치와 아이콘 · 장착할 Equipment 클래스 · 슬롯 인덱스가 전부 에셋 안에 있다",
+              hint: "DataAsset 디테일 패널",
+              aspect: "4/3",
+            },
+          ],
+          table: {
+            caption:
+              "무엇을 코드에 두고 무엇을 데이터 · 노드로 뺐는지가 확장 비용을 가릅니다. 팀원이 C++을 건드리지 않고도 무기를 추가할 수 있습니다.",
+            headers: ["구분", "구현"],
+            rows: [
+              ["수치 · 레벨별 강화 · 아이콘", "DataAsset"],
+              ["장착 위치", "소켓 이름 (DataAsset)"],
+              ["장착 · 교체", "소켓 재바인딩 (C++)"],
+              ["조준", "스프링 암 기준 트레이스 (C++)"],
+              ["발사 · 재장전 순서", "C++ 뼈대"],
+              ["무기별 고유 동작 · 연출", "BlueprintImplementableEvent"],
+            ],
+          },
+          blogPosts: [
+            {
+              title: "템플릿 패턴과 샌드박스 패턴",
+              url: "https://blog.naver.com/startblack7/224271901922",
+            },
+            {
+              title: "장비 카드 UI 시스템 구현",
+              url: "https://blog.naver.com/startblack7/224276952661",
+            },
+            {
+              title: "GAS(21) - 무기 트레이스 기능 (SpringArm & Socket)",
+              url: "https://blog.naver.com/startblack7/224291732825",
+            },
+          ],
+          // 장착 · 조준 사진은 섹션 맨 아래, 개발 기록 링크 바로 위에 둡니다
+          media: [
+            {
+              src: "/projects/crawlescape/weapon-sockets.png",
+              alt: "캐릭터 메시의 소켓마다 무기가 장착된 화면",
+              caption:
+                "장비 장착 — 등 · 허리 · 양손 소켓에 무기가 각각 붙는다. 어느 소켓에 붙일지는 DataAsset이 들고 있다",
+              hint: "무기 장착 · 조준 화면",
+              aspect: "16/9",
+            },
+          ],
+        },
+        {
+          id: "pooling",
+          kind: "feature",
+          eyebrow: "02 · 오브젝트 풀링",
+          title: "총알 오브젝트 풀링",
+          lead: "컴포넌트를 붙여 오브젝트를 회수하고 재활용했습니다.",
+          body: [
+            "풀링은 액터에 컴포넌트를 붙이는 방식으로 만들었습니다. 상속 계층을 건드리지 않고 컴포넌트만 달면 그 액터는 회수 · 재활용 대상이 되므로, 총알에 쓰던 것을 몬스터에도 그대로 붙일 수 있었습니다.",
+            "시작할 때 필요한 만큼 미리 만들어 두고, 발사할 때는 꺼내 위치와 방향만 다시 세팅합니다. 명중하거나 수명이 끝나면 지우지 않고 비활성 상태로 되돌려 풀에 반납합니다. 대기 중에는 Tick과 충돌 · 가시성을 모두 꺼 둬, 풀에 있다는 것이 곧 아무 비용도 쓰지 않는다는 뜻이 되게 했습니다.",
+          ],
+          table: {
+            caption: "발사 수와 비용의 관계를 끊는 것이 풀링의 목적입니다.",
+            headers: ["단계", "매번 Spawn / Destroy", "오브젝트 풀링"],
+            rows: [
+              ["생성", "발사할 때마다 액터 생성 · 초기화", "미리 확보해 두고 꺼내 쓰기"],
+              ["대기", "해당 없음", "Tick · 충돌 · 가시성을 끈 채 보관"],
+              ["반환", "Destroy → GC 대상", "비활성화 후 풀에 반납"],
+              ["재사용", "매번 새로 만듦", "컴포넌트만 붙이면 몬스터에도 적용"],
+              ["비용", "발사 수에 비례", "풀 크기만큼 고정"],
+            ],
+          },
+          blogPosts: [
+            {
+              title: "Object Pooling",
+              url: "https://blog.naver.com/startblack7/224254925484",
+            },
+            {
+              title: "총알 최적화",
+              url: "https://blog.naver.com/startblack7/224269651875",
+            },
+            {
+              title: "GAS(19) - Bullet Pooling",
+              url: "https://blog.naver.com/startblack7/224285715523",
+            },
+          ],
+        },
+        {
+          id: "ui",
+          kind: "feature",
+          eyebrow: "03 · UI",
+          title: "UI 매니저 중심의 화면 관리",
+          lead: "레퍼런스 카운터를 기준으로 위젯을 중앙에서 관리했습니다.",
+          headerMedia: [
+            {
+              // https://youtu.be/05jIXJ4GJK8
+              youtubeId: "05jIXJ4GJK8",
+              src: null,
+              alt: "UI 시스템 시연 영상",
+              caption: "UI 시스템 — 화면을 열고 닫는 흐름",
+              hint: "UI 시스템 영상",
+              aspect: "16/9",
+            },
+          ],
+          body: [
+            "위젯을 만들고 붙이고 떼는 일을 UIManager 한 곳으로 모았습니다. 게임플레이 코드는 무엇을 열지만 말하고, 실제로 어떤 위젯을 어떤 순서로 올릴지는 매니저가 정합니다.",
+            "중복은 하드코딩으로 막지 않고 카운팅으로 처리했습니다. 같은 화면을 여러 곳에서 요청하면 참조 수만 올라가고, 닫기 요청이 그 수만큼 들어와야 실제로 내려갑니다. 덕분에 요청하는 쪽은 상대가 이미 열었는지 신경 쓸 필요가 없어집니다.",
+          ],
+          table: {
+            caption: "여는 쪽이 상태를 알 필요가 없어지면, 그만큼 화면끼리의 의존이 사라집니다.",
+            headers: ["구분", "개별 관리", "중앙 관리 (UIManager)"],
+            rows: [
+              ["관리 주체", "화면마다 제각기", "매니저 한 곳"],
+              ["여닫는 기준", "각자의 판단", "레퍼런스 카운트"],
+              ["두 곳에서 요청", "두 번 겹쳐 뜸", "카운트만 증가"],
+              ["한쪽만 닫음", "남은 쪽까지 사라짐", "0이 될 때만 내려감"],
+              ["새 화면 추가", "여닫는 코드를 또 작성", "매니저 함수 재사용"],
+              ["결합도", "화면끼리 서로를 알아야 함", "위젯 클래스를 몰라도 됨"],
+            ],
+          },
+          blogPosts: [
+            { title: "UI 모듈", url: "https://blog.naver.com/startblack7/224203079327" },
+            { title: "UI 동기화", url: "https://blog.naver.com/startblack7/224204409547" },
+            {
+              title: "Inventory - UI 컴포지트 패턴",
+              url: "https://blog.naver.com/startblack7/224263026340",
+            },
+            {
+              title: "PlayerController를 UI 이벤트의 중앙 허브로 활용하기",
+              url: "https://blog.naver.com/startblack7/224297331171",
+            },
+          ],
+        },
+        {
+          id: "render",
+          kind: "feature",
+          eyebrow: "04 · UI 효과",
+          title: "Dynamic Material Instance로 UI 효과 구현",
+          lead: "연출을 로직이 아니라 머티리얼에서 처리해 게임 코드와 분리했습니다.",
+          headerMedia: [
+            {
+              // https://youtu.be/gZ5CZWi2KTQ
+              youtubeId: "gZ5CZWi2KTQ",
+              src: null,
+              alt: "히트 이펙트 시연 영상",
+              caption: "히트 이펙트 — 피격 순간의 화면 반응",
+              hint: "히트 이펙트 영상",
+              aspect: "16/9",
+            },
+          ],
+          table: {
+            caption: "연출이 갈라져도 머티리얼은 늘지 않습니다.",
+            headers: ["구분", "위젯 로직으로 처리", "Dynamic Material Instance"],
+            rows: [
+              ["연출 제어", "위젯 코드에서 분기", "머티리얼 파라미터 값만 변경"],
+              ["위젯별 상태", "머티리얼을 따로 만듦", "인스턴스를 따로 들어 값만 다르게"],
+              ["효과 추가", "에셋이 함께 늘어남", "파라미터만 열면 됨"],
+              ["수정 범위", "게임플레이 코드까지 번짐", "머티리얼 안에서 끝"],
+            ],
+          },
+          blogPosts: [
+            {
+              title: "Material - Enter Effect",
+              url: "https://blog.naver.com/startblack7/224274779372",
+            },
+          ],
+        },
+      ],
+
+      troubleshooting: [
+        {
+          title: "총알을 SpawnActor로 만들 때 프레임이 떨어지는 문제",
+          problem:
+            "총알을 발사할 때마다 SpawnActor로 만들고 명중하면 Destroy했습니다. 연사 무기를 쏘는 동안 프레임이 눈에 띄게 떨어졌고, 화면에 남은 총알 수보다 쏘는 속도에 비례해 나빠졌습니다.",
+          hypotheses: [
+            {
+              text: "날아가는 총알의 이동 · 충돌 연산이 병목이다",
+              test: "화면에 떠 있는 총알 수는 그대로 두고 발사 간격만 늘려 비교",
+              verdict: "기각",
+            },
+            {
+              text: "SpawnActor와 Destroy를 반복하는 비용 자체가 병목이다",
+              test: "발사 간격을 좁힐수록 하락 폭이 커지는지 확인",
+              verdict: "확인",
+            },
+            {
+              text: "파괴된 총알이 한꺼번에 GC 대상이 되며 순간 부하를 만든다",
+              test: "프레임이 튀는 시점과 총알이 대량으로 사라지는 시점을 대조",
+              verdict: "확인",
+            },
+          ],
+          fix: "풀링 컴포넌트를 붙여 총알을 미리 만들어 두고, 발사할 때는 꺼내 위치와 방향만 다시 세팅하도록 바꿨습니다. 명중하거나 수명이 끝나면 Destroy 대신 비활성화해 풀에 반납하므로 생성도 파괴도 일어나지 않습니다.",
+          result:
+            "발사량과 무관하게 프레임이 유지됐습니다. 같은 컴포넌트를 몬스터에도 붙여 다수 스폰 구간까지 60fps를 안정적으로 유지했습니다.",
+          lesson:
+            "비용이 총알 수가 아니라 생성 · 소멸 횟수에 붙어 있었습니다. 떠 있는 총알 수를 고정한 채 발사 간격만 바꿔본 것이 그 둘을 갈라줬고, 그 확인이 없었다면 이동 · 충돌 쪽을 붙잡고 있었을 겁니다.",
+          mine: true,
+        },
+        {
+          title: "패키징하면 일부 UASSET이 빠지는 문제",
+          problem:
+            "에디터에서는 멀쩡한데 패키징한 빌드에서는 일부 에셋이 누락돼 정상적으로 뜨지 않았습니다.",
+          hypotheses: [
+            {
+              text: "패키징 설정이 잘못돼 콘텐츠가 통째로 빠졌다",
+              test: "다른 에셋들이 정상 포함되는지 빌드 산출물에서 확인",
+              verdict: "기각",
+            },
+            {
+              text: "어떤 클래스도 직접 참조하지 않아 쿠킹 대상에서 제외됐다",
+              test: "누락된 에셋들의 참조 관계를 확인 — 런타임에 경로로만 불러오는 것들이었음",
+              verdict: "확인",
+            },
+          ],
+          fix: "프로젝트 세팅의 Additional Asset Directories to Cook에 해당 에셋 경로를 등록해 참조가 없어도 쿠킹에 포함되도록 했습니다.",
+          result: "에셋 누락이 사라지고 패키징이 정상적으로 완료됐습니다.",
+          lesson:
+            "참조 그래프로 쿠킹 대상을 정한다는 엔진의 전제를 알고 나니, 경로로 불러 쓰는 에셋은 따로 알려줘야 한다는 것이 당연한 결론이 됐습니다.",
+          mine: true,
+        },
+      ],
+    },
+  },
+  {
     slug: "destination",
     title: "DESTINATION",
     tagline: "대규모 PVE와 총기 액션이 결합된 빠른 템포의 서바이벌 게임",

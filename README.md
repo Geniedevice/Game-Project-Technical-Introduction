@@ -65,7 +65,7 @@ relatedPosts: ["gas-15", "gas-17"]   // 총알 최적화, 장비 카드 UI 시�
 `projects.ts`의 프로젝트에 `detail` 필드가 있으면 `/projects/{slug}/` 페이지가 자동 생성됩니다.
 메인의 프로젝트 타일에도 "자세히 보기" 버튼이 붙고, sitemap에도 추가됩니다.
 
-현재 상세 페이지가 있는 프로젝트: **Gears of Deceit** (`/projects/gears-of-deceit/`)
+현재 상세 페이지가 있는 프로젝트: **Gears of Deceit** · **Crawlescape** · **DESTINATION**
 
 ### 섹션 두 종류 — 기능 구현과 트러블 슈팅
 
