@@ -25,7 +25,7 @@ export function Til() {
   }
 
   return (
-    <section id="til" className="scroll-mt-24 bg-tile-1 px-6 py-24 sm:py-32">
+    <section id="til" className="scroll-mt-28 bg-tile-1 px-6 py-24 sm:py-32">
       <div className="container-wide">
         <SectionHeading
           eyebrow="Today I Learned"

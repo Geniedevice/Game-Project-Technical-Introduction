@@ -50,7 +50,7 @@ export function Projects() {
   }, []);
 
   return (
-    <section id="projects" className="scroll-mt-24 bg-parchment px-6 py-24 sm:py-32">
+    <section id="projects" className="scroll-mt-28 bg-parchment px-6 py-24 sm:py-32">
       <div className="container-wide">
         <SectionHeading
           eyebrow="Projects"

@@ -20,7 +20,7 @@ export function Hero() {
   return (
     <section
       id="overview"
-      className="scroll-mt-24 bg-canvas px-6 pt-40 pb-24 sm:pt-48 sm:pb-32"
+      className="scroll-mt-28 bg-canvas px-6 pt-40 pb-24 sm:pt-48 sm:pb-32"
     >
       <div className="mx-auto flex max-w-[980px] flex-col items-center text-center">
         <Reveal>

@@ -25,7 +25,7 @@ export function SubNav() {
 
         if (visible[0]) setActive(`#${visible[0].target.id}`);
       },
-      { rootMargin: "-96px 0px -55% 0px", threshold: 0 },
+      { rootMargin: "-112px 0px -55% 0px", threshold: 0 },
     );
 
     sections.forEach((el) => observer.observe(el));
@@ -33,7 +33,7 @@ export function SubNav() {
   }, []);
 
   return (
-    <div className="fixed inset-x-0 top-11 z-40 h-13 border-b border-black/5 bg-parchment/80 backdrop-blur-xl backdrop-saturate-[1.8]">
+    <div className="fixed inset-x-0 top-12 z-40 h-16 border-b border-black/5 bg-parchment/80 backdrop-blur-xl backdrop-saturate-[1.8]">
       <nav
         aria-label="섹션"
         className="container-wide flex h-full items-center justify-between gap-4"
@@ -48,7 +48,7 @@ export function SubNav() {
                   href={item.href}
                   aria-current={active === item.href ? "true" : undefined}
                   className={cn(
-                    "press rounded-full px-3 py-1.5 text-caption",
+                    "press rounded-full px-4 py-2 text-body",
                     active === item.href
                       ? "bg-white text-ink"
                       : "text-ink-80 hover:text-ink",
@@ -60,7 +60,7 @@ export function SubNav() {
             ))}
           </ul>
 
-          <Button href={`mailto:${site.email}`} className="text-caption! px-4! py-2!">
+          <Button href={`mailto:${site.email}`} className="text-body! px-5! py-2!">
             연락하기
           </Button>
         </div>

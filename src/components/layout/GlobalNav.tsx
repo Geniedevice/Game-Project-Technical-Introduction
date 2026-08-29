@@ -4,7 +4,7 @@ import { site } from "@/content/site";
 /** 최상단 초슬림 블랙 바. 페이지 전체에서 유일하게 순수 검정이 등장하는 곳. */
 export function GlobalNav() {
   return (
-    <div className="fixed inset-x-0 top-0 z-50 h-11 bg-black text-white">
+    <div className="fixed inset-x-0 top-0 z-50 h-12 bg-black text-white">
       <nav
         aria-label="사이트"
         className="container-wide flex h-full items-center justify-between"

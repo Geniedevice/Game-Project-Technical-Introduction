@@ -88,9 +88,9 @@
   --text-fine--line-height: 1.4;
   --text-fine--letter-spacing: -0.12px;
 
-  --text-nav: 12px;
+  --text-nav: 14px;
   --text-nav--line-height: 1;
-  --text-nav--letter-spacing: -0.12px;
+  --text-nav--letter-spacing: -0.14px;
 
   /* Radii */
   --radius-xs: 5px;
@@ -108,8 +108,8 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    /* global nav (44px) + sub nav (52px) */
-    scroll-padding-top: 96px;
+    /* global nav (48px) + sub nav (64px) */
+    scroll-padding-top: 112px;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
