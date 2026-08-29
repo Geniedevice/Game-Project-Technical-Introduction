@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { nav, site } from "@/content/site";
-import { Button } from "@/components/ui/Button";
+import { nav } from "@/content/site";
 import { cn } from "@/lib/cn";
 
 /** 글로벌 네비 바로 아래 붙는 프로스티드 서브 네비. 현재 섹션을 표시합니다. */
@@ -40,30 +39,24 @@ export function SubNav() {
       >
         <span className="text-tagline font-semibold text-ink">기술 소개서</span>
 
-        <div className="flex items-center gap-1 sm:gap-2">
-          <ul className="hidden items-center gap-1 md:flex">
-            {nav.map((item) => (
-              <li key={item.href}>
-                <a
-                  href={item.href}
-                  aria-current={active === item.href ? "true" : undefined}
-                  className={cn(
-                    "press rounded-full px-4 py-2 text-body",
-                    active === item.href
-                      ? "bg-white text-ink"
-                      : "text-ink-80 hover:text-ink",
-                  )}
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          <Button href={`mailto:${site.email}`} className="text-body! px-5! py-2!">
-            연락하기
-          </Button>
-        </div>
+        <ul className="hidden items-center gap-1 md:flex">
+          {nav.map((item) => (
+            <li key={item.href}>
+              <a
+                href={item.href}
+                aria-current={active === item.href ? "true" : undefined}
+                className={cn(
+                  "press rounded-full px-4 py-2 text-body",
+                  active === item.href
+                    ? "bg-white text-ink"
+                    : "text-ink-80 hover:text-ink",
+                )}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
       </nav>
     </div>
   );

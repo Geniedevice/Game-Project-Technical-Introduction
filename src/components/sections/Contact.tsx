@@ -21,9 +21,6 @@ export function Contact() {
 
         <Reveal delay={160}>
           <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-            <Button href={`mailto:${site.email}`} size="lg">
-              이메일 보내기
-            </Button>
             <Button href={site.githubUrl} variant="ghost" size="lg">
               GitHub
             </Button>
