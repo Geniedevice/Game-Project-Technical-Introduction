@@ -46,10 +46,27 @@ export type MediaSlot = {
 };
 
 /**
- * 섹션 종류.
- * 제목만 봐도 "기능을 만든 이야기"인지 "고장을 고친 이야기"인지 알 수 있게 합니다.
+ * 흐름도 한 장.
+ *
+ * 프로젝트 소개 아래에 "한눈에 보는 흐름"으로 나란히 놓입니다.
+ * 도식은 글자가 작아 잘라내면 못 읽으므로 비율 그대로 그리고,
+ * 누르면 화면 가득 확대됩니다. (FlowDiagrams.tsx)
  */
-export type SectionKind = "feature" | "trouble";
+export type FlowDiagram = {
+  /** 카드 제목 — 예: "워크플로우" */
+  title: string;
+  src: string;
+  alt: string;
+  /** 그림 아래 한 줄 설명 */
+  caption: string;
+};
+
+/**
+ * 섹션 종류.
+ * 제목만 봐도 "기능을 만든 이야기"인지 "고장을 고친 이야기"인지,
+ * 아니면 "만들고 나서 돌아본 이야기"인지 알 수 있게 합니다.
+ */
+export type SectionKind = "feature" | "trouble" | "retro";
 
 /**
  * 적용 전 · 후 비교.
@@ -158,6 +175,8 @@ export type ProjectDetail = {
   overviewVideo?: MediaSlot;
   /** 소개 글 아래에 놓이는 이미지 · 영상 */
   overviewMedia?: MediaSlot[];
+  /** 소개 아래에 놓이는 흐름도 — 워크플로우 · 게임 플로우 */
+  flows?: FlowDiagram[];
   /** 유튜브 영상 id. 있으면 상세 페이지에 임베드됩니다 */
   youtubeId?: string | null;
   /** 유튜브가 아닌 곳(네이버 등)에 올린 시연 영상. 버튼으로 연결됩니다 */
@@ -277,6 +296,22 @@ export const projects: Project[] = [
         },
       ],
 
+      flows: [
+        {
+          title: "역할 · 능력 구조",
+          src: "/projects/gears-of-deceit/flow-gas.png",
+          alt: "역할 태그로 데이터 테이블을 찾아 GAS에 능력을 붙이는 구조도",
+          caption:
+            "역할 태그로 DT 행을 찾아 GameplayEffect · GameplayAbility를 ASC에 붙인다",
+        },
+        {
+          title: "게임 플로우",
+          src: "/projects/gears-of-deceit/flow-game.png",
+          alt: "접속부터 승패 판정까지의 한 판 흐름도",
+          caption:
+            "접속 → 로비 → 역할 배정 → 열차 운행 · 퀘스트 · 방해 → 승패 판정 → 로비 복귀",
+        },
+      ],
       keyArt: {
         src: "/projects/gears-of-deceit/key-art.png",
         alt: "Gears of Deceit 타이틀 아트",
@@ -744,6 +779,22 @@ export const projects: Project[] = [
         },
       ],
 
+      flows: [
+        {
+          title: "워크플로우",
+          src: "/projects/crawlescape/flow-work.png",
+          alt: "전투 · 미션 · 지원 시스템이 이벤트로 이어지는 구조도",
+          caption:
+            "장비 · 전투 · 성장, 처치 이벤트로 이어지는 미션, 그리고 풀링 · 스폰 지원 시스템",
+        },
+        {
+          title: "게임 플로우",
+          src: "/projects/crawlescape/flow-game.png",
+          alt: "구역 진입부터 다음 구역 이동까지의 한 판 흐름도",
+          caption:
+            "구역 진입 → 전투 · 성장 → 미션 달성 → 출구 개방, 제한 시간이 지나면 전기장",
+        },
+      ],
       keyArt: {
         src: "/projects/crawlescape/key-art.png",
         alt: "Crawlescape 타이틀 아트",
@@ -1089,6 +1140,22 @@ export const projects: Project[] = [
         },
       ],
 
+      flows: [
+        {
+          title: "코드 플로우",
+          src: "/projects/destination/flow-code.png",
+          alt: "접속부터 좀비 재사용까지 다섯 단계로 나눈 코드 흐름도 — 단계마다 서버 · 클라이언트 권한을 표시",
+          caption:
+            "① 온라인 접속 → ② 초기화 · 입력 → ③ 아이템 · 장비 → ④ 전투 · 피해 계산 → ⑤ 좀비 · 스포너 재사용. 상자마다 그 일을 누가(서버 · 클라이언트) 하는지 함께 적었다",
+        },
+        {
+          title: "게임 플로우",
+          src: "/projects/destination/flow-game.png",
+          alt: "방 생성부터 스포너 재활성화까지 반복되는 한 판 흐름도",
+          caption:
+            "방 생성 → 전장 이동 → 좀비 · 스포너 전투 → 보상 → 스포너 재활성화 반복",
+        },
+      ],
       keyArt: {
         // 74초짜리 짧은 영상이라 유튜브 대신 직접 올렸습니다 (8.5MB)
         video: "/projects/destination/demo.mp4",
@@ -1230,6 +1297,51 @@ export const projects: Project[] = [
               aspect: "16/9",
             },
           ],
+        },
+        {
+          id: "solo",
+          kind: "retro",
+          eyebrow: "05 · 회고",
+          title:
+            "혼자 만드는 구조는 어디까지 가야 할까? Lyra 분석으로 배운 데이터 기반 설계",
+          lead: "InputTag 도입으로 코드 수정을 최소화하고, 과도한 설계의 시행착오 속에서 배운 구조적 기준.",
+          body: [
+            "기능을 하나 붙일 때마다 앞서 만든 것이 흔들렸습니다. 무기가 늘면 입력이 늘고, 입력이 늘면 어빌리티 분기가 늘었습니다. 혼자라 \"이렇게 나누는 게 맞냐\"고 물을 곳이 없어, 이미 검증된 구조를 읽는 것으로 리뷰를 대신했습니다.",
+            "에픽의 Lyra에서 가져온 것은 InputTag였습니다. 키를 어빌리티에 바로 묶지 않고 이름표를 사이에 두니 무기가 늘어도 손댈 곳이 데이터 한 줄로 줄었고, 같은 발상을 아이템 · 장비로 넓히자 세 갈래가 태그 하나로 이어졌습니다.",
+            "시행착오 끝에 남은 것은 기능이 아니라 기준이었습니다. 큰 프로젝트를 그대로 흉내내는 대신 감당할 수 있는 만큼만 가져오고, 구조를 고를 때 \"이게 나중에 무엇을 바꾸기 쉽게 해주는가\"를 먼저 묻게 됐습니다. 이후 팀 프로젝트에서 위젯이 온라인 서브시스템을 직접 다루지 않도록 사이에 인터페이스를 둔 것도 여기서 온 습관입니다.",
+          ],
+          table: {
+            caption:
+              "혼자 만들며 가져온 것과 걷어낸 것. 마지막 줄이 코드 플로우에 경고를 붙여둔 자리입니다.",
+            headers: ["구분", "무엇을", "결과"],
+            rows: [
+              [
+                "가져온 것",
+                "Lyra의 InputTag — 키와 어빌리티 사이에 이름표를 둔다",
+                "키 → InputTag → ASC → GA. 무기 추가가 데이터 한 줄로",
+              ],
+              [
+                "넓혀 쓴 것",
+                "ItemTag로 DataTable 선택, SlotTag로 장착 위치 결정",
+                "입력 · 데이터 · 장비가 같은 키로 연결",
+              ],
+              [
+                "걷어낸 것",
+                "Experience · GameFeature — 기능을 통째로 갈아끼우는 구조",
+                "감당할 수 있는 범위를 넘어 포기",
+              ],
+              [
+                "과했던 것",
+                "쓸 수 있는 곳마다 태그를 붙임",
+                "이름 체계를 중간에 두 번 갈아엎음",
+              ],
+              [
+                "남은 숙제",
+                "스포너 체력을 GAS 피해 체계 밖에 둠",
+                "피해가 흐르는 길이 두 갈래로 갈라짐",
+              ],
+            ],
+          },
         },
       ],
 

@@ -134,3 +134,38 @@ icon: "gear",   // banner가 없을 때만 쓰입니다
 `projects.ts`의 프로젝트에 `detail` 필드를 채우면 `/projects/{slug}/`가 자동 생성되고,
 메인 타일에 "자세히 보기" 버튼과 sitemap 항목이 함께 붙습니다.
 이미지는 `public/projects/{slug}/`에 두세요.
+
+## 흐름도 (워크플로우 · 게임 플로우)
+
+`projects.ts`의 `detail.flows`에 넣으면 **프로젝트 소개 바로 아래**에
+"한눈에 보는 흐름"으로 나란히 놓입니다. 누르면 화면 가득 펼쳐지고,
+그 상태에서 그림을 한 번 더 누르면 원본 픽셀 크기로 커져 스크롤로 훑을 수 있습니다.
+(`src/components/project/FlowDiagrams.tsx` · Esc · 바깥 클릭 · 닫기 버튼으로 닫힙니다)
+
+```ts
+flows: [
+  {
+    title: "워크플로우",
+    src: "/projects/gears-of-deceit/flow-work.png",
+    alt: "…",
+    caption: "…",
+    width: 1774,   // 원본 픽셀 크기 — 로딩 중 레이아웃이 흔들리지 않게
+    height: 887,
+  },
+],
+```
+
+`MediaSlot`과 달리 **자리표시자가 없습니다.** 그림이 없으면 `flows`를 비워두세요.
+도식은 글자가 작아 잘리면 못 읽으므로 `object-contain`으로 비율 그대로 그립니다.
+
+| 프로젝트 | 파일 |
+|---|---|
+| Gears of Deceit | `flow-gas.png` · `flow-game.png` |
+| CrawleScape | `flow-work.png` · `flow-game.png` |
+| DESTINATION | `flow-code.png` · `flow-game.png` |
+
+원본 크기가 필요하면 이렇게 확인합니다.
+
+```bash
+node -e "const b=require('fs').readFileSync(process.argv[1]);console.log(b.readUInt32BE(16),b.readUInt32BE(20))" public/projects/destination/flow-work.png
+```

@@ -10,6 +10,7 @@ import type {
 } from "@/content/projects";
 import { site } from "@/content/site";
 import { Button } from "@/components/ui/Button";
+import { FlowDiagrams } from "./FlowDiagrams";
 import { Media, VideoEmbed } from "@/components/ui/Media";
 import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/cn";
@@ -159,6 +160,24 @@ export function ProjectDetail({
                 </Reveal>
               ))}
             </div>
+          )}
+
+          {/* 소개 아래 — 흐름을 한 장으로. 누르면 화면 가득 펼쳐집니다 */}
+          {detail.flows && detail.flows.length > 0 && (
+            <Reveal delay={160}>
+              <div className="mt-14">
+                <h3 className="text-tagline font-semibold text-ink">
+                  한눈에 보는 흐름
+                </h3>
+                <p className="mt-2 max-w-[62ch] text-caption text-pretty text-ink-48">
+                  그림을 누르면 크게 볼 수 있습니다.
+                </p>
+
+                <div className="mt-6">
+                  <FlowDiagrams flows={detail.flows} />
+                </div>
+              </div>
+            </Reveal>
           )}
 
           {/* 2·3. 기간 · 팀 규모 / 개발 환경 — 제목을 단 블록으로 나눠서 */}
@@ -554,24 +573,31 @@ function HypothesisTable({ hypotheses }: { hypotheses: Hypothesis[] }) {
   );
 }
 
-/** 기능 구현 / 트러블 슈팅 — 제목 옆 꼬리표. 무엇을 읽는 중인지 먼저 알려줍니다. */
+/** 기능 구현 / 트러블 슈팅 / 회고 — 제목 옆 꼬리표. 무엇을 읽는 중인지 먼저 알려줍니다. */
 function KindTag({ kind, onDark }: { kind: SectionKind; onDark: boolean }) {
-  const isTrouble = kind === "trouble";
+  const label = {
+    feature: "기능 구현",
+    trouble: "트러블 슈팅",
+    retro: "회고",
+  }[kind];
+
+  // 기능 구현에만 색을 씁니다. 나머지는 본문을 읽게 두고 꼬리표는 물러납니다
+  const muted = kind !== "feature";
 
   return (
     <span
       className={cn(
         "rounded-full border px-2.5 py-1 text-fine",
         onDark
-          ? isTrouble
+          ? muted
             ? "border-white/25 bg-white/8 text-white/70"
             : "border-sky/45 bg-sky/10 text-sky"
-          : isTrouble
+          : muted
             ? "border-divider bg-pearl text-ink-48"
             : "border-primary/30 bg-primary/8 text-primary",
       )}
     >
-      {isTrouble ? "트러블 슈팅" : "기능 구현"}
+      {label}
     </span>
   );
 }
@@ -650,12 +676,14 @@ function DetailTableView({
           <table className="w-full min-w-[560px] border-collapse text-left">
             <thead>
               <tr>
-                {table.headers.map((h) => (
+                {table.headers.map((h, j) => (
                   <th
                     key={h}
                     scope="col"
                     className={cn(
                       "px-6 py-4 text-caption-strong",
+                      // 첫 칸은 항목 이름이라 줄바꿈 없이 한 줄로 둡니다
+                      j === 0 && "whitespace-nowrap",
                       onDark
                         ? "bg-tile-3 text-white"
                         : "bg-pearl text-ink",
@@ -680,6 +708,7 @@ function DetailTableView({
                       key={j}
                       className={cn(
                         "px-6 py-4 align-top text-caption text-pretty",
+                        j === 0 && "whitespace-nowrap",
                         j === 0
                           ? onDark
                             ? "text-white"

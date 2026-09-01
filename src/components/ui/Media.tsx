@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { MediaSlot } from "@/content/projects";
+import { ZoomTrigger } from "@/components/ui/Lightbox";
 import { asset } from "@/lib/asset";
 import { cn } from "@/lib/cn";
 
@@ -41,15 +42,21 @@ export function Media({
           이 브라우저는 영상 재생을 지원하지 않습니다.
         </video>
       ) : slot.src ? (
-        <div className={cn("relative overflow-hidden rounded-lg", ratio)}>
-          <Image
-            src={asset(slot.src)}
-            alt={slot.alt}
-            fill
-            sizes="(min-width: 980px) 900px, 100vw"
-            className="object-cover"
-          />
-        </div>
+        // 잘라 맞춘 그림이라 작은 글씨는 안 읽힙니다. 누르면 원본으로 펼칩니다
+        <ZoomTrigger
+          image={{ src: slot.src, alt: slot.alt, caption: slot.caption }}
+          className="overflow-hidden rounded-lg"
+        >
+          <div className={cn("relative", ratio)}>
+            <Image
+              src={asset(slot.src)}
+              alt={slot.alt}
+              fill
+              sizes="(min-width: 980px) 900px, 100vw"
+              className="object-cover"
+            />
+          </div>
+        </ZoomTrigger>
       ) : (
         <Placeholder hint={slot.hint} ratio={ratio} onDark={onDark} />
       )}
