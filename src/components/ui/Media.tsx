@@ -36,7 +36,7 @@ export function Media({
           playsInline
           preload="none"
           poster={slot.src ? asset(slot.src) : undefined}
-          className={cn("w-full rounded-lg bg-black", ratio, "object-cover")}
+          className={cn("w-full rounded-lg bg-black", ratio, "object-contain")}
         >
           <source src={asset(slot.video)} type="video/mp4" />
           이 브라우저는 영상 재생을 지원하지 않습니다.
