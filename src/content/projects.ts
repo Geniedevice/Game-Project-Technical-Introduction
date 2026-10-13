@@ -226,10 +226,10 @@ export const projects: Project[] = [
     tagline: "모닥불에 둘러앉은 4~7인, 확률 판정 카드로 싸우는 마피아 게임",
     banner: "/projects/emberroad/title.webp",
     icon: "cube",
-    label: "Unreal · 팀 프로젝트",
+    label: "Unreal · 팀 9인",
     period: "2026.07 – 2026.10",
     role: "카드 연출 · 시퀀스 · 렌더링 / 라이팅",
-    teamSize: "팀 프로젝트",
+    teamSize: "9인 팀",
     stack: ["Unreal Engine 5.8", "C++", "GAS", "CommonUI", "Chaos Destruction"],
     problem:
       "카드가 11종이고 판정이 4단계라, 연출을 카드마다 만들면 44가지를 손으로 그려야 했습니다. 거기에 멀티플레이라 인트로 · 엔딩 연출이 클라마다 어긋나면 같은 판을 다르게 보게 됩니다.",
@@ -262,7 +262,7 @@ export const projects: Project[] = [
           title: "기간 · 팀 규모",
           items: [
             { label: "개발 기간", value: "2026.07 – 2026.10" },
-            { label: "팀 구성", value: "팀 프로젝트" },
+            { label: "팀 구성", value: "9명" },
             { label: "담당 업무", value: "카드 연출 · 시퀀스 · 렌더링 / 라이팅" },
           ],
         },
@@ -277,7 +277,7 @@ export const projects: Project[] = [
         },
       ],
       teamNote:
-        "팀 프로젝트입니다. 아래는 커밋 이력으로 확인 가능한 본인 작업이며, 규칙 · 판정 서버 로직, PvE AI, 사운드, 캐릭터 애니메이션, HUD 대부분은 팀원들이 담당했습니다.",
+        "9인 팀 프로젝트입니다. 아래는 커밋 이력으로 확인 가능한 본인 작업이며, 규칙 · 판정 서버 로직, PvE AI, 사운드, 캐릭터 애니메이션, HUD 대부분은 팀원들이 담당했습니다.",
 
       myScope: [
         {
