@@ -216,7 +216,434 @@ export type Project = {
 
 const GOD_REPO = "https://github.com/NBcampUnrealTrack/8th-Team4-CH4-Project";
 
+/** 블로그 글 주소 — EmberRoad 섹션에서 여러 번 쓴다 */
+const blog = (id: string) => `https://blog.naver.com/startblack7/${id}`;
+
 export const projects: Project[] = [
+  {
+    slug: "emberroad",
+    title: "EmberRoad",
+    tagline: "모닥불에 둘러앉은 4~7인, 확률 판정 카드로 싸우는 마피아 게임",
+    banner: "/projects/emberroad/key-art.jpg",
+    icon: "cube",
+    label: "Unreal · 팀 프로젝트",
+    period: "2026.07 – 2026.10",
+    role: "카드 연출 · 시퀀스 · 렌더링 / 라이팅",
+    teamSize: "팀 프로젝트",
+    stack: ["Unreal Engine 5.8", "C++", "GAS", "CommonUI", "Chaos Destruction"],
+    problem:
+      "카드가 11종이고 판정이 4단계라, 연출을 카드마다 만들면 44가지를 손으로 그려야 했습니다. 거기에 멀티플레이라 인트로 · 엔딩 연출이 클라마다 어긋나면 같은 판을 다르게 보게 됩니다.",
+    approach: [
+      "카드 연출 — 카드 효과 목록을 그대로 연출 프리미티브 조합으로 재사용",
+      "카드 위젯 — Input · Motion · FX 모듈로 나눈 상태 기계, 머티리얼 글로우 · 디졸브",
+      "시퀀스 — 서버 GameState 가 단계를 복제, 영상은 각 클라가 로컬 재생",
+      "렌더링 — 실사 전제 설정을 걷어내고 노을 3레이어 라이팅, Chaos 붕괴 엔딩",
+    ],
+    results: [
+      { label: "카드 연출", value: "카드별 에셋 없이 효과 조합으로" },
+      { label: "시퀀스", value: "늦게 들어와도 같은 단계" },
+      { label: "엔딩", value: "진영별 3종 · 붕괴 시뮬레이션" },
+    ],
+    relatedPosts: ["unreal-36", "unreal-37", "unreal-45", "unreal-50", "unreal-49", "unreal-48"],
+    surface: "dark",
+
+    detail: {
+      overview: [],
+      factGroups: [
+        {
+          title: "게임 정보",
+          items: [
+            { label: "장르", value: "TRPG 스타일 마피아 카드 게임" },
+            { label: "인원", value: "PvP 4~7인 · PvE 싱글" },
+            { label: "기반", value: "보드게임 《뱅!》 + 확률 판정" },
+          ],
+        },
+        {
+          title: "기간 · 팀 규모",
+          items: [
+            { label: "개발 기간", value: "2026.07 – 2026.10" },
+            { label: "팀 구성", value: "팀 프로젝트" },
+            { label: "담당 업무", value: "카드 연출 · 시퀀스 · 렌더링 / 라이팅" },
+          ],
+        },
+        {
+          title: "개발 환경",
+          items: [
+            { label: "게임 엔진", value: "Unreal Engine 5.8" },
+            { label: "IDE", value: "Visual Studio 2022" },
+            { label: "프로그래밍 언어", value: "C++ / Blueprint" },
+            { label: "플랫폼", value: "PC (Steam)" },
+          ],
+        },
+      ],
+      teamNote:
+        "팀 프로젝트입니다. 아래는 커밋 이력으로 확인 가능한 본인 작업이며, 규칙 · 판정 서버 로직, PvE AI, 사운드, 캐릭터 애니메이션, HUD 대부분은 팀원들이 담당했습니다.",
+
+      myScope: [
+        {
+          title: "카드 연출",
+          text: "카드 위젯 상태 기계(등장 · 호버 · 사용 · 퇴장), 손패 레이아웃, 효과 조합 연출, 판정 게이지",
+        },
+        {
+          title: "머티리얼",
+          text: "카드 테두리 글로우 · 디졸브 머티리얼과 머티리얼 함수, 생성 스크립트",
+        },
+        {
+          title: "시퀀스",
+          text: "인트로 4단계 · 진영별 엔딩 시퀀스, 연출 디렉터, Chaos Destruction 성 붕괴",
+        },
+        {
+          title: "렌더링 · 레벨",
+          text: "로우폴리 라이팅 · 렌더링 설정, 캠프파이어 조명, 성 맵, 타이틀 화면, 그래픽 옵션",
+        },
+      ],
+
+      flows: [
+        {
+          title: "카드 한 장의 생애",
+          src: "/projects/emberroad/flow-card.png",
+          alt: "카드가 손패에 들어와 사용되고 사라지기까지의 상태 흐름도",
+          caption: "Pending → Dealing → Idle → Presenting → Dwelling → Exiting, 사용 단계에서 글로우 · 디졸브",
+        },
+        {
+          title: "인트로 흐름",
+          src: "/projects/emberroad/flow-intro.png",
+          alt: "야영지 진입부터 첫 턴 안내까지 인트로 4단계 흐름도",
+          caption: "야영지 진입 → 내 역할 → 용사 공개 → 첫 턴, 서버 타이머 하나가 단계를 넘긴다",
+        },
+      ],
+      keyArt: {
+        src: "/projects/emberroad/key-art.jpg",
+        alt: "노을 진 성과 모닥불이 보이는 타이틀 화면",
+        caption: "노을 진 성 앞의 야영지 — 판이 벌어지는 곳",
+        hint: "게임 대표 컷",
+        aspect: "16/9",
+      },
+      overviewMedia: [
+        {
+          src: "/projects/emberroad/hand.jpg",
+          alt: "모닥불 앞에 부채꼴로 펼쳐진 손패",
+          caption: "모닥불 앞에 펼친 손패 — 카드마다 대실패 · 실패 · 성공 · 대성공 확률이 붙는다",
+          hint: "인게임 손패",
+          aspect: "16/9",
+        },
+      ],
+      youtubeId: null,
+
+      sections: [
+        {
+          id: "card-fx",
+          kind: "feature",
+          eyebrow: "01 · 카드 연출",
+          title: "효과 목록을 그대로 쓰는 조합형 카드 연출",
+          lead: "카드 효과 데이터가 곧 연출 조합이 되게 해, 카드를 추가해도 연출을 따로 만들지 않습니다.",
+          body: [
+            "카드는 판정 등급마다 효과 목록(뽑기 1 · 피해 1 · 한도 회복 1 …)을 들고 있습니다. 서버는 이 목록대로 효과를 실행하고, 클라는 같은 목록에서 Op만 남겨 연출 프리미티브를 차례로 재생합니다.",
+            "연출 전용 데이터 테이블은 만들지 않았습니다. 같은 사실이 두 곳에 적히면 카드에서 피해를 뺐는데 공격 연출이 계속 나가는 식으로 반드시 어긋나기 때문입니다.",
+          ],
+          table: {
+            caption: "분기 수가 아니라 정보를 버리는지가 갈랐습니다.",
+            headers: ["방식", "분기", "문제"],
+            rows: [
+              ["카드 ID로 Switch", "카드 수만큼", "카드 추가마다 그래프 수정, 빠뜨리면 조용히 연출 없음"],
+              ["대표 성격 하나로 Switch", "7개", "속공(뽑기 + 피해 + 회복)이 피해 하나로 뭉개짐"],
+              ["효과 목록을 순서대로 재생", "프리미티브 수만큼 고정", "새 카드는 효과만 적으면 연출이 따라옴"],
+            ],
+          },
+          media: [
+            {
+              src: "/projects/emberroad/card-bp.png",
+              alt: "카드 위젯 블루프린트의 연출 이벤트 노드",
+              caption: "위젯 BP — 등장 · 사용 · 판정 이벤트가 문맥(등급 · 효과 단계)을 받아 재생만 한다",
+              hint: "카드 위젯 BP",
+              aspect: "16/9",
+            },
+          ],
+          blogPosts: [
+            { title: "Primitive 조합을 통한 연출 구현", url: blog("224369187359") },
+            { title: "카드 이벤트(상호작용)", url: blog("224415309629") },
+          ],
+        },
+        {
+          id: "card-widget",
+          kind: "feature",
+          eyebrow: "02 · 카드 위젯",
+          title: "모듈로 나눈 카드 위젯 상태 기계",
+          lead: "한 파일에 쌓이던 연출을 성격별 모듈로 나눴습니다.",
+          headerMedia: [
+            {
+              src: "/projects/emberroad/card-modules.png",
+              alt: "카드 위젯과 손패 위젯을 이루는 모듈 구성도",
+              caption: "한 클래스, 여러 모듈 — 공통 계산은 MotionMath · Internal 로 빼서 가져다 쓴다",
+              hint: "모듈 구성도",
+              aspect: "16/9",
+            },
+          ],
+          body: [
+            "카드는 날아오고, 커서에 반응하고, 판정에 번쩍이고, 타서 사라집니다. 클래스를 쪼개지 않고 파일만 나눈 이유는 이 연출들이 위치 · 크기 · 각도라는 같은 상태를 공유하기 때문입니다.",
+            "입력은 상태만 기록하고, 무엇을 그릴지는 Tick이 정합니다. 호버 여부는 IsHoverActive() 한 함수만 보게 해, 커서를 움직이지 않아도 풀려야 하는 경우(턴 종료 · 잠금)를 놓치지 않습니다.",
+          ],
+          table: {
+            headers: ["모듈", "하는 일"],
+            rows: [
+              ["Input", "슬레이트 입력을 상태로 옮긴다"],
+              ["Motion", "위치 · 크기 · 각도를 갱신하는 상태 기계"],
+              ["FX", "머티리얼 파라미터 구동"],
+              ["MotionMath", "오버슈트 · 진행도 같은 순수 계산"],
+              ["Layout / Play", "손패의 자리 계산 / 카드 사용 흐름"],
+            ],
+          },
+          media: [
+            {
+              src: "/projects/emberroad/card-hover.png",
+              alt: "입력과 연출을 분리한 카드 호버 파이프라인",
+              caption: "호버 파이프라인 — 입력 → 단일 판정 → 모션 · 레이아웃 · BP 이벤트",
+              hint: "호버 파이프라인",
+              aspect: "16/9",
+            },
+            {
+              src: "/projects/emberroad/card-pipeline.png",
+              alt: "카드를 드롭했을 때 버리기 · 즉시 사용 · 대상 선택으로 갈리는 분기도",
+              caption: "카드 한 장이 거치는 분기 — 드롭 위치와 대상 필요 여부로 갈린다",
+              hint: "카드 사용 분기",
+              aspect: "16/9",
+            },
+          ],
+          blogPosts: [{ title: "카드 연출 모듈화", url: blog("224434348874") }],
+        },
+        {
+          id: "card-material",
+          kind: "feature",
+          eyebrow: "03 · 머티리얼",
+          title: "위젯 애니메이션이 흔드는 판정 글로우 · 퇴장 디졸브",
+          lead: "곡선은 시퀀서가 그리고, 머티리얼은 0~1 값 하나만 받습니다.",
+          body: [
+            "판정 글로우를 C++ → BP Tick → 위젯 애니메이션 순으로 세 번 옮겼습니다. 기준은 C++이냐 BP냐가 아니라 만드는 사람이 눈으로 보면서 다듬을 수 있는가였습니다.",
+            "머티리얼은 평소 세기와 등급별 피크 사이를 BurstAlpha 하나로 보간합니다. 위젯 애니메이션은 그 값을 언제 얼마만큼 줄지만 정하므로, 감쇠 곡선을 숫자가 아니라 커브로 맞춥니다.",
+          ],
+          table: {
+            caption: "세 안 모두 동작은 했습니다. 튜닝할 때의 반복 비용이 달랐습니다.",
+            headers: ["안", "값을 고치는 법", "판단"],
+            rows: [
+              ["C++ 이 파라미터 직접 구동", "코드 수정 → 빌드", "BP에서 손댈 수 없음"],
+              ["BP Event Tick + 수식", "숫자 수정 → PIE → 0.45초 관찰", "재생 전엔 볼 수 없음"],
+              ["위젯 애니메이션 + 머티리얼", "커브를 보며 바로 수정", "채택"],
+            ],
+          },
+          media: [
+            {
+              src: "/projects/emberroad/card-glow.png",
+              alt: "판정이 확정된 카드의 글로우가 터졌다가 가라앉는 과정",
+              caption: "판정 글로우 — 확정 순간 터졌다가 평상시로 잦아든다",
+              hint: "판정 글로우",
+              aspect: "16/9",
+            },
+            {
+              src: "/projects/emberroad/card-dissolve.png",
+              alt: "퇴장 진행도에 따라 카드가 타 들어가는 디졸브",
+              caption: "퇴장 디졸브 — 머티리얼은 하나, 공격 · 회복은 진행 곡선만 다르다",
+              hint: "퇴장 디졸브",
+              aspect: "16/9",
+            },
+          ],
+          blogPosts: [{ title: "카드 연출(Dynamic Material Instance)", url: blog("224370473451") }],
+        },
+        {
+          id: "sequence",
+          kind: "feature",
+          eyebrow: "04 · 시퀀스",
+          title: "서버가 단계를 들고 있는 인트로 · 엔딩 시퀀스",
+          lead: "단계만 복제하고 영상은 각 클라가 로컬로 재생합니다.",
+          headerMedia: [
+            {
+              src: "/projects/emberroad/sequence-gamestate.png",
+              alt: "GameState 가 단계를 복제해 클라마다 로컬 재생하는 구조",
+              caption: "GameState 가 단계를 소유 — 늦게 들어온 클라도 지금 단계부터 따라잡는다",
+              hint: "시퀀스 구조",
+              aspect: "16/9",
+            },
+          ],
+          table: {
+            headers: ["고민", "선택"],
+            rows: [
+              ["이벤트로 쏠까, 상태로 둘까", "상태 — 늦게 와도 지금 단계를 받는다"],
+              ["타이머는 누가", "서버에 하나 — 클라가 각자 세면 어긋난다"],
+              ["영상을 복제할까", "단계만 복제, 영상은 각자 로컬 재생"],
+              ["시퀀스 목록은 어디에", "맵의 액터 — 그 맵의 성을 찍은 것이라 맵에 속한다"],
+              ["무거운 에셋은", "레벨과 함께 로드되는 하드 참조로 연출 시작 시 대기 없음"],
+            ],
+          },
+          media: [
+            {
+              src: "/projects/emberroad/ending-debug.png",
+              alt: "F1 · F2 · F3 로 진영별 엔딩을 바로 보는 디버그 슬롯",
+              caption: "진영별 엔딩을 키 하나로 확인 — 서버 · 판 진행 중 · Shipping 제외 조건으로 버그를 만들지 않게",
+              hint: "엔딩 디버그",
+              aspect: "16/9",
+            },
+          ],
+          blogPosts: [
+            { title: "인트로/엔딩 시퀸스", url: blog("224433425791") },
+            { title: "타이밍 이슈", url: blog("224367134864") },
+          ],
+        },
+        {
+          id: "collapse",
+          kind: "feature",
+          eyebrow: "05 · 엔딩 연출",
+          title: "Chaos Destruction 으로 만든 성 붕괴 엔딩",
+          lead: "조각을 손으로 애니메이션하지 않고 시뮬레이션을 캐시로 구워 재생합니다.",
+          body: [
+            "무법자 승리 엔딩은 성이 무너지는 장면입니다. 스태틱 메시를 조각내 하나하나 애니메이션하는 대신 Geometry Collection 으로 성을 쪼개고, 앵커가 받치던 조각을 필드로 풀어 무너뜨렸습니다.",
+            "6초 분량의 시뮬레이션은 에디터에서 한 번 굽고, 런타임은 그 프레임을 순서대로 읽기만 합니다. 매번 결과가 같아 시퀀스 카메라와 맞출 수 있습니다.",
+          ],
+          table: {
+            headers: ["진영", "엔딩"],
+            rows: [
+              ["보안관", "지켜낸 새벽 — 성에 아침이 온다"],
+              ["무법자", "무너진 왕국 — 성이 붕괴한다"],
+              ["배신자", "빼앗긴 왕좌 — 주인이 바뀐다"],
+            ],
+          },
+          media: [
+            {
+              src: "/projects/emberroad/collapse-structure.png",
+              alt: "Geometry Collection · 조각 · 앵커로 이뤄진 성 구조",
+              caption: "조각은 떨어지려 하고, 앵커가 붙잡는다 — 이 균형이 서 있는 성이다",
+              hint: "붕괴 구조",
+              aspect: "16/9",
+            },
+            {
+              src: "/projects/emberroad/collapse-timeline.png",
+              alt: "6초 동안 성이 무너지는 단계별 그림",
+              caption: "6초가 캐시다 — 균열 → 상부 낙하 → 잔해",
+              hint: "붕괴 타임라인",
+              aspect: "16/9",
+            },
+          ],
+          blogPosts: [{ title: "붕괴 시뮬레이션 연출", url: blog("224426329189") }],
+        },
+        {
+          id: "lighting",
+          kind: "feature",
+          eyebrow: "06 · 라이팅",
+          title: "로우폴리를 위한 노을 3레이어 라이팅",
+          lead: "무엇을 켤까보다 무엇을 끌까를 먼저 정했습니다.",
+          compare: {
+            title: "실사 프리셋 → Lumen off + 노을 3점 조명",
+            before: {
+              src: "/projects/emberroad/lighting-before.png",
+              alt: "실사 프리셋 그대로인 야영지 그레이박스",
+              caption: "실사 프리셋 + 라이팅 미설정",
+              hint: "적용 전",
+              aspect: "16/9",
+            },
+            after: {
+              src: "/projects/emberroad/lighting-after.png",
+              alt: "노을빛 3레이어 라이팅을 적용한 야영지",
+              caption: "Lumen off + 노을 3레이어",
+              hint: "적용 후",
+              aspect: "16/9",
+            },
+          },
+          table: {
+            caption: "씬 반경이 10m 남짓이고 라이트가 5개뿐이라 베이크 없이 전부 Movable 로 둬 이터레이션 속도를 지켰습니다.",
+            headers: ["레이어", "핵심 값", "이유"],
+            rows: [
+              ["Directional Light", "2700K · 8 lux · Pitch −20°", "노을은 약하다. 세지면 모닥불이 존재감을 잃는다"],
+              ["Sky Light", "Intensity 3.5 · 아래 반구 색 지정", "카메라를 향한 면을 밝히는 유일한 레이어"],
+              ["Post Process", "노출 수동 고정 · 그림자 Gain 1.35", "색을 고르기 전에 노출부터 잠근다"],
+            ],
+          },
+          blogPosts: [{ title: "로우폴리 라이팅", url: blog("224391284637") }],
+        },
+      ],
+
+      troubleshooting: [
+        {
+          title: "로우폴리 씬이 실사처럼 보이고 외곽선이 안 나오는 문제",
+          problem:
+            "로우폴리 에셋만 배치했는데 실사 엔진에 로우폴리를 던져 놓은 느낌이 났고, 실루엣은 계단처럼 지글거렸습니다. 대상에 마우스를 올리면 떠야 할 외곽선도 나오지 않았습니다.",
+          hypotheses: [
+            {
+              text: "포스트 프로세스 값이 맞지 않는다",
+              test: "포스트는 마감 단계라, 값보다 먼저 프로젝트 렌더링 설정(DefaultEngine.ini)을 확인",
+              verdict: "기각",
+            },
+            {
+              text: "파이프라인이 실사 전제로 잡혀 있다",
+              test: "고정 카메라 단일 씬에 Lumen · 하드웨어 레이트레이싱 · Substrate · Nanite 가 켜져 있음",
+              verdict: "확인",
+            },
+            {
+              text: "외곽선 코드가 스텐실 값을 못 찍는다",
+              test: "SetCustomDepthStencilValue 는 정상 — r.CustomDepth=1 이라 읽을 스텐실 버퍼가 없었음",
+              verdict: "기각",
+            },
+          ],
+          fix: "Lumen · Substrate · Nanite 를 끄고 반사는 Screen Space 로, 꺼져 있던 AA는 TSR 로, r.CustomDepth 는 스텐실을 포함하는 3 으로 바꿨습니다. 디퍼드 셰이딩이라 적혀 있던 MSAA 4x 는 처음부터 동작하지 않고 있었습니다.",
+          result: "실루엣이 깨끗해지고 호버 외곽선이 정상으로 나왔습니다. 톤은 3레이어 라이팅으로 고정할 수 있게 됐습니다.",
+          lesson:
+            "코드는 멀쩡한데 렌더링 쪽이 0%였습니다. 스타일라이즈드에서 Lumen 을 끄는 건 품질을 낮추는 게 아니라, 물리적으로 맞는 빛 대신 의도한 빛을 고르는 일이었습니다.",
+          mine: true,
+          postUrl: blog("224391284637"),
+        },
+        {
+          title: "맵의 바닥 · 길 · 잡초가 미세하게 깜빡이는 문제",
+          problem: "게임 씬에서 바닥, 길, 잡초 주변이 미세하게 깜빡였습니다. 카메라가 고정이라 작은 떨림도 그대로 눈에 띄었습니다.",
+          hypotheses: [
+            {
+              text: "겹친 표면의 Z-Fighting",
+              test: "같은 자리의 중복 길 조각, 너무 가까운 길 · 바닥 표면, 성벽 마감재와 캡의 겹침을 확인",
+              verdict: "확인",
+            },
+            {
+              text: "메시 겹침 하나만의 문제다",
+              test: "겹침을 정리한 뒤에도 식생 그림자와 광원 하이라이트 주변의 깜빡임이 남음",
+              verdict: "기각",
+            },
+            {
+              text: "작은 식생의 그림자 · 거리장 AO 가 떨린다",
+              test: "잡초 · 수풀의 Cast Shadow 와 Distance Field Lighting 기여를 끄고 비교",
+              verdict: "확인",
+            },
+            {
+              text: "보조 광원의 반사 하이라이트가 반짝인다",
+              test: "길 주변 · 모닥불 광원의 Specular Scale 과 Source Radius 를 조정해 비교",
+              verdict: "확인",
+            },
+          ],
+          fix: "중복 조각은 숨기고 길 높이를 올려 표면을 분리했습니다. 작은 식생과 바닥의 그림자 · 거리장 기여를 끄고, 보조 광원은 재배치한 뒤 Specular Scale 0.1~0.15 · Source Radius 20cm 로 하이라이트를 눌렀습니다.",
+          result: "바닥 · 길 · 식생 주변의 깜빡임이 사라졌습니다.",
+          lesson: "깜빡임 하나에 원인이 셋이었습니다. 표면 겹침 · 그림자 · 반사를 나눠 하나씩 끄며 본 것이 원인을 가려냈습니다.",
+          mine: true,
+          postUrl: blog("224416393147"),
+        },
+        {
+          title: "연출 단계가 클라마다 어긋나는 문제",
+          problem:
+            "인트로 · 승리 연출을 클라마다 도는 타이머와 일회성 멀티캐스트로 넘기면, 늦게 접속한 사람은 자기 도착 시각부터 다시 세어 뒤처지고, 히치로 콜백이 밀린 클라는 다른 화면에 갇혔습니다.",
+          hypotheses: [
+            {
+              text: "멀티캐스트로 시작을 알리면 된다",
+              test: "늦게 들어온 클라 기준으로 확인 — 이미 지나간 멀티캐스트는 받을 수 없음",
+              verdict: "기각",
+            },
+            {
+              text: "클라마다 시계를 따로 갖는 것이 원인이다",
+              test: "어긋남의 기준점이 각 클라의 도착 시각 · 월드 시간이라는 점을 확인",
+              verdict: "확인",
+            },
+          ],
+          fix: "타이머를 서버에 하나만 두고, 단계를 GameState 의 복제 변수(OnRep)로 바꿨습니다. 리슨 서버의 호스트는 자기에게 복제가 오지 않아 OnRep 이 불리지 않으므로, 서버에서 값을 바꿀 때 직접 통지하도록 했습니다.",
+          result: "늦게 들어와도 현재 단계부터 받고, 호스트 화면만 연출이 안 뜨는 일이 없어졌습니다.",
+          lesson: "피할 것은 타이머가 아니라 클라마다 도는 타이머였습니다. 어긋나도 남과 다른 결과를 보지 않는 것(피격 플래시 · 카메라 셰이크)만 로컬에 둡니다.",
+          mine: true,
+          postUrl: blog("224367134864"),
+        },
+      ],
+    },
+  },
   {
     slug: "gears-of-deceit",
     title: "Gears of Deceit",

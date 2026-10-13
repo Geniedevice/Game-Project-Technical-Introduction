@@ -7,7 +7,7 @@
  * 노트에 글을 추가한 뒤 이 스크립트만 돌리면 사이트가 따라옵니다.
  * 손으로 링크를 옮기지 마세요.
  */
-import { writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
@@ -99,6 +99,9 @@ function cleanTitle(title) {
 const toKey = (s) => JSON.stringify(s);
 
 async function fetchNote(file) {
+  // NOTES_DIR=../BaseStudyNote — 푸시 전 로컬 노트로 미리 동기화할 때
+  if (process.env.NOTES_DIR) return readFile(path.join(process.env.NOTES_DIR, file), "utf8");
+
   const url = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/${file
     .split("/")
     .map(encodeURIComponent)

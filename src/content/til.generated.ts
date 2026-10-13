@@ -99,6 +99,12 @@ export const generatedSeries: Series[] = [
       { id: "unreal-42", title: "언리얼 엔진 탐구(73) - Mass Entity(5) - Rader만들기", url: "https://blog.naver.com/startblack7/224384868670" },
       { id: "unreal-43", title: "언리얼 엔진 탐구(74) - Mass Entity(6) - TransfromFragment기반 미니맵", url: "https://blog.naver.com/startblack7/224385949452" },
       { id: "unreal-44", title: "언리얼 엔진 탐구(75) - 로우폴리 라이팅", url: "https://blog.naver.com/startblack7/224391284637" },
+      { id: "unreal-45", title: "언리얼 엔진 탐구(76) - 카드 이벤트(상호작용)", url: "https://blog.naver.com/startblack7/224415309629" },
+      { id: "unreal-46", title: "언리얼 엔진 탐구(77) - 배경 깜빡임 문제", url: "https://blog.naver.com/startblack7/224416393147" },
+      { id: "unreal-47", title: "언리얼 엔진 탐구(78) - CommonUI", url: "https://blog.naver.com/startblack7/224420199530" },
+      { id: "unreal-48", title: "언리얼 엔진 탐구(79) - 붕괴 시뮬레이션 연출", url: "https://blog.naver.com/startblack7/224426329189" },
+      { id: "unreal-49", title: "언리얼 엔진 탐구(80) - 인트로/엔딩 시퀸스", url: "https://blog.naver.com/startblack7/224433425791" },
+      { id: "unreal-50", title: "언리얼 엔진 탐구(81) - 카드 연출 모듈화", url: "https://blog.naver.com/startblack7/224434348874" },
     ],
   },
   {
@@ -182,6 +188,7 @@ export const generatedSeries: Series[] = [
       { id: "cs-50", title: "CS Study - 알고리즘", url: "https://blog.naver.com/startblack7/224363180812" },
       { id: "cs-51", title: "CS Study - 실전 알고리즘", url: "https://blog.naver.com/startblack7/224378344349" },
       { id: "cs-52", title: "CS Study - 디자인 패턴", url: "https://blog.naver.com/startblack7/224388338048" },
+      { id: "cs-53", title: "게임 알고리즘(1) - 2D에서 가장 가까운 대상 찾기", url: "https://blog.naver.com/startblack7/224414138623" },
     ],
   },
   {
